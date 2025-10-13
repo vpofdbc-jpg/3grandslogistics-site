@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard - 3 Grands Logistics</title>
+    <!-- Load Tailwind CSS from CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Styles to enhance the look and feel */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        
+        :root {
+            --primary-color: #10B981; /* Emerald Green */
+            --primary-light: #D1FAE5;
+            --primary-dark: #059669;
+            --danger-color: #EF4444; /* Red */
+            --yellow-400: #FACC15;
+            --yellow-50: #FFFBEB;
+            --yellow-100: #FEF3C7;
+            --yellow-800: #92400E;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fbf8;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 960px; /* max-w-4xl */
+            margin: 0 auto; /* mx-auto */
+            padding: 1rem; /* p-4 */
+        }
+        @media (min-width: 768px) {
+            .container {
+                padding: 2rem; /* md:p-8 */
+            }
+        }
+
+        /* Utility Classes (Shadows and Rounded Corners) */
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Button Styling */
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            transition: all 0.2s;
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary { /* Added for the new print label button */
+            background-color: #cbd5e1; /* gray-300 */
+            color: #1f2937; /* gray-800 */
+            transition: all 0.2s;
+        }
+        .btn-secondary:hover {
+            background-color: #94a3b8; /* gray-400 */
+            transform: translateY(-1px);
+        }
+        
+        .tab-active {
+            border-color: var(--primary-color) !important;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active { /* Use 'active' class for showing/hiding content */
+            display: block;
+        }
+
+        /* Status Badges */
+        .status-delivered { background-color: #D1FAE5; color: #059669; } /* Green */
+        .status-stowed { background-color: #DBEAFE; color: #2563EB; } /* Blue */
+        .status-pending { background-color: #FEE2E2; color: #B91C1C; } /* Red */
+        .status-scheduled { background-color: #FEF3C7; color: #F59E0B; } /* Orange */
+        .status-transit { background-color: #E5E7EB; color: #4B5563; } /* Gray */
+        .status-return_requested { background-color: #FED7AA; color: #F97316; } /* Orange-ish for return requested */
+
+
+        .badge {
+            padding: 0.25rem 0.6rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+            text-transform: capitalize; /* Make status text look nicer */
+        }
+        .return-requested-badge { /* This might be redundant with status-return_requested */
+            background-color: #FEE2E2; /* Light Red */
+            color: var(--danger-color);
+            border: 1px solid var(--danger-color);
+        }
+        
+        /* Header */
+        .header {
+            padding: 1.5rem; /* p-6 */
+            margin-bottom: 2rem; /* mb-8 */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header h1 {
+            font-size: 1.875rem; /* text-3xl */
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+        .header #user-display {
+            font-size: 0.875rem; /* text-sm */
+            color: var(--gray-500);
+            margin-top: 0.25rem;
+        }
+        /* Removed fee-section styling */
+
+        /* Tabs */
+        .tabs-container {
+            display: flex;
+            border-bottom: 2px solid var(--gray-200);
+            margin-bottom: 1.5rem;
+        }
+        .tab-button {
+            padding: 0.5rem 1rem;
+            color: var(--gray-600);
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            cursor: pointer;
+            text-decoration: none; /* Ensure no underline */
+        }
+        .tab-button:hover {
+            border-color: var(--gray-300);
+        }
+
+        /* Form styling */
+        .form-section {
+            padding-top: 1rem;
+        }
+        .form-section h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            border-bottom: 1px solid var(--gray-200);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+        .form-group input, .form-group textarea, .form-group select { /* Added select here */
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.5rem;
+            margin-top: 0.25rem;
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { /* Added select here */
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+        }
+        .form-group .radio-label {
+            display: flex;
+            align-items: flex-start; /* Align items to the start for multiline descriptions */
+            cursor: pointer;
+            padding: 1rem;
+            border: 2px solid transparent;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            transition: all 0.2s;
+        }
+        .form-group .radio-label:has(:checked) {
+            border-color: var(--primary-color);
+        }
+        .form-group .radio-label .radio-input {
+            height: 1rem;
+            width: 1rem;
+            color: var(--primary-color);
+            margin-right: 0.75rem;
+            margin-top: 0.2rem; /* Adjust alignment for radio button */
+        }
+        .form-group .radio-label .label-content { /* New wrapper for title and description */
+            flex-grow: 1; /* Allow content to take up space */
+        }
+        .form-group .radio-label .label-text {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-700);
+            margin-bottom: 0.25rem; /* Space between title and description */
+            display: block; /* Ensure it takes full width */
+        }
+        .form-group .radio-label .service-description { /* New style for service description */
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+        .form-group .radio-label .label-text-small {
+            margin-left: auto;
+            font-size: 0.75rem;
+            color: var(--gray-400);
+        }
+        
+        .alert-box {
+            background-color: var(--yellow-50);
+            padding: 1rem;
+            border-left: 4px solid var(--yellow-400);
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .alert-box .alert-title {
+            font-weight: 500;
+            color: var(--yellow-800);
+        }
+        .alert-box .alert-content {
+            font-size: 0.875rem;
+            color: var(--gray-700);
+        }
+        .order-card {
+            background-color: #fcfcfc;
+            border: 1px solid var(--gray-200);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+        .order-card .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .order-card .order-id {
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+        .order-card .order-details {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+        }
+        .order-card .order-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px dashed var(--gray-200);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" style="display:none;" id="dashboard-main-content">
+
+        <!-- Header -->
+        <div class="card header">
+            <div>
+                <h1>3 Grands Logistics Customer Dashboard</h1>
+                <p id="user-display">Loading user info...</p>
+                <button id="logout-button" class="btn btn-primary mt-2">
+                    Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content Tabs -->
+        <div class="card p-6">
+            
+            <!-- Tabs -->
+            <div class="tabs-container">
+                <a href="#" id="tab-new-order" data-tab="new-order" class="tab-button tab-active">
+                    New Order
+                </a>
+                <a href="#" id="tab-my-orders" data-tab="my-orders" class="tab-button">
+                    My Orders
+                </a>
+            </div>
+            
+            <!-- Tab Content: New Order -->
+            <div id="content-new-order" class="tab-content active">
+                <h2 style="font-size: 1.25rem; font-weight: 600; color: var(--gray-700); margin-bottom: 1rem;">Choose Your Pricing Plan & Service</h2>
+
+                <!-- Pricing Plan Selection -->
+                <div class="form-section mb-6 pb-6 border-b border-gray-200">
+                    <h3 class="!border-b-0">Your Delivery Options</h3>
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 1rem;">
+                        <label class="radio-label">
+                            <input type="radio" name="pricing_plan" value="pay_as_you_go" checked class="radio-input" id="plan-pay-as-you-go">
+                            <div class="label-content">
+                                <span class="label-text">📦 On-Demand Delivery (Pay-as-You-Go)</span>
+                                <p class="service-description">
+                                    Perfect for occasional deliveries. Your fee is based on:
+                                    <ul class="list-disc list-inside text-xs text-gray-500 mt-2 ml-4">
+                                        <li>Weight & dimensions of the package</li>
+                                        <li>Mileage to your destination</li>
+                                    </ul>
+                                    You'll be charged the greater of the two.
+                                    <ul class="list-disc list-inside text-xs text-gray-500 mt-2 ml-4">
+                                        <li>Example: If your package is small but going 30 miles, your charge will be based on mileage.</li>
+                                        <li>Example: If it's large but going 5 miles, you'll be charged based on size.</li>
+                                    </ul>
+                                    No subscription required. Pay only when you need it.
+                                </p>
+                            </div>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="pricing_plan" value="subscription" class="radio-input" id="plan-subscription">
+                            <div class="label-content">
+                                <span class="label-text">🔒 VWC Subscription Plan</span>
+                                <p class="service-description">
+                                    Enjoy unlimited delivery convenience with our VWC (Vendor to Warehouse to Customer) Plan. Costs <span class="font-semibold text-primary-dark">$23.99/month</span>. This plan includes:
+                                    <ul class="list-disc list-inside text-xs text-gray-500 mt-2 ml-4">
+                                        <li>Unlimited deliveries each month</li>
+                                        <li>Priority handling and delivery scheduling</li>
+                                        <li>Verified drop-off to ensure secure delivery</li>
+                                        <li>Weather-protected handling</li>
+                                        <li>Signature confirmation (when required)</li>
+                                    </ul>
+                                    No additional fees—just one flat monthly rate! Subscribe now for just $23.99/month and enjoy worry-free deliveries. On-Demand deliveries are still priced per delivery.
+                                </p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Service Selection Radios -->
+                <h3 class="!border-b-0">Choose Your Delivery Service</h3>
+                <div style="display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                    <label class="radio-label">
+                        <input type="radio" name="service_type" value="on_demand" checked class="radio-input" id="radio-on-demand">
+                        <div class="label-content">
+                            <span class="label-text">On-Demand Pickup & Delivery</span>
+                            <p class="service-description">Request a delivery from one specific location to another, perfect for personal items, documents, or direct transfers.</p>
+                        </div>
+                        <p class="label-text-small">P2P</p>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="service_type" value="vendor_warehouse" class="radio-input" id="radio-vendor-warehouse">
+                        <div class="label-content">
+                            <span class="label-text">Vendor-to-Warehouse Delivery</span>
+                            <p class="service-description">This is a fulfillment service or a third-party logistics (3PL) provider that specializes in eCommerce fulfillment and offers warehousing services for delayed or consolidated delivery. It allows the customer to use the service's warehouse as a temporary holding point for items they have ordered online, before having them shipped to their final destination at a later time.</p>
+                        </div>
+                        <p class="label-text-small">VWC</p>
+                    </label>
+                </div>
+
+                <!-- Package Limits Information -->
+                <div class="card p-4 mb-6 bg-blue-50 border-l-4 border-blue-400 text-blue-800">
+                    <p class="font-semibold mb-2">Important: Package Restrictions</p>
+                    <p class="text-sm">
+                        The maximum limits are 108 inches (9 ft) in length and 150 lbs in weight.
+                        Packages must be appropriately boxed or wrapped.
+                        Anything exceeding these limits, including palletized items and unboxed furniture, must be scheduled using our on demand option.
+                    </p>
+                </div>
+                
+                <!-- On-Demand Form Fields -->
+                <form id="on-demand-form" class="form-section">
+                    <h3>On-Demand Details</h3>
+
+                    <div class="form-group">
+                        <label for="onDemandPickupAddress">Pickup Address</label>
+                        <input type="text" id="onDemandPickupAddress" required placeholder="Your current location or desired pickup spot" onkeyup="calculateOnDemandCost()">
+                    </div>
+                    <div class="form-group">
+                        <label for="onDemandFinalDeliveryAddress">Final Delivery Address</label>
+                        <input type="text" id="onDemandFinalDeliveryAddress" required placeholder="Your home address" onkeyup="calculateOnDemandCost()">
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="form-group">
+                            <label for="onDemandPackageWeight">Package Weight (lbs)</label>
+                            <input type="number" id="onDemandPackageWeight" min="0.1" step="0.1" placeholder="e.g., 5.5" oninput="calculateOnDemandCost()">
+                        </div>
+                        <div class="form-group">
+                            <label for="onDemandPackageVolume">Package Volume (cu ft)</label>
+                            <input type="number" id="onDemandPackageVolume" min="0.1" step="0.1" placeholder="e.g., 1.2 (L x W x H / 1728)" oninput="calculateOnDemandCost()">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="onDemandEstimatedMileage">Estimated Mileage (miles)</label>
+                        <input type="number" id="onDemandEstimatedMileage" min="0.1" step="0.1" placeholder="e.g., 10.5" oninput="calculateOnDemandCost()">
+                        <p class="text-xs text-gray-500 mt-1">This is an estimate. Actual mileage will be confirmed for final pricing.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="onDemandPackageDesc">Package Description</label>
+                        <textarea id="onDemandPackageDesc" rows="2" placeholder="e.g., Small box, fragile documents, clothes"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="onDemandPickupTime">Scheduled Pickup Time (Date & Time)</label>
+                        <input type="datetime-local" id="onDemandPickupTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="onDemandPreferredDeliveryDate">Preferred Delivery Date</label>
+                        <input type="date" id="onDemandPreferredDeliveryDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="onDemandPreferredDeliveryWindow">Preferred Delivery Window</label>
+                        <select id="onDemandPreferredDeliveryWindow" required>
+                            <option value="">Select a time window</option>
+                            <option value="13:00-16:00">1:00 PM - 4:00 PM</option>
+                            <option value="16:00-19:00">4:00 PM - 7:00 PM</option>
+                            <option value="19:00-22:00">7:00 PM - 10:00 PM</option>
+                        </select>
+                    </div>
+
+                    <div class="mt-4 p-4 card text-center">
+                        <p class="text-gray-600 font-semibold">Estimated On-Demand Cost:</p>
+                        <p id="on-demand-estimated-cost" class="text-3xl font-bold text-green-600">$0.00</p>
+                        <p class="text-xs text-gray-500">Excludes potential surge pricing and tolls.</p>
+                    </div>
+
+                    <button type="submit" id="submit-on-demand" class="btn-primary w-full py-3 mt-4 font-semibold rounded-lg">
+                        Request On-Demand Service
+                    </button>
+                    <p id="on-demand-status" style="font-size: 0.875rem; text-align: center; padding-top: 0.5rem;"></p>
+                </form>
+
+                <!-- VWC Form Fields -->
+                <form id="vwc-form" class="form-section" style="display: none;">
+                    <h3>Vendor-to-Warehouse Details</h3>
+
+                    <!-- Warehouse Address Display -->
+                    <div class="alert-box">
+                        <p class="alert-title">IMPORTANT: Use this address when ordering from your vendor!</p>
+                        <p id="warehouse-address-display" class="alert-content" style="font-family: 'Courier New', Courier, monospace; background-color: var(--yellow-100); padding: 0.5rem; border-radius: 0.25rem; overflow-wrap: break-word;">
+                            Loading Warehouse Address...
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="vwcVendorName">Vendor Name</label>
+                        <input type="text" id="vwcVendorName" required placeholder="e.g., Amazon, Target, HelloFresh">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="vwcOrderNumber">Order Number / ID</label>
+                        <input type="text" id="vwcOrderNumber" required placeholder="e.g., #234-5678-ABCD">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="vwcTrackingNumber">Tracking Number</label>
+                        <input type="text" id="vwcTrackingNumber" required placeholder="e.g., 9400109699939126298516">
+                    </div>
+
+                    <!-- New Delivery Date/Time Fields for VWC -->
+                    <div class="form-group">
+                        <label for="vwcPreferredDeliveryDate">Preferred Delivery Date</label>
+                        <input type="date" id="vwcPreferredDeliveryDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="vwcPreferredDeliveryWindow">Preferred Delivery Window</label>
+                        <select id="vwcPreferredDeliveryWindow" required>
+                            <option value="">Select a time window</option>
+                            <option value="13:00-16:00">1:00 PM - 4:00 PM</option>
+                            <option value="16:00-19:00">4:00 PM - 7:00 PM</option>
+                            <option value="19:00-22:00">7:00 PM - 10:00 PM</option>
+                        </select>
+                    </div>
+
+                    <div class="mt-4 p-4 card text-center">
+                        <p class="text-gray-600 font-semibold">VWC Delivery Cost:</p>
+                        <p id="vwc-delivery-cost" class="text-3xl font-bold text-green-600">$0.00</p>
+                        <p class="text-xs text-gray-500" id="vwc-pricing-info">Pay-as-you-go price or covered by subscription.</p>
+                    </div>
+                    
+                    <button type="submit" id="submit-vwc" class="btn-primary w-full py-3 mt-4 font-semibold rounded-lg">
+                        Request Vendor Service
+                    </button>
+                    <p id="vwc-status" style="font-size: 0.875rem; text-align: center; padding-top: 0.5rem;"></p>
+                </form>
+            </div>
+            
+            <!-- Tab Content: My Orders -->
+            <div id="content-my-orders" class="tab-content">
+                <h2 style="font-size: 1.25rem; font-weight: 600; color: var(--gray-700); margin-bottom: 1rem;">My Recent Orders</h2>
+                <div id="orders-list" style="display: grid; gap: 1rem;">
+                    <p id="no-orders-message" class="text-center text-gray-500">No orders found.</p>
+                    <!-- Order Items will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Message for initial loading/auth -->
+    <div id="auth-status-message" class="text-center p-4 text-gray-500" style="margin-top: 2rem;">
+        Loading customer dashboard...
+    </div>
+    
+    <!-- Firebase Imports and Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { 
+            getAuth, 
+            signOut, 
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { 
+            getFirestore, 
+            collection, 
+            doc, 
+            getDoc, 
+            onSnapshot, 
+            addDoc,
+            updateDoc,
+            query,
+            where,
+            orderBy,
+            serverTimestamp, // Use this for accurate server-side timestamps
+            setLogLevel 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Set log level for debugging
+        setLogLevel('Debug');
+
+        // === YOUR ACTUAL FIREBASE CONFIG HERE ===
+        const firebaseConfig = {
+          apiKey: "AIzaSyAtT_XsWP_uumlBO2yrVzAIKZK25PzClWw",
+          authDomain: "grandslogistics-8af41.firebaseapp.com",
+          projectId: "grandslogistics-8af41",
+          storageBucket: "grandslogistics-8af41.appspot.com",
+          messagingSenderId: "267189664335",
+          appId: "1:267189664335:web:bf0536ef521ace642e883a"
+        };
+        // =======================================
+
+        // DOM Elements
+        const dashboardMainContent = document.getElementById('dashboard-main-content');
+        const authStatusMessageEl = document.getElementById('auth-status-message');
+        const userDisplayEl = document.getElementById('user-display');
+        const logoutButton = document.getElementById('logout-button');
+        const warehouseAddressDisplay = document.getElementById('warehouse-address-display');
+
+        // Tab Elements
+        const tabNewOrderBtn = document.getElementById('tab-new-order');
+        const tabMyOrdersBtn = document.getElementById('tab-my-orders');
+        const contentNewOrder = document.getElementById('content-new-order');
+        const contentMyOrders = document.getElementById('content-my-orders');
+
+        // New Order Form Elements
+        const onDemandRadio = document.getElementById('radio-on-demand');
+        const vwcRadio = document.getElementById('radio-vendor-warehouse');
+        const onDemandForm = document.getElementById('on-demand-form');
+        const vwcForm = document.getElementById('vwc-form');
+        const onDemandStatus = document.getElementById('on-demand-status');
+        const vwcStatus = document.getElementById('vwc-status');
+        const submitOnDemandBtn = document.getElementById('submit-on-demand');
+        const submitVwcBtn = document.getElementById('submit-vwc');
+
+        // Pricing Plan Elements
+        const planPayAsYouGoRadio = document.getElementById('plan-pay-as-you-go');
+        const planSubscriptionRadio = document.getElementById('plan-subscription');
+        let currentUserPlan = 'pay_as_you_go'; // Default plan
+
+        // On-Demand Form Inputs
+        const onDemandPickupAddressInput = document.getElementById('onDemandPickupAddress');
+        const onDemandFinalDeliveryAddressInput = document.getElementById('onDemandFinalDeliveryAddress');
+        const onDemandPackageWeightInput = document.getElementById('onDemandPackageWeight');
+        const onDemandPackageVolumeInput = document.getElementById('onDemandPackageVolume');
+        const onDemandEstimatedMileageInput = document.getElementById('onDemandEstimatedMileage');
+        const onDemandPackageDescInput = document.getElementById('onDemandPackageDesc');
+        const onDemandPickupTimeInput = document.getElementById('onDemandPickupTime');
+        const onDemandPreferredDeliveryDateInput = document.getElementById('onDemandPreferredDeliveryDate');
+        const onDemandPreferredDeliveryWindowInput = document.getElementById('onDemandPreferredDeliveryWindow');
+        const onDemandEstimatedCostDisplay = document.getElementById('on-demand-estimated-cost');
+
+        // VWC Form Inputs
+        const vwcVendorNameInput = document.getElementById('vwcVendorName');
+        const vwcOrderNumberInput = document.getElementById('vwcOrderNumber');
+        const vwcTrackingNumberInput = document.getElementById('vwcTrackingNumber');
+        const vwcPreferredDeliveryDateInput = document.getElementById('vwcPreferredDeliveryDate');
+        const vwcPreferredDeliveryWindowInput = document.getElementById('vwcPreferredDeliveryWindow');
+        const vwcDeliveryCostDisplay = document.getElementById('vwc-delivery-cost');
+        const vwcPricingInfoDisplay = document.getElementById('vwc-pricing-info');
+
+        // My Orders Elements
+        const ordersList = document.getElementById('orders-list');
+        const noOrdersMessage = document.getElementById('no-orders-message');
+
+        let auth, db;
+        let currentUser = null;
+        let appSettings = {
+            baseDeliveryFee: 5.00, // Default pay-as-you-go fee for VWC
+            vwcSubscriptionPrice: 23.99, // Monthly cost for VWC subscription
+            onDemandRatePerLb: 0.75, // Cost per pound for on-demand
+            onDemandRatePerCubicFoot: 1.50, // Cost per cubic foot for on-demand
+            onDemandRatePerMile: 2.00, // Cost per mile for on-demand
+            surgeMultiplier: 1, // Kept for future potential use
+            warehouseAddress: 'Loading...'
+        };
+        const deliveryStatusMap = { // For display purposes
+            'pending': 'Pending',
+            'scheduled': 'Scheduled',
+            'stowed': 'At Warehouse',
+            'transit': 'In Transit',
+            'delivered': 'Delivered',
+            'return_requested': 'Return Requested'
+        };
+
+        // --- Core Functions ---
+
+        /**
+         * Sets the minimum date for date inputs (today or future)
+         * and minimum datetime for datetime-local (now + 15 mins).
+         */
+        function setMinDateForInputs() {
+            const today = new Date();
+            const isoToday = today.toISOString().split('T')[0]; // YYYY-MM-DD format
+
+            // Set min for date inputs (must be today or in the future)
+            const dateInputs = [
+                onDemandPreferredDeliveryDateInput,
+                vwcPreferredDeliveryDateInput
+            ];
+            dateInputs.forEach(input => {
+                if (input) input.setAttribute('min', isoToday);
+            });
+
+            // Set min for datetime-local (must be at least 15 minutes in the future)
+            const pickupTimeInput = onDemandPickupTimeInput;
+            if (pickupTimeInput) {
+                const nowPlus15Mins = new Date(today.getTime() + 15 * 60 * 1000); // Add 15 minutes
+                // Format to YYYY-MM-DDTHH:mm for datetime-local min attribute
+                pickupTimeInput.setAttribute('min', nowPlus15Mins.toISOString().slice(0, 16));
+            }
+        }
+
+
+        /**
+         * Fetches global app settings from Firestore.
+         * Uses onSnapshot for real-time updates to rates and warehouse address.
+         */
+        function subscribeToAppSettings() {
+            const settingsRef = doc(db, 'settings', 'appConfig');
+            onSnapshot(settingsRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    appSettings.baseDeliveryFee = data.baseDeliveryFee || 5.00;
+                    appSettings.vwcSubscriptionPrice = data.vwcSubscriptionPrice || 23.99;
+                    appSettings.onDemandRatePerLb = data.onDemandRatePerLb || 0.75;
+                    appSettings.onDemandRatePerCubicFoot = data.onDemandRatePerCubicFoot || 1.50;
+                    appSettings.onDemandRatePerMile = data.onDemandRatePerMile || 2.00;
+                    appSettings.surgeMultiplier = data.surgeMultiplier || 1;
+                    appSettings.warehouseAddress = data.warehouseAddress || 'N/A';
+                    warehouseAddressDisplay.textContent = `Warehouse Address: ${appSettings.warehouseAddress}`;
+                    // Recalculate costs if settings change
+                    calculateOnDemandCost();
+                    updateVwcCostDisplay();
+                } else {
+                    console.log("No app config document found in 'settings/appConfig'.");
+                    warehouseAddressDisplay.textContent = 'Warehouse Address: Not configured.';
+                }
+            }, (error) => {
+                console.error("Error fetching app settings:", error);
+            });
+        }
+
+        /**
+         * Calculates the estimated cost for an On-Demand delivery.
+         * Uses the greater of weight/volume cost or mileage cost.
+         * Applies surge multiplier if applicable.
+         */
+        function calculateOnDemandCost() {
+            const weight = parseFloat(onDemandPackageWeightInput.value) || 0;
+            const volume = parseFloat(onDemandPackageVolumeInput.value) || 0;
+            const mileage = parseFloat(onDemandEstimatedMileageInput.value) || 0;
+
+            const costByWeightAndVolume = (weight * appSettings.onDemandRatePerLb) + (volume * appSettings.onDemandRatePerCubicFoot);
+            const costByMileage = mileage * appSettings.onDemandRatePerMile;
+
+            let finalCost = Math.max(costByWeightAndVolume, costByMileage);
+            finalCost *= appSettings.surgeMultiplier; // Apply surge if configured
+
+            onDemandEstimatedCostDisplay.textContent = `$${finalCost.toFixed(2)}`;
+            return finalCost;
+        }
+
+        /**
+         * Updates the VWC cost display based on the current pricing plan.
+         */
+        function updateVwcCostDisplay() {
+            if (currentUserPlan === 'subscription') {
+                vwcDeliveryCostDisplay.textContent = '$0.00';
+                vwcPricingInfoDisplay.textContent = 'Covered by your monthly VWC Subscription.';
+            } else {
+                let cost = appSettings.baseDeliveryFee * appSettings.surgeMultiplier;
+                vwcDeliveryCostDisplay.textContent = `$${cost.toFixed(2)}`;
+                vwcPricingInfoDisplay.textContent = 'Pay-as-you-go price per delivery.';
+            }
+        }
+
+        /**
+         * Subscribes to the current user's orders for real-time display.
+         * @param {string} userId The UID of the current user.
+         */
+        function subscribeToMyOrders(userId) {
+            const ordersRef = collection(db, 'orders');
+            // Query orders for the current user, ordered by creation date
+            const q = query(ordersRef, where('userId', '==', userId), orderBy('createdAt', 'desc'));
+
+            onSnapshot(q, (snapshot) => {
+                const orders = [];
+                snapshot.forEach(doc => {
+                    orders.push({ id: doc.id, ...doc.data() });
+                });
+                renderOrders(orders);
+            }, (error) => {
+                console.error("Error subscribing to orders:", error);
+                ordersList.innerHTML = `<p class="text-center text-red-500">Error loading orders: ${error.message}</p>`;
+            });
+        }
+
+        /**
+         * Renders the list of orders in the 'My Orders' tab.
+         * @param {Array<Object>} orders The list of order objects.
+         */
+        function renderOrders(orders) {
+            ordersList.innerHTML = ''; // Clear existing orders
+            if (orders.length === 0) {
+                noOrdersMessage.style.display = 'block';
+                return;
+            }
+            noOrdersMessage.style.display = 'none';
+
+            orders.forEach(order => {
+                const serviceType = order.serviceType === 'on_demand' ? 'On-Demand (P2P)' : 'V-W (VWC)';
+                const statusClass = `status-${order.status || 'pending'}`;
+                const displayStatus = deliveryStatusMap[order.status] || order.status;
+                const orderDate = order.createdAt ? new Date(order.createdAt.toDate()).toLocaleString() : 'N/A';
+                const orderFee = order.deliveryFee !== undefined ? `$${order.deliveryFee.toFixed(2)}` : 'N/A';
+                
+                let details = '';
+                if (order.serviceType === 'on_demand') {
+                    details = `
+                        <p>Pickup: ${order.pickupAddress}</p>
+                        <p>Delivery: ${order.finalDeliveryAddress}</p>
+                        <p>Package: ${order.packageDesc || 'N/A'} (Weight: ${order.packageWeight || 'N/A'} lbs, Volume: ${order.packageVolume || 'N/A'} cu ft)</p>
+                        <p>Estimated Mileage: ${order.estimatedMileage || 'N/A'} miles</p>
+                        <p>Pickup Time: ${order.pickupTime ? new Date(order.pickupTime.toDate()).toLocaleString() : 'N/A'}</p>
+                    `;
+                } else { // vendor_warehouse
+                    details = `
+                        <p>Vendor: ${order.vendorName}</p>
+                        <p>Order #: ${order.orderNumber}</p>
+                        <p>Tracking #: ${order.trackingNumber}</p>
+                    `;
+                }
+                
+                // Add preferred delivery info if available
+                let preferredDeliveryInfo = '';
+                if (order.preferredDeliveryDate && order.preferredDeliveryWindow) {
+                    preferredDeliveryInfo = `<p>Preferred Delivery: ${order.preferredDeliveryDate} (${order.preferredDeliveryWindow})</p>`;
+                }
+
+                // Conditional buttons based on order status
+                let actionButtons = '';
+                if (order.status === 'delivered') {
+                    actionButtons = `
+                        <button class="btn-primary mt-2 py-2 text-sm rounded-lg request-return-btn" data-order-id="${order.id}">
+                            Request Return
+                        </button>
+                    `;
+                } else if (order.status === 'return_requested') {
+                    actionButtons = `
+                        <button class="btn-secondary mt-2 py-2 text-sm rounded-lg print-return-label-btn" data-order-id="${order.id}">
+                            Print Return Label
+                        </button>
+                    `;
+                }
+
+
+                const orderCard = `
+                    <div class="order-card">
+                        <div class="order-header">
+                            <span class="order-id">Order ID: ${order.id.substring(0, 8)}...</span>
+                            <span class="badge ${statusClass}">${displayStatus}</span>
+                        </div>
+                        <div class="order-details">
+                            <p><strong>Service:</strong> ${serviceType}</p>
+                            ${details}
+                            ${preferredDeliveryInfo}
+                            <p class="text-xs text-gray-500">Pricing Plan: ${order.pricingPlanUsed === 'subscription' ? 'VWC Subscription' : 'Pay-as-you-go'}</p>
+                        </div>
+                        <div class="order-meta">
+                            <span>Placed: ${orderDate}</span>
+                            <span>Fee: ${orderFee}</span>
+                        </div>
+                        ${actionButtons}
+                    </div>
+                `;
+                ordersList.insertAdjacentHTML('beforeend', orderCard);
+            });
+
+            // Add event listeners for new return buttons
+            document.querySelectorAll('.request-return-btn').forEach(button => {
+                button.addEventListener('click', requestReturn);
+            });
+
+            // Add event listeners for print return label buttons
+            document.querySelectorAll('.print-return-label-btn').forEach(button => {
+                button.addEventListener('click', printReturnLabel);
+            });
+        }
+
+        /**
+         * Handles requesting a return for a delivered order.
+         * @param {Event} event The click event from the button.
+         */
+        async function requestReturn(event) {
+            const orderId = event.target.dataset.orderId;
+            if (!orderId || !confirm("Are you sure you want to request a return for this order?")) {
+                return;
+            }
+
+            try {
+                event.target.disabled = true;
+                event.target.textContent = 'Requesting...';
+                const orderRef = doc(db, 'orders', orderId);
+                await updateDoc(orderRef, {
+                    status: 'return_requested',
+                    returnRequestedAt: serverTimestamp()
+                });
+                alert('Return request submitted successfully! Once approved, a print label option will appear.');
+            } catch (error) {
+                console.error("Error requesting return:", error);
+                alert(`Failed to submit return request: ${error.message}`);
+            }
+        }
+
+        /**
+         * Handles printing a return label for an order with status 'return_requested'.
+         * In a real application, this would trigger a backend process to generate/download the label.
+         * @param {Event} event The click event from the button.
+         */
+        async function printReturnLabel(event) {
+            const orderId = event.target.dataset.orderId;
+            if (!orderId) {
+                alert("Error: No order ID found for printing label.");
+                return;
+            }
+
+            event.target.disabled = true;
+            event.target.textContent = 'Generating Label...';
+            console.log(`Simulating print return label for Order ID: ${orderId}`);
+            
+            // --- Placeholder for actual label generation/download logic ---
+            // In a real application, you might do something like:
+            // 1. Call a Cloud Function:
+            //    const response = await fetch('/api/generateReturnLabel', {
+            //        method: 'POST',
+            //        headers: { 'Content-Type': 'application/json' },
+            //        body: JSON.stringify({ orderId: orderId, userId: currentUser.uid })
+            //    });
+            //    const data = await response.json();
+            //    if (data.labelUrl) {
+            //        window.open(data.labelUrl, '_blank'); // Open PDF in new tab
+            //        alert('Return label generated and opened in a new tab!');
+            //    } else {
+            //        alert('Failed to generate return label: ' + data.error);
+            //    }
+
+            await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API call delay
+            alert(`Return label for Order ID: ${orderId} would now be generated/downloaded.`);
+            // --- End Placeholder ---
+
+            event.target.disabled = false;
+            event.target.textContent = 'Print Return Label';
+        }
+
+
+        // --- UI Control Functions ---
+
+        /**
+         * Switches between tabs and updates active styling.
+         * @param {string} tabId The ID of the tab to activate ('new-order' or 'my-orders').
+         */
+        function switchTab(tabId) {
+            // Remove active classes from all buttons and content
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('tab-active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            // Add active classes to the selected tab and its content
+            document.getElementById(`tab-${tabId}`).classList.add('tab-active');
+            document.getElementById(`content-${tabId}`).classList.add('active');
+
+            if (tabId === 'my-orders' && currentUser) {
+                // Ensure orders are loaded/subscribed when 'My Orders' is selected
+                subscribeToMyOrders(currentUser.uid);
+            }
+        }
+
+        /**
+         * Toggles the visibility of new order forms based on radio selection.
+         */
+        function toggleNewOrderForms() {
+            if (onDemandRadio.checked) {
+                onDemandForm.style.display = 'block';
+                vwcForm.style.display = 'none';
+            } else {
+                onDemandForm.style.display = 'none';
+                vwcForm.style.display = 'block';
+            }
+            // Update VWC cost display whenever forms are toggled
+            updateVwcCostDisplay();
+        }
+
+        /**
+         * Handles change in pricing plan selection.
+         */
+        function handlePricingPlanChange(event) {
+            currentUserPlan = event.target.value;
+            // Persist user plan choice for a real app (e.g., in Firestore user profile, not just localStorage)
+            localStorage.setItem('userPricingPlan', currentUserPlan); 
+            console.log("Current user plan:", currentUserPlan);
+
+            // Re-evaluate current costs based on new plan
+            calculateOnDemandCost(); // On-demand still pay-as-you-go, but good to refresh.
+            updateVwcCostDisplay(); // VWC cost depends on the plan.
+        }
+
+        /**
+         * Initializes Firebase services and authentication.
+         */
+        async function initializeFirebase() {
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        currentUser = user;
+                        console.log("Customer authenticated. User ID:", user.uid);
+                        userDisplayEl.textContent = user.email; // Or user.displayName if available
+                        authStatusMessageEl.style.display = 'none';
+                        dashboardMainContent.style.display = 'block'; // Show dashboard content
+
+                        // Load saved user plan or set default
+                        currentUserPlan = localStorage.getItem('userPricingPlan') || 'pay_as_you_go';
+                        if (currentUserPlan === 'subscription') {
+                            planSubscriptionRadio.checked = true;
+                        } else {
+                            planPayAsYouGoRadio.checked = true;
+                        }
+
+                        // Set min dates for date/datetime inputs
+                        setMinDateForInputs();
+
+                        // Start fetching dynamic data (rates and warehouse address)
+                        subscribeToAppSettings();
+                        // Initially load 'New Order' tab
+                        switchTab('new-order'); 
+
+                    } else {
+                        // User is signed out. Redirect to login.
+                        console.log("User not authenticated. Redirecting to login.");
+                        window.location.href = 'login.html';
+                    }
+                });
+
+            } catch (error) {
+                console.error("Firebase Initialization Error:", error.message);
+                authStatusMessageEl.textContent = `Initialization Failed: ${error.message}`;
+            }
+        }
+
+        // --- Event Listeners ---
+
+        // Tab Switching
+        tabNewOrderBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            switchTab('new-order');
+        });
+        tabMyOrdersBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            switchTab('my-orders');
+        });
+
+        // Service Type Radio Buttons
+        onDemandRadio.addEventListener('change', toggleNewOrderForms);
+        vwcRadio.addEventListener('change', toggleNewOrderForms);
+
+        // Pricing Plan Radio Buttons
+        planPayAsYouGoRadio.addEventListener('change', handlePricingPlanChange);
+        planSubscriptionRadio.addEventListener('change', handlePricingPlanChange);
+
+        // On-Demand Form Submission
+        onDemandForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!currentUser) {
+                onDemandStatus.textContent = 'Error: Not authenticated.';
+                return;
+            }
+            submitOnDemandBtn.disabled = true;
+            onDemandStatus.textContent = 'Submitting order...';
+
+            try {
+                const calculatedFee = calculateOnDemandCost(); // Get the dynamically calculated fee
+                await addDoc(collection(db, 'orders'), {
+                    userId: currentUser.uid,
+                    serviceType: 'on_demand',
+                    pricingPlanUsed: currentUserPlan, // Store the plan used for this order
+                    pickupAddress: onDemandPickupAddressInput.value,
+                    finalDeliveryAddress: onDemandFinalDeliveryAddressInput.value,
+                    packageWeight: parseFloat(onDemandPackageWeightInput.value) || 0,
+                    packageVolume: parseFloat(onDemandPackageVolumeInput.value) || 0,
+                    estimatedMileage: parseFloat(onDemandEstimatedMileageInput.value) || 0,
+                    packageDesc: onDemandPackageDescInput.value,
+                    pickupTime: new Date(onDemandPickupTimeInput.value),
+                    preferredDeliveryDate: onDemandPreferredDeliveryDateInput.value,
+                    preferredDeliveryWindow: onDemandPreferredDeliveryWindowInput.value,
+                    status: 'pending', // Initial status
+                    deliveryFee: calculatedFee,
+                    surgeApplied: appSettings.surgeMultiplier > 1,
+                    createdAt: serverTimestamp()
+                });
+                onDemandStatus.textContent = `On-Demand order placed successfully! Estimated cost: $${calculatedFee.toFixed(2)}`;
+                onDemandForm.reset(); // Clear form
+                setMinDateForInputs(); // Re-set min dates after reset
+                calculateOnDemandCost(); // Recalculate cost display after reset
+            } catch (error) {
+                console.error("Error placing on-demand order:", error);
+                onDemandStatus.textContent = `Error: ${error.message}`;
+            } finally {
+                submitOnDemandBtn.disabled = false;
+            }
+        });
+
+        // VWC Form Submission
+        vwcForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!currentUser) {
+                vwcStatus.textContent = 'Error: Not authenticated.';
+                return;
+            }
+            submitVwcBtn.disabled = true;
+            vwcStatus.textContent = 'Submitting order...';
+
+            try {
+                let actualDeliveryFee = 0;
+                if (currentUserPlan === 'pay_as_you_go') {
+                    actualDeliveryFee = appSettings.baseDeliveryFee * appSettings.surgeMultiplier;
+                }
+                // If currentUserPlan is 'subscription', actualDeliveryFee remains 0
+
+                await addDoc(collection(db, 'orders'), {
+                    userId: currentUser.uid,
+                    serviceType: 'vendor_warehouse',
+                    pricingPlanUsed: currentUserPlan, // Store the plan used for this order
+                    vendorName: vwcVendorNameInput.value,
+                    orderNumber: vwcOrderNumberInput.value,
+                    trackingNumber: vwcTrackingNumberInput.value,
+                    warehouseAddress: appSettings.warehouseAddress, // Store for reference
+                    preferredDeliveryDate: vwcPreferredDeliveryDateInput.value,
+                    preferredDeliveryWindow: vwcPreferredDeliveryWindowInput.value,
+                    status: 'pending', // Initial status
+                    deliveryFee: actualDeliveryFee,
+                    surgeApplied: appSettings.surgeMultiplier > 1,
+                    createdAt: serverTimestamp()
+                });
+                vwcStatus.textContent = `Vendor-to-Warehouse order placed successfully! Cost: $${actualDeliveryFee.toFixed(2)}`;
+                vwcForm.reset(); // Clear form
+                setMinDateForInputs(); // Re-set min dates after reset
+                updateVwcCostDisplay(); // Recalculate cost display after reset
+            } catch (error) {
+                console.error("Error placing VWC order:", error);
+                vwcStatus.textContent = `Error: ${error.message}`;
+            } finally {
+                submitVwcBtn.disabled = false;
+            }
+        });
+
+        // Logout Event
+        logoutButton.addEventListener('click', async () => {
+            if (auth) {
+                logoutButton.disabled = true;
+                logoutButton.textContent = "Signing Out...";
+                try {
+                    await signOut(auth); 
+                    // onAuthStateChanged will handle redirection to login.html
+                } catch (error) {
+                    console.error("Logout Error:", error.message);
+                    alert("Logout failed: " + error.message);
+                }
+            }
+        });
+
+        // Initialize application
+        initializeFirebase();
+        // Initial form display (after scripts load)
+        toggleNewOrderForms();
+        calculateOnDemandCost(); // Initial calculation for on-demand form
+        updateVwcCostDisplay(); // Initial display for VWC form
+
+    </script>
+</body>
+</html>

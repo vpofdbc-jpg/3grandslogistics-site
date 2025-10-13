@@ -1,0 +1,101 @@
+<?php
+// Get POST data from booking form
+$packageType = $_POST['type'] ?? '';
+$vehicleType = $_POST['vehicle'] ?? '';
+$pickup = $_POST['pickup'] ?? '';
+$delivery = $_POST['delivery'] ?? '';
+$contact = $_POST['contact'] ?? '';
+$phone = $_POST['phone'] ?? '';
+$finalCost = $_POST['finalCost'] ?? 0;
+$miles = $_POST['miles'] ?? 0;
+$mileageCost = $_POST['mileageCost'] ?? 0;
+
+// Map package types to base cost
+$packagePrices = [
+    'small' => 22,
+    'medium' => 31,
+    'large' => 40,
+    'oversized' => 52
+];
+$packageCost = $packagePrices[$packageType] ?? 0;
+
+// Map vehicle types to per-mile rates
+$vehicleRates = [
+    'car' => 2.20,
+    'truck' => 4.40
+];
+$mileageRate = $vehicleRates[$vehicleType] ?? 0;
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Summary</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f8f8f8; }
+        .summary-container { background: white; max-width: 600px; margin: 40px auto; padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-top: 5px solid #2E7D32; }
+        h2 { text-align: center; color: #2E7D32; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 10px; border-bottom: 1px solid #ccc; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .total { font-weight: bold; color: #2E7D32; font-size: 1.2em; }
+        button { width: 100%; background-color: #2E7D32; color: white; padding: 12px; font-size: 16px; font-weight: bold; border: none; border-radius: 4px; margin-top: 20px; cursor: pointer; }
+        button:hover { background-color: #256428; }
+    </style>
+</head>
+<body>
+<div class="summary-container">
+    <h2>Order Summary</h2>
+
+    <h3>Delivery Details</h3>
+    <p><strong>Pickup:</strong> <?php echo htmlspecialchars($pickup); ?></p>
+    <p><strong>Delivery:</strong> <?php echo htmlspecialchars($delivery); ?></p>
+    <p><strong>Contact:</strong> <?php echo htmlspecialchars($contact); ?></p>
+    <p><strong>Phone:</strong> <?php echo htmlspecialchars($phone); ?></p>
+
+    <h3>Cost Breakdown</h3>
+    <table>
+        <tr>
+            <th>Item</th>
+            <th>Amount</th>
+        </tr>
+        <tr>
+            <td>Base Package (<?php echo ucfirst($packageType); ?>)</td>
+            <td>$<?php echo number_format($packageCost, 2); ?></td>
+        </tr>
+        <tr>
+            <td>Mileage Cost (<?php echo number_format($miles, 2); ?> miles × $<?php echo number_format($mileageRate, 2); ?>/mile)</td>
+            <td>$<?php echo number_format($mileageCost, 2); ?></td>
+        </tr>
+        <tr class="total">
+            <td>Final Cost (Greater of above)</td>
+            <td>$<?php echo number_format($finalCost, 2); ?></td>
+        </tr>
+    </table>
+
+    <form action="payment.php" method="POST">
+        <input type="hidden" name="finalCost" value="<?php echo htmlspecialchars($finalCost); ?>">
+        <input type="hidden" name="pickup" value="<?php echo htmlspecialchars($pickup); ?>">
+        <input type="hidden" name="delivery" value="<?php echo htmlspecialchars($delivery); ?>">
+        <input type="hidden" name="contact" value="<?php echo htmlspecialchars($contact); ?>">
+        <input type="hidden" name="phone" value="<?php echo htmlspecialchars($phone); ?>">
+        <input type="hidden" name="type" value="<?php echo htmlspecialchars($packageType); ?>">
+        <input type="hidden" name="vehicle" value="<?php echo htmlspecialchars($vehicleType); ?>">
+        <button type="submit">Proceed to Payment</button>
+    </form>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

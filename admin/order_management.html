@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3 Grands Logistics - Order Management</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Font Import */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+        /* Base Styles & Wavy Background */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fbf8; /* Very light green/white background */
+            min-height: 100vh;
+            padding: 1rem;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .wavy-bg {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            z-index: -10;
+        }
+        .wavy-circle-1 {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 400px;
+            background-color: #D1FAE5;
+            opacity: 0.3;
+            border-radius: 9999px;
+            transform: translate(50%, -50%);
+            filter: blur(48px);
+        }
+        .wavy-circle-2 {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 600px;
+            height: 600px;
+            background-color: #ECFDF5;
+            opacity: 0.5;
+            border-radius: 9999px;
+            transform: translate(-50%, 50%);
+            filter: blur(48px);
+        }
+
+        /* Main Container */
+        .container {
+            width: 100%;
+            max-width: 96rem; /* Wider container for the table */
+            padding-top: 2rem;
+            z-index: 10;
+        }
+        
+        /* Utility for status colors */
+        .status-pending { background-color: #FEF3C7; color: #92400E; } /* Yellow */
+        .status-in-transit { background-color: #DBEAFE; color: #1D4ED8; } /* Blue */
+        .status-delivered { background-color: #D1FAE5; color: #065F46; } /* Green */
+        .status-failed { background-color: #FEE2E2; color: #991B1B; } /* Red */
+        .status-label {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            display: inline-block;
+        }
+
+        /* Responsive Table */
+        .responsive-table th, .responsive-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+        
+        .responsive-table thead {
+            border-bottom: 2px solid #E5E7EB;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #6B7280;
+            font-weight: 600;
+            display: none; /* Hide header on mobile */
+        }
+        @media (min-width: 768px) {
+            .responsive-table thead { display: table-header-group; }
+        }
+
+        /* Mobile Card View */
+        .responsive-table tbody tr {
+            display: block;
+            margin-bottom: 1rem;
+            border: 1px solid #E5E7EB;
+            border-radius: 0.5rem;
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+        @media (min-width: 768px) {
+            .responsive-table tbody tr {
+                display: table-row;
+                margin-bottom: 0;
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                border-bottom: 1px solid #F3F4F6;
+            }
+        }
+        
+        .responsive-table tbody td {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            border-bottom: 1px solid #F3F4F6; /* Divider for mobile card items */
+        }
+        .responsive-table tbody td:last-child {
+            border-bottom: none;
+        }
+
+        .responsive-table tbody td::before {
+            content: attr(data-label);
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #4B5563;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+            margin-right: 1rem;
+        }
+        @media (min-width: 768px) {
+            .responsive-table tbody td {
+                display: table-cell;
+                border-bottom: 1px solid #F3F4F6;
+            }
+            .responsive-table tbody td::before { content: none; }
+        }
+
+        .action-button {
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s;
+        }
+        .action-button:hover { background-color: #F3F4F6; }
+
+
+        /* Modal Styles (using Tailwind classes directly in JS/HTML for convenience) */
+    </style>
+</head>
+<body>
+
+    <!-- Wavy background elements for aesthetics -->
+    <div class="wavy-bg">
+        <div class="wavy-circle-1"></div>
+        <div class="wavy-circle-2"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-6 rounded-xl shadow-lg mb-6">
+            <h1 class="text-3xl font-extrabold text-[#047857]">Order Management</h1>
+            <div class="flex flex-col md:flex-row gap-3 mt-4 md:mt-0">
+                <!-- CORRECTED LINK HERE -->
+                <a href="login.html" class="flex items-center justify-center text-sm font-semibold text-gray-700 hover:text-[#047857] transition">
+                    <i data-lucide="layout-dashboard" class="w-4 h-4 mr-2"></i> Back to Dashboard
+                </a>
+                <button id="add-order-button" class="bg-[#10B981] hover:bg-[#059669] text-white font-semibold py-2 px-4 rounded-lg shadow-md transition transform hover:scale-[1.02] flex items-center">
+                    <i data-lucide="plus" class="w-5 h-5 mr-2"></i> Add New Order
+                </button>
+            </div>
+        </div>
+
+        <!-- Filter and Status -->
+        <div class="bg-white p-4 rounded-xl shadow-lg mb-6 flex flex-wrap gap-4 items-center">
+            <span class="text-gray-600 font-medium">Filter by Status:</span>
+            <button class="filter-btn py-1 px-3 rounded-full text-sm font-medium border border-gray-300 bg-gray-100 hover:bg-gray-200 transition" data-status="All">All</button>
+            <button class="filter-btn py-1 px-3 rounded-full text-sm font-medium border status-pending" data-status="Pending">Pending</button>
+            <button class="filter-btn py-1 px-3 rounded-full text-sm font-medium border status-in-transit" data-status="In Transit">In Transit</button>
+            <button class="filter-btn py-1 px-3 rounded-full text-sm font-medium border status-delivered" data-status="Delivered">Delivered</button>
+            <button class="filter-btn py-1 px-3 rounded-full text-sm font-medium border status-failed" data-status="Failed">Failed</button>
+        </div>
+
+        <!-- Order List Table -->
+        <div class="bg-white p-4 rounded-xl shadow-lg overflow-x-auto">
+            <div id="loading-message" class="text-center py-10 text-xl text-gray-500 font-medium">Loading orders...</div>
+            <div id="error-message" class="text-center py-10 text-xl text-red-500 font-medium hidden">An error occurred while loading data.</div>
+            
+            <table id="orders-table" class="min-w-full responsive-table divide-y divide-gray-200 hidden">
+                <thead>
+                    <tr>
+                        <th class="px-6 py-3">Tracking ID</th>
+                        <th class="px-6 py-3">Customer</th>
+                        <th class="px-6 py-3">Destination</th>
+                        <th class="px-6 py-3">Driver</th>
+                        <th class="px-6 py-3">Status</th>
+                        <th class="px-6 py-3">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-table-body" class="bg-white divide-y divide-gray-200">
+                    <!-- Order rows will be injected here by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Order Modal (Hidden by default) -->
+    <div id="order-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-50 transition-opacity duration-300">
+        <div class="flex items-center justify-center min-h-full p-4">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg transform transition-all duration-300 scale-95 opacity-0" id="modal-content">
+                <form id="order-form" class="p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 id="modal-title" class="text-2xl font-bold text-gray-800">Add New Order</h2>
+                        <button type="button" id="close-modal-button" class="text-gray-400 hover:text-gray-600 transition">
+                            <i data-lucide="x" class="w-6 h-6"></i>
+                        </button>
+                    </div>
+
+                    <input type="hidden" id="order-doc-id" name="docId">
+                    <input type="hidden" id="order-tracking-id-display" name="trackingId">
+
+                    <div class="space-y-4">
+                        <div class="flex flex-col">
+                            <label for="customer-name" class="text-sm font-medium text-gray-700 mb-1">Customer Name</label>
+                            <input type="text" id="customer-name" name="customerName" required class="p-3 border border-gray-300 rounded-lg focus:ring-[#10B981] focus:border-[#10B981] transition">
+                        </div>
+                        <div class="flex flex-col">
+                            <label for="destination" class="text-sm font-medium text-gray-700 mb-1">Destination Address</label>
+                            <input type="text" id="destination" name="destination" required class="p-3 border border-gray-300 rounded-lg focus:ring-[#10B981] focus:border-[#10B981] transition">
+                        </div>
+                        <div class="flex flex-col">
+                            <label for="driver" class="text-sm font-medium text-gray-700 mb-1">Assigned Driver</label>
+                            <select id="driver" name="driver" required class="p-3 border border-gray-300 rounded-lg focus:ring-[#10B981] focus:border-[#10B981] transition">
+                                <option value="Unassigned">Unassigned</option>
+                                <option value="John Doe (D001)">John Doe (D001)</option>
+                                <option value="Jane Smith (D002)">Jane Smith (D002)</option>
+                                <option value="Alex Lee (D003)">Alex Lee (D003)</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col">
+                            <label for="status" class="text-sm font-medium text-gray-700 mb-1">Status</label>
+                            <select id="status" name="status" required class="p-3 border border-gray-300 rounded-lg focus:ring-[#10B981] focus:border-[#10B981] transition">
+                                <option value="Pending">Pending</option>
+                                <option value="In Transit">In Transit</option>
+                                <option value="Delivered">Delivered</option>
+                                <option value="Failed">Failed</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end gap-3 mt-6">
+                        <button type="button" id="delete-order-button" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition hidden">Delete</button>
+                        <button type="submit" class="bg-[#10B981] hover:bg-[#059669] text-white font-semibold py-2 px-4 rounded-lg shadow-md transition">
+                            <span id="form-submit-text">Save Order</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal (Custom replacement for confirm()) -->
+    <div id="confirmation-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-50 transition-opacity duration-300">
+        <div class="flex items-center justify-center min-h-full p-4">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm transform transition-all duration-300 scale-95 opacity-0" id="confirmation-content">
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-red-600 mb-3 flex items-center">
+                        <i data-lucide="alert-triangle" class="w-6 h-6 mr-2 text-red-500"></i>
+                        Confirm Deletion
+                    </h3>
+                    <p id="confirmation-message" class="text-gray-700 mb-6">Are you sure you want to proceed with this action?</p>
+                    <div class="flex justify-end gap-3">
+                        <button type="button" id="cancel-confirm-button" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg transition">Cancel</button>
+                        <button type="button" id="execute-confirm-button" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Firebase Imports and Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import {
+            getAuth,
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import {
+            getFirestore,
+            setLogLevel,
+            collection,
+            query,
+            onSnapshot,
+            doc,
+            setDoc,
+            deleteDoc
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- Core Setup ---
+        setLogLevel('Debug'); // Enable Firestore logging
+
+        // DOM Elements
+        const ordersTableBody = document.getElementById('orders-table-body');
+        const ordersTable = document.getElementById('orders-table');
+        const loadingMessage = document.getElementById('loading-message');
+        const errorMessage = document.getElementById('error-message');
+        
+        const addOrderButton = document.getElementById('add-order-button');
+        const orderModal = document.getElementById('order-modal');
+        const modalContent = document.getElementById('modal-content');
+        const closeModalButton = document.getElementById('close-modal-button');
+        const orderForm = document.getElementById('order-form');
+        const modalTitle = document.getElementById('modal-title');
+        const formSubmitText = document.getElementById('form-submit-text');
+        const deleteOrderButton = document.getElementById('delete-order-button');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+
+        // New Confirmation Modal Elements
+        const confirmationModal = document.getElementById('confirmation-modal');
+        const confirmationContent = document.getElementById('confirmation-content');
+        const confirmationMessage = document.getElementById('confirmation-message');
+        const cancelConfirmButton = document.getElementById('cancel-confirm-button');
+        const executeConfirmButton = document.getElementById('execute-confirm-button');
+
+        let auth, db;
+        let userId = '';
+        let allOrders = [];
+        let currentFilter = 'All';
+
+        // Global variables provided by the canvas environment
+        // NOTE: If you are not using a specific canvas environment that defines __app_id,
+        // you might need to set your projectId here directly or pass it differently.
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'grandslogistics-8af41'; // Using your project ID as a fallback
+        const collectionPath = `artifacts/${appId}/public/data/orders`;
+
+        // --- Utility Functions ---
+
+        /**
+         * Generates a simple, unique tracking ID string.
+         * In a real system, this would be a more robust sequence/UUID.
+         * @returns {string} The formatted tracking ID.
+         */
+        function generateTrackingId() {
+            // Using a simple random hexadecimal string
+            const hex = Math.floor(Math.random() * 0xFFFFFF).toString(16).padStart(6, '0').toUpperCase();
+            return `3GL-${hex}`;
+        }
+
+        /**
+         * Converts a date string or Firestore Timestamp to a readable format.
+         * @param {string} timestamp The Firestore Timestamp object or string.
+         * @returns {string} The formatted date string.
+         */
+        function formatTime(timestamp) {
+             if (timestamp && timestamp.toDate) {
+                return timestamp.toDate().toLocaleString();
+            }
+            if (timestamp) {
+                // Try parsing if it's a date string (e.g., from initial form submission)
+                return new Date(timestamp).toLocaleString();
+            }
+            return 'N/A';
+        }
+
+        /**
+         * Returns the appropriate Tailwind status class.
+         * @param {string} status The order status.
+         * @returns {string} Tailwind classes for styling.
+         */
+        function getStatusClasses(status) {
+            switch (status) {
+                case 'Pending': return 'status-pending';
+                case 'In Transit': return 'status-in-transit';
+                case 'Delivered': return 'status-delivered';
+                case 'Failed': return 'status-failed';
+                default: return 'bg-gray-200 text-gray-800';
+            }
+        }
+
+        // --- Modal & Form Logic ---
+
+        /** Closes the order modal. */
+        function closeOrderModal() {
+            modalContent.classList.remove('scale-100', 'opacity-100');
+            modalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                orderModal.classList.add('hidden');
+            }, 300);
+        }
+
+        /**
+         * Shows the generic confirmation modal.
+         * @param {string} message The message to display.
+         * @param {function} onConfirm The callback function to execute on confirmation.
+         */
+        function showConfirmationModal(message, onConfirm) {
+            confirmationMessage.textContent = message;
+
+            // Reset and set button listeners
+            cancelConfirmButton.onclick = closeConfirmationModal;
+            executeConfirmButton.onclick = () => {
+                onConfirm();
+                closeConfirmationModal();
+            };
+            
+            // Display Modal
+            confirmationModal.classList.remove('hidden', 'opacity-0');
+            confirmationContent.classList.remove('scale-95', 'opacity-0');
+            confirmationContent.classList.add('scale-100', 'opacity-100');
+        }
+
+        /** Closes the confirmation modal. */
+        function closeConfirmationModal() {
+            confirmationContent.classList.remove('scale-100', 'opacity-100');
+            confirmationContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                confirmationModal.classList.add('hidden');
+            }, 300);
+        }
+
+        /**
+         * Opens the modal for adding or editing an order.
+         * @param {Object|null} orderData Existing order data for editing, or null for new order.
+         * @param {string|null} docId The Firestore document ID.
+         */
+        function openOrderModal(orderData = null, docId = null) {
+            orderForm.reset();
+            deleteOrderButton.onclick = null;
+            
+            // Set up modal for Add/Edit
+            if (orderData) {
+                modalTitle.textContent = `Edit Order: ${orderData.trackingId}`;
+                formSubmitText.textContent = "Update Order";
+                deleteOrderButton.style.display = 'inline-block';
+                
+                // Populate form fields
+                document.getElementById('order-doc-id').value = docId;
+                document.getElementById('order-tracking-id-display').value = orderData.trackingId;
+                document.getElementById('customer-name').value = orderData.customerName || '';
+                document.getElementById('destination').value = orderData.destination || '';
+                document.getElementById('driver').value = orderData.driver || 'Unassigned';
+                document.getElementById('status').value = orderData.status || 'Pending';
+
+                // Set up delete button (uses custom confirmation modal)
+                deleteOrderButton.onclick = (e) => {
+                    e.preventDefault();
+                    const message = `Are you sure you want to permanently delete the order with tracking ID ${orderData.trackingId}? This action cannot be undone.`;
+                    showConfirmationModal(message, () => {
+                        deleteOrder(docId);
+                    });
+                };
+
+            } else {
+                modalTitle.textContent = "Add New Order";
+                formSubmitText.textContent = "Save Order";
+                document.getElementById('order-doc-id').value = '';
+                document.getElementById('order-tracking-id-display').value = generateTrackingId();
+                deleteOrderButton.style.display = 'none';
+            }
+
+            // Display Modal
+            orderModal.classList.remove('hidden', 'opacity-0');
+            modalContent.classList.remove('scale-95', 'opacity-0');
+            modalContent.classList.add('scale-100', 'opacity-100');
+        }
+
+        // Attach event listeners for modal controls
+        addOrderButton.addEventListener('click', () => openOrderModal());
+        closeModalButton.addEventListener('click', closeOrderModal);
+        orderModal.addEventListener('click', (e) => {
+            if (e.target === orderModal) closeOrderModal();
+        });
+        confirmationModal.addEventListener('click', (e) => {
+            if (e.target === confirmationModal) closeConfirmationModal();
+        });
+
+
+        // Form Submission Handler
+        orderForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const docId = document.getElementById('order-doc-id').value;
+            const trackingId = document.getElementById('order-tracking-id-display').value;
+            const customerName = document.getElementById('customer-name').value;
+            const destination = document.getElementById('destination').value;
+            const driver = document.getElementById('driver').value;
+            const status = document.getElementById('status').value;
+
+            const orderData = {
+                trackingId,
+                customerName,
+                destination,
+                driver,
+                status,
+                updatedAt: new Date(),
+            };
+
+            if (docId) {
+                // UPDATE existing order
+                await setDoc(doc(db, collectionPath, docId), orderData, { merge: true });
+                console.log(`Order ${trackingId} updated.`);
+            } else {
+                // ADD new order
+                orderData.createdAt = new Date();
+                // Firestore will auto-generate the doc ID
+                const newDocRef = doc(collection(db, collectionPath));
+                await setDoc(newDocRef, orderData);
+                console.log(`New Order ${trackingId} added with ID ${newDocRef.id}`);
+            }
+
+            closeOrderModal();
+        });
+
+        // --- Firestore CRUD Operations ---
+
+        /**
+         * Deletes an order from Firestore.
+         * @param {string} docId The Firestore document ID to delete.
+         */
+        async function deleteOrder(docId) {
+            try {
+                await deleteDoc(doc(db, collectionPath, docId));
+                console.log("Order deleted successfully.");
+            } catch (error) {
+                console.error("Error deleting order:", error);
+                errorMessage.textContent = `Error deleting order: ${error.message}`;
+                errorMessage.classList.remove('hidden');
+            }
+        }
+
+        // --- Real-time Data Display ---
+
+        /**
+         * Renders the current list of orders to the table.
+         * @param {Array<Object>} orders The list of order objects from Firestore.
+         * @param {string} filter The current status filter ('All', 'Pending', etc.).
+         */
+        function renderOrders(orders, filter) {
+            ordersTableBody.innerHTML = '';
+            
+            const filteredOrders = filter === 'All' 
+                ? orders 
+                : orders.filter(order => order.status === filter);
+
+            if (filteredOrders.length === 0) {
+                ordersTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-8 text-gray-500">
+                            No orders found with status: <strong class="text-gray-700">${filter}</strong>.
+                        </td>
+                    </tr>
+                `;
+                ordersTable.classList.remove('hidden');
+                return;
+            }
+
+            filteredOrders.sort((a, b) => (b.createdAt?.toDate() || new Date(0)) - (a.createdAt?.toDate() || new Date(0)));
+
+
+            filteredOrders.forEach(order => {
+                const docId = order.id;
+                const row = document.createElement('tr');
+                row.classList.add('hover:bg-gray-50', 'transition');
+                
+                // Get the status class dynamically
+                const statusClasses = getStatusClasses(order.status);
+                
+                row.innerHTML = `
+                    <td data-label="Tracking ID" class="font-bold text-gray-800">${order.trackingId}</td>
+                    <td data-label="Customer">${order.customerName}</td>
+                    <td data-label="Destination">${order.destination}</td>
+                    <td data-label="Driver">${order.driver}</td>
+                    <td data-label="Status">
+                        <span class="status-label ${statusClasses}">${order.status}</span>
+                    </td>
+                    <td data-label="Actions" class="text-right md:text-left">
+                        <button class="action-button text-[#047857] hover:bg-gray-100" 
+                                data-doc-id="${docId}" 
+                                data-action="edit">
+                            <i data-lucide="pencil" class="w-5 h-5"></i>
+                        </button>
+                    </td>
+                `;
+                ordersTableBody.appendChild(row);
+            });
+            
+            ordersTable.classList.remove('hidden');
+            lucide.createIcons(); // Re-render Lucide icons after adding new elements
+
+            // Attach edit button listeners after rendering
+            document.querySelectorAll('[data-action="edit"]').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const docId = e.currentTarget.getAttribute('data-doc-id');
+                    const orderToEdit = allOrders.find(o => o.id === docId);
+                    if (orderToEdit) {
+                        openOrderModal(orderToEdit, docId);
+                    }
+                });
+            });
+        }
+
+        /**
+         * Sets up the real-time listener for the 'orders' collection.
+         */
+        function setupOrderListener() {
+            if (!db) return;
+
+            const q = query(collection(db, collectionPath));
+
+            onSnapshot(q, (snapshot) => {
+                allOrders = [];
+                snapshot.forEach((doc) => {
+                    // Store the Firestore document ID with the data
+                    allOrders.push({ id: doc.id, ...doc.data() });
+                });
+
+                loadingMessage.classList.add('hidden');
+                errorMessage.classList.add('hidden');
+                
+                // Render with current filter
+                renderOrders(allOrders, currentFilter);
+                console.log(`Fetched ${allOrders.length} orders. Current filter: ${currentFilter}`);
+
+            }, (error) => {
+                console.error("Error listening to orders:", error);
+                loadingMessage.classList.add('hidden');
+                ordersTable.classList.add('hidden');
+                errorMessage.textContent = `Real-time connection failed: ${error.message}`;
+                errorMessage.classList.remove('hidden');
+            });
+        }
+
+        // --- Filter Logic ---
+        filterButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                // Update current filter and visually highlight the active button
+                currentFilter = e.currentTarget.getAttribute('data-status');
+                filterButtons.forEach(btn => {
+                    btn.classList.remove('ring-2', 'ring-offset-2', 'ring-[#10B981]');
+                });
+                e.currentTarget.classList.add('ring-2', 'ring-offset-2', 'ring-[#10B981]');
+                
+                // Re-render orders with the new filter
+                renderOrders(allOrders, currentFilter);
+            });
+        });
+        // Set initial filter highlight
+        document.querySelector('.filter-btn[data-status="All"]').classList.add('ring-2', 'ring-offset-2', 'ring-[#10B981]');
+
+        // --- Initialization ---
+
+        /**
+         * Initializes Firebase services and authentication.
+         */
+        async function initializeFirebase() {
+            let firebaseConfig = {};
+            // Your actual Firebase project config
+            const YOUR_FIREBASE_CONFIG = {
+                apiKey: "AIzaSyAtT_XsWP_uumlBO2yrVzAIKZK25PzClWw",
+                authDomain: "grandslogistics-8af41.firebaseapp.com",
+                projectId: "grandslogistics-8af41",
+                storageBucket: "grandslogistics-8af41.appspot.com",
+                messagingSenderId: "267189664335",
+                appId: "1:267189664335:web:bf0536ef521ace642e883a"
+            };
+
+            // Use your actual config directly
+            firebaseConfig = YOUR_FIREBASE_CONFIG;
+           
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                // Auth State Listener (Crucial for redirection if not authenticated)
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        userId = user.uid;
+                        console.log("User authenticated in order_management.html:", userId);
+                        // Once authenticated, hide the loading message and start listening for orders
+                        loadingMessage.classList.add('hidden');
+                        setupOrderListener();
+                    } else {
+                        console.log("User not authenticated in order_management.html. Redirecting to login.html for login.");
+                        loadingMessage.textContent = "Authentication required. Redirecting to login...";
+                        // Redirect to the admin dashboard (which contains the login form)
+                        window.location.href = 'login.html'; // CORRECTED REDIRECT HERE
+                    }
+                });
+
+            } catch (error) {
+                console.error("Firebase Initialization Error:", error.message);
+                loadingMessage.classList.add('hidden');
+                errorMessage.textContent = `Initialization Failed: ${error.message}`;
+                errorMessage.classList.remove('hidden');
+            }
+        }
+
+        // Run initialization
+        initializeFirebase();
+        // Create initial icons
+        window.onload = () => lucide.createIcons();
+    </script>
+</body>
+</html>

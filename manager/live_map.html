@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3GL Live Driver Tracking</title>
+    <!-- 1. LEAFLET CSS: CORRECTED path to the leaflet-1.9.4-dist folder -->
+    <link rel="stylesheet" href="./leaflet-1.9.4-dist/leaflet.css" crossorigin=""/>
+    
+    <!-- Removing external CSS links that were causing CSP issues. Custom CSS moved inline. -->
+    <style>
+        /* General Setup */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            background-color: #f0f2f5;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        /* Main Container for Aesthetic Padding/Shadows */
+        .container {
+            width: 95%;
+            max-width: 1400px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: calc(100vh - 40px);
+        }
+        h1 {
+            background-color: #34495e;
+            color: #ecf0f1;
+            padding: 15px 30px;
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        /* CRITICAL: The map MUST have a defined height */
+        #map {
+            flex-grow: 1;
+            min-height: 500px;
+            border-top: 1px solid #ddd;
+            z-index: 1;
+        }
+        .info-panel {
+            padding: 15px 30px;
+            background-color: #ecf0f1;
+            border-top: 1px solid #ccc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 2;
+        }
+        /* Status Badges */
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.9em;
+            color: white;
+            background-color: #2ecc71;
+        }
+        .error-badge {
+            background-color: #e74c3c;
+        }
+        /* Custom Driver Icon Styling */
+        .driver-icon {
+            background-color: #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            border: 3px solid #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Live Driver Tracking Map</h1>
+        <div id="map"></div>
+        <div class="info-panel">
+            <p>Drivers Online: <span id="driver-count">0</span></p>
+            <div id="status-message" class="status-badge">Awaiting Data...</div>
+        </div>
+    </div>
+
+    <!-- 2. LEAFLET JAVASCRIPT: CORRECTED path to the leaflet-1.9.4-dist folder -->
+    <script src="./leaflet-1.9.4-dist/leaflet.js" crossorigin=""></script>
+
+    <script>
+        // ==========================================================
+        // LEAFLET ICON FIX (Must be run before map initialization)
+        // Corrected path to point to the 'images' folder inside leaflet-1.9.4-dist
+        // ==========================================================
+        if (typeof L !== 'undefined') {
+            L.Icon.Default.mergeOptions({
+                iconRetinaUrl: './leaflet-1.9.4-dist/images/marker-icon-2x.png',
+                iconUrl: './leaflet-1.9.4-dist/images/marker-icon.png',
+                shadowUrl: './leaflet-1.9.4-dist/images/marker-shadow.png',
+            });
+        }
+        // ==========================================================
+
+        // CONFIGURATION
+        const API_URL = './get_live_drivers.php';
+        const POLL_INTERVAL = 5000;
+        const DEFAULT_CENTER = [34.0522, -118.2437]; // Default to LA
+        const DEFAULT_ZOOM = 10;
+
+        let map;
+        const driverMarkers = {};
+
+        // Helper function to update the status panel
+        function updateStatus(message, isError = false, driverCount = 'N/A') {
+            const statusMessage = document.getElementById('status-message');
+            const driverCountEl = document.getElementById('driver-count');
+
+            statusMessage.textContent = message;
+            driverCountEl.textContent = driverCount;
+
+            statusMessage.classList.toggle('status-badge', !isError);
+            statusMessage.classList.toggle('error-badge', isError);
+        }
+
+        // ==========================================================
+        // MAP INITIALIZATION
+        // ==========================================================
+
+        /**
+         * Initializes the Leaflet map and sets up the base tile layer.
+         */
+        function initMap() {
+            if (typeof L === 'undefined') {
+                updateStatus('Fatal Error: Leaflet library failed to load (Check path to leaflet-1.9.4-dist folder).', true, '0');
+                console.error("Leaflet is not defined. Check if ./leaflet-1.9.4-dist/leaflet.js was uploaded correctly.");
+                return;
+            }
+            const mapElement = document.getElementById('map');
+            if (!mapElement) {
+                 updateStatus('Fatal Error: Map element (#map) not found.', true, '0');
+                 console.error("The DOM element with ID 'map' is missing.");
+                 return;
+            }
+
+            try {
+                map = L.map('map').setView(DEFAULT_CENTER, DEFAULT_ZOOM);
+
+                // Add OpenStreetMap tiles
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors',
+                    maxZoom: 19,
+                }).addTo(map);
+
+                console.log("Map initialized successfully. Starting data fetch...");
+                updateStatus('Map Loaded. Awaiting Data...', false, '0');
+
+            } catch (error) {
+                console.error("Error during L.map initialization:", error);
+                updateStatus(`Map initialization failed! Error: ${error.message}`, true, '0');
+            }
+        }
+
+        // ==========================================================
+        // DATA FETCHING AND RENDERING
+        // ==========================================================
+
+        function createDriverIcon(username) {
+            // If username is null/empty, use a default initial (like 'D')
+            const displayUsername = username || 'N/A';
+            const initials = (displayUsername.substring(0, 1) || 'D').toUpperCase();
+            const html = `<div class="driver-icon" title="${displayUsername}">${initials}</div>`;
+            
+            return L.divIcon({
+                className: 'custom-driver-marker',
+                html: html,
+                iconSize: [30, 30],
+                iconAnchor: [15, 15]
+            });
+        }
+
+        async function fetchAndRenderDrivers() {
+            if (!map) {
+                console.warn("Map not ready, skipping fetch.");
+                return;
+            }
+            // Keep the previous driver count while fetching to avoid flash
+            const previousDriverCount = document.getElementById('driver-count').textContent;
+            updateStatus('Fetching...', false, previousDriverCount); 
+
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json();
+
+                if (!data.success) {
+                    console.error("API Error:", data.error);
+                    // Check specifically for the database connection failed error
+                    if (data.error.includes("Database connection failed")) {
+                        updateStatus('DB Connection Failed! Check PHP Config.', true, 'N/A');
+                    } else {
+                        updateStatus(`API Error: ${data.error.substring(0, 50)}...`, true, 'N/A');
+                    }
+                    return;
+                }
+                
+                const liveDrivers = data.drivers || [];
+                const updatedDriverIds = new Set();
+                
+                // 1. Update/Add Drivers
+                liveDrivers.forEach(driver => {
+                    const { user_id, username, lat, lng } = driver;
+                    const displayUsername = username || `Driver ${user_id}`; // Use ID if username is null
+                    const latLng = [parseFloat(lat), parseFloat(lng)];
+                    updatedDriverIds.add(user_id);
+
+                    const popupContent = `
+                        <strong>Driver:</strong> ${displayUsername}<br>
+                        <strong>ID:</strong> ${user_id}<br>
+                        <strong>Coordinates:</strong> ${lat.toFixed(4)}, ${lng.toFixed(4)}
+                    `;
+
+                    // Check if marker exists, if not, create it
+                    if (!driverMarkers[user_id]) {
+                        const icon = createDriverIcon(displayUsername);
+                        const marker = L.marker(latLng, { icon: icon })
+                            .bindPopup(popupContent)
+                            .addTo(map);
+                        driverMarkers[user_id] = marker;
+                    } else {
+                        // Marker exists, just update position and content
+                        driverMarkers[user_id].setLatLng(latLng);
+                        driverMarkers[user_id].setPopupContent(popupContent);
+                    }
+                });
+
+                // 2. Remove Stale Drivers
+                Object.keys(driverMarkers).forEach(id => {
+                    if (!updatedDriverIds.has(id)) {
+                        map.removeLayer(driverMarkers[id]);
+                        delete driverMarkers[id];
+                    }
+                });
+
+                // 3. Update UI Status
+                const driverCountValue = updatedDriverIds.size;
+                let statusMsg = driverCountValue > 0 
+                    ? `Tracking ${driverCountValue} drivers.` 
+                    : "No drivers currently online.";
+                
+                updateStatus(`${statusMsg} Last update: ${new Date().toLocaleTimeString()}`, false, driverCountValue);
+                
+                // 4. Adjust map view if drivers are present
+                if (driverCountValue > 0) {
+                    const group = new L.featureGroup(Object.values(driverMarkers));
+                    map.fitBounds(group.getBounds().pad(0.2));
+                }
+
+            } catch (error) {
+                console.error("Network/Parsing Error:", error);
+                updateStatus('Connection failed (Check PHP/network).', true, 'N/A');
+            }
+        }
+
+        // ==========================================================
+        // MAIN EXECUTION
+        // ==========================================================
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initMap();
+            if (map) {
+                fetchAndRenderDrivers(); 
+                setInterval(fetchAndRenderDrivers, POLL_INTERVAL);
+            }
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Tracking Dashboard</title>
+    <!-- Load Tailwind CSS from CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Styles to enhance the look and feel */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+        :root {
+            --primary-color: #10B981; /* Emerald Green */
+            --primary-light: #D1FAE5;
+            --primary-dark: #059669;
+            --danger-color: #EF4444; /* Red */
+            --warning-color: #F59E0B; /* Amber */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fbf8;
+        }
+
+        /* Utility Classes (Shadows and Rounded Corners) */
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Button Styling */
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        /* Status Badges */
+        .badge {
+            padding: 0.25rem 0.6rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .status-pending { background-color: #FEE2E2; color: #B91C1C; } /* Red */
+        .status-scheduled { background-color: #FEF3C7; color: #F59E0B; } /* Orange */
+        .status-intake { background-color: #DBEAFE; color: #2563EB; } /* Blue */
+        .status-stowed { background-color: #E0F2F1; color: #0D9488; } /* Teal */
+        .status-transit { background-color: #E5E7EB; color: #4B5563; } /* Gray */
+        .status-delivered { background-color: #D1FAE5; color: #059669; } /* Green */
+
+        /* Table Responsiveness */
+        @media (max-width: 768px) {
+            .table-container {
+                overflow-x: auto;
+            }
+            table {
+                min-width: 900px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <!-- Header -->
+        <div class="card p-6 mb-8 flex justify-between items-center flex-wrap gap-4">
+            <h1 class="text-3xl font-bold text-gray-800">Order Tracking</h1>
+            <a href="index.html" class="px-4 py-2 text-sm font-semibold rounded-lg bg-gray-200 hover:bg-gray-300 transition">
+                < Back to Dashboard
+            </a>
+        </div>
+
+        <!-- Authentication Status -->
+        <div id="status-message" class="text-center p-4 bg-yellow-100 text-yellow-800 rounded-lg mb-4 hidden">
+            Authenticating...
+        </div>
+
+        <!-- Main Order List Content -->
+        <div id="order-list-container" class="card p-6" style="display: none;">
+
+            <!-- Controls (Filter) -->
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+                <input type="text" id="order-search" placeholder="Search by Order ID or Customer ID..." 
+                       class="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition max-w-sm md:max-w-md">
+                
+                <select id="service-type-filter" class="p-3 border border-gray-300 rounded-lg">
+                    <option value="all">Service Type (All)</option>
+                    <option value="on_demand">On-Demand Pickup</option>
+                    <option value="vendor_warehouse">Vendor-to-Warehouse</option>
+                </select>
+            </div>
+
+            <!-- Order Table -->
+            <div class="table-container">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer ID</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Driver ID</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="order-table-body" class="bg-white divide-y divide-gray-200">
+                        <!-- Order rows will be injected here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="no-orders-message" class="text-center p-8 text-gray-500 hidden">
+                No orders found matching the filter criteria.
+            </div>
+
+        </div>
+        
+        <!-- Action Modal (Simplified for demo) -->
+        <div id="action-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50">
+            <div class="card p-6 w-full max-w-md">
+                <h3 class="text-xl font-bold mb-4">Update Order Status</h3>
+                <p id="modal-order-id" class="text-gray-600 mb-4"></p>
+                <p id="modal-current-status" class="text-gray-800 font-semibold mb-4"></p>
+                
+                <select id="modal-status-select" class="w-full p-2 border rounded-lg mb-4">
+                    <!-- Options populated by JS based on order type -->
+                </select>
+
+                <div class="flex justify-end gap-3">
+                    <button id="modal-cancel-btn" class="px-4 py-2 text-sm font-semibold rounded-lg bg-gray-200 hover:bg-gray-300">Cancel</button>
+                    <button id="modal-save-btn" class="btn-primary px-4 py-2 text-sm font-semibold rounded-lg">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Imports and Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { 
+            getAuth, 
+            onAuthStateChanged, 
+            signInWithCustomToken, 
+            signInAnonymously 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { 
+            getFirestore, 
+            setLogLevel,
+            collection, 
+            onSnapshot, 
+            doc, 
+            updateDoc,
+            query
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Set log level for debugging
+        setLogLevel('Debug');
+
+        // DOM Elements
+        const statusMessageEl = document.getElementById('status-message');
+        const orderListContainer = document.getElementById('order-list-container');
+        const orderTableBody = document.getElementById('order-table-body');
+        const noOrdersMessage = document.getElementById('no-orders-message');
+        const orderSearchInput = document.getElementById('order-search');
+        const serviceTypeFilter = document.getElementById('service-type-filter');
+
+        // Modal Elements
+        const actionModal = document.getElementById('action-modal');
+        const modalOrderId = document.getElementById('modal-order-id');
+        const modalCurrentStatus = document.getElementById('modal-current-status');
+        const modalStatusSelect = document.getElementById('modal-status-select');
+        const modalCancelBtn = document.getElementById('modal-cancel-btn');
+        const modalSaveBtn = document.getElementById('modal-save-btn');
+        
+        let auth, db;
+        let allOrders = []; // Stores all orders fetched from Firestore
+        let currentUserId = ''; // The authenticated user's ID
+        let currentEditingOrder = null; // Store the order being edited
+        
+        // Global variables provided by the canvas environment
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+        // Define status flows for each service type
+        const ON_DEMAND_FLOW = [
+            { value: 'pending', label: 'Pending Dispatch' },
+            { value: 'scheduled', label: 'Scheduled Pickup/Delivery' },
+            { value: 'transit', label: 'In Transit' },
+            { value: 'delivered', label: 'Delivered' }
+        ];
+
+        const VWC_FLOW = [
+            { value: 'awaiting_arrival', label: 'Awaiting Vendor Arrival' },
+            { value: 'intake', label: 'Warehouse Intake Complete' },
+            { value: 'stowed', label: 'Stowed (Awaiting Customer Schedule)' },
+            { value: 'scheduled', label: 'Scheduled Final Delivery' },
+            { value: 'transit', label: 'In Transit' },
+            { value: 'delivered', label: 'Delivered' }
+        ];
+
+        // --- Core Data Functions ---
+
+        /**
+         * Generates mock order data for demonstration, respecting the two service types.
+         * @returns {Object} A mock order document.
+         */
+        function generateMockOrder(id) {
+            const types = ['on_demand', 'vendor_warehouse'];
+            const type = types[id.charCodeAt(0) % 2];
+            
+            let status;
+            if (type === 'on_demand') {
+                status = ON_DEMAND_FLOW[id.charCodeAt(1) % ON_DEMAND_FLOW.length].value;
+            } else {
+                status = VWC_FLOW[id.charCodeAt(1) % VWC_FLOW.length].value;
+            }
+
+            return {
+                orderId: id,
+                type: type,
+                customerId: `cust-${id.substring(4, 8)}`,
+                driverId: status === 'pending' || status === 'awaiting_arrival' ? 'N/A' : `driver-${id.substring(0, 4)}`,
+                status: status,
+                docId: `doc-${id}`
+            };
+        }
+        
+        /**
+         * Subscribes to the public 'orders' collection for real-time updates.
+         */
+        function subscribeToOrders() {
+            if (!db || !currentUserId) return;
+
+            // Use the public collection path for shared orders
+            // /artifacts/{appId}/public/data/orders
+            const ordersCollectionRef = collection(db, `artifacts/${appId}/public/data/orders`);
+            const q = query(ordersCollectionRef); // No orderBy to avoid indexing issues
+
+            onSnapshot(q, (snapshot) => {
+                const fetchedOrders = [];
+                // Generate mock orders if the database is empty for demonstration
+                if (snapshot.empty) {
+                     console.log("Firestore 'orders' collection is empty. Generating mock data.");
+                     for (let i = 0; i < 20; i++) {
+                        const mockId = crypto.randomUUID().substring(0, 10).toUpperCase();
+                        fetchedOrders.push(generateMockOrder(mockId));
+                    }
+                } else {
+                    snapshot.forEach(doc => {
+                        const orderData = doc.data();
+                        fetchedOrders.push({ docId: doc.id, ...orderData });
+                    });
+                }
+                
+                allOrders = fetchedOrders;
+                filterAndRenderOrders();
+
+            }, (error) => {
+                console.error("Firestore Subscription Error:", error);
+                statusMessageEl.textContent = `Error fetching orders: ${error.message}`;
+            });
+        }
+        
+        /**
+         * Updates an order's status in Firestore.
+         */
+        async function updateOrderStatus(docId, newStatus) {
+            if (!db) {
+                console.error("Database not initialized.");
+                return;
+            }
+
+            try {
+                const orderDocRef = doc(db, `artifacts/${appId}/public/data/orders`, docId);
+                await updateDoc(orderDocRef, {
+                    status: newStatus,
+                    updated_by: currentUserId,
+                    updated_at: new Date().toISOString()
+                });
+                console.log(`Order ${docId} status successfully updated to: ${newStatus}`);
+                closeModal(); // Close modal on success
+            } catch (error) {
+                console.error("Error updating order document:", error);
+                // Use a simple custom message box for error
+                showCustomMessage(`Failed to save changes: ${error.message}`, 'error');
+            }
+        }
+
+        // --- UI & Rendering Functions ---
+
+        /**
+         * Renders the full order table based on current filters and search term.
+         */
+        function filterAndRenderOrders() {
+            const searchTerm = orderSearchInput.value.toLowerCase();
+            const selectedType = serviceTypeFilter.value;
+
+            let filteredOrders = allOrders.filter(order => {
+                // 1. Type Filter
+                const typeMatches = selectedType === 'all' || order.type === selectedType;
+                
+                // 2. Search Filter
+                const searchMatches = 
+                    order.orderId?.toLowerCase().includes(searchTerm) || 
+                    order.customerId?.toLowerCase().includes(searchTerm);
+                
+                return typeMatches && searchMatches;
+            });
+
+            // Sort by status then orderId
+            filteredOrders.sort((a, b) => {
+                if (a.status === 'delivered' && b.status !== 'delivered') return 1;
+                if (a.status !== 'delivered' && b.status === 'delivered') return -1;
+                if (a.orderId < b.orderId) return -1;
+                return 0;
+            });
+            
+            renderOrderTable(filteredOrders);
+        }
+
+        /**
+         * Dynamically updates the order table HTML.
+         */
+        function renderOrderTable(orders) {
+            orderTableBody.innerHTML = ''; // Clear existing rows
+
+            if (orders.length === 0) {
+                noOrdersMessage.classList.remove('hidden');
+                return;
+            }
+            noOrdersMessage.classList.add('hidden');
+
+            orders.forEach(order => {
+                const statusDisplay = order.status.replace(/_/g, ' ').toUpperCase();
+                const typeDisplay = order.type === 'on_demand' ? 'On-Demand' : 'VWC';
+                const statusClass = `status-${order.status.toLowerCase().replace(/[^a-z]/g, '')}`; // Sanitized class name
+                
+                const isDelivered = order.status === 'delivered';
+
+                const actionButton = isDelivered 
+                    ? `<span class="text-gray-500 text-sm">Completed</span>`
+                    : `<button data-doc-id="${order.docId}" 
+                                data-type="${order.type}"
+                                data-status="${order.status}"
+                                class="text-emerald-600 hover:text-emerald-900 font-semibold action-btn">
+                            Manage
+                        </button>`;
+
+                const row = `
+                    <tr class="hover:bg-gray-50 transition">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${order.orderId}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${typeDisplay}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${order.customerId}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${order.driverId}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="badge ${statusClass}">${statusDisplay}</span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            ${actionButton}
+                        </td>
+                    </tr>
+                `;
+                orderTableBody.insertAdjacentHTML('beforeend', row);
+            });
+            
+            // Re-attach listeners to the new action buttons
+            document.querySelectorAll('.action-btn').forEach(button => {
+                button.addEventListener('click', openActionModal);
+            });
+        }
+
+        // --- Modal Control ---
+
+        /**
+         * Opens the modal and populates it with status options based on order type.
+         */
+        function openActionModal(event) {
+            const button = event.currentTarget;
+            const docId = button.getAttribute('data-doc-id');
+            const type = button.getAttribute('data-type');
+            const status = button.getAttribute('data-status');
+            
+            currentEditingOrder = allOrders.find(o => o.docId === docId);
+            if (!currentEditingOrder) return;
+
+            // Determine status flow
+            const flow = type === 'on_demand' ? ON_DEMAND_FLOW : VWC_FLOW;
+
+            modalOrderId.textContent = `Order ID: ${currentEditingOrder.orderId}`;
+            modalCurrentStatus.textContent = `Current Status: ${status.replace(/_/g, ' ').toUpperCase()}`;
+            
+            // Populate select options
+            modalStatusSelect.innerHTML = '';
+            flow.forEach(s => {
+                const option = document.createElement('option');
+                option.value = s.value;
+                option.textContent = s.label;
+                if (s.value === status) {
+                    option.selected = true;
+                }
+                modalStatusSelect.appendChild(option);
+            });
+
+            actionModal.classList.remove('hidden');
+        }
+
+        /**
+         * Closes the action modal.
+         */
+        function closeModal() {
+            actionModal.classList.add('hidden');
+            currentEditingOrder = null;
+        }
+        
+        /**
+         * Displays a simple, custom message box instead of alert().
+         */
+        function showCustomMessage(message, type = 'info') {
+            const bgColor = type === 'error' ? 'bg-red-500' : 'bg-blue-500';
+            const colorClass = type === 'error' ? 'text-white' : 'text-gray-900';
+            
+            const messageBox = document.createElement('div');
+            messageBox.className = `fixed top-4 right-4 p-4 card ${bgColor} ${colorClass} z-50 transition-transform transform translate-x-0`;
+            messageBox.textContent = message;
+            
+            document.body.appendChild(messageBox);
+            
+            // Auto-hide after 3 seconds
+            setTimeout(() => {
+                messageBox.classList.add('translate-x-full');
+                messageBox.addEventListener('transitionend', () => messageBox.remove());
+            }, 3000);
+        }
+
+        // --- Authentication & Initialization ---
+
+        /**
+         * Initializes Firebase services and authentication.
+         */
+        async function initializeFirebase() {
+            let firebaseConfig = {};
+            if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+                try {
+                    firebaseConfig = JSON.parse(__firebase_config);
+                } catch (e) {
+                    statusMessageEl.textContent = "Configuration Error: Invalid Firebase config.";
+                    statusMessageEl.classList.remove('hidden');
+                    return;
+                }
+            } else {
+                firebaseConfig = { apiKey: "AIzaSy_TESTING_ONLY", projectId: "test-project-id" };
+            }
+
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        currentUserId = user.uid;
+                        console.log("Admin authenticated. User ID:", currentUserId);
+                        statusMessageEl.classList.add('hidden');
+                        orderListContainer.style.display = 'block';
+                        subscribeToOrders(); // Start listening for data
+                    } else {
+                        console.log("User not authenticated. Access Denied.");
+                        statusMessageEl.textContent = "Authentication failed. Access Denied.";
+                        statusMessageEl.classList.remove('hidden');
+                    }
+                });
+            } catch (error) {
+                console.error("Firebase Initialization Error:", error.message);
+                statusMessageEl.textContent = `Initialization Failed: ${error.message}`;
+                statusMessageEl.classList.remove('hidden');
+            }
+        }
+
+
+        // --- Event Listeners ---
+
+        // Listen for changes in search or filter
+        orderSearchInput.addEventListener('input', filterAndRenderOrders);
+        serviceTypeFilter.addEventListener('change', filterAndRenderOrders);
+
+        // Modal event listeners
+        modalCancelBtn.addEventListener('click', closeModal);
+        actionModal.addEventListener('click', (e) => {
+            if (e.target.classList.contains('bg-opacity-50')) {
+                closeModal();
+            }
+        });
+
+        // Modal save button
+        modalSaveBtn.addEventListener('click', async () => {
+            if (!currentEditingOrder) return;
+            
+            const newStatus = modalStatusSelect.value;
+            const docId = currentEditingOrder.docId;
+
+            modalSaveBtn.disabled = true;
+            modalSaveBtn.textContent = "Saving...";
+
+            await updateOrderStatus(docId, newStatus);
+            
+            modalSaveBtn.disabled = false;
+            modalSaveBtn.textContent = "Save";
+        });
+        
+        // Initialize application
+        initializeFirebase();
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

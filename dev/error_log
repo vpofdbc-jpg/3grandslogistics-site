@@ -1,0 +1,6 @@
+[25-Sep-2025 17:36:03 UTC] PHP Warning:  require(/home/hearmysm/public_html/dev/../emails.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/dev/email_smoke.php on line 5
+[25-Sep-2025 17:36:03 UTC] PHP Warning:  require(/home/hearmysm/public_html/dev/../emails.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/dev/email_smoke.php on line 5
+[25-Sep-2025 17:36:03 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/dev/../emails.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/dev/email_smoke.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/dev/email_smoke.php on line 5

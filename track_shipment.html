@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Shipment</title>
+    <!-- Use Google Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Define Colors (Consistent with Portal Home) */
+        :root {
+            --color-primary: #3B82F6;    /* Blue */
+            --color-secondary: #0F766E; /* Teal */
+            --color-tertiary: #F3F4F6; /* Light Gray */
+            --color-background: #f8fafc; /* Light BG (gray-50) */
+            --color-card: #ffffff;
+            --color-text-dark: #1F2937; /* Dark Gray (gray-900) */
+            --color-text-light: #6B7280; /* Medium Gray (gray-500/600) */
+        }
+
+        /* Global Styles & Layout */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-background);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Container Card Styling */
+        .track-card {
+            background-color: var(--color-card);
+            border-radius: 1rem; /* rounded-xl */
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* shadow-2xl */
+            max-width: 500px;
+            width: 100%;
+            padding: 2.5rem; 
+            text-align: center;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 1.875rem;
+            font-weight: 800;
+            color: var(--color-text-dark);
+            margin-bottom: 0.5rem;
+        }
+        .subtitle {
+            font-size: 1rem;
+            color: var(--color-text-light);
+            margin-bottom: 2rem;
+        }
+
+        /* Tracking Form */
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #D1D5DB; /* gray-300 */
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Primary Button Style (Blue) */
+        .btn-primary {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            color: var(--color-card);
+            background-color: var(--color-primary);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-primary:hover {
+            background-color: #2563EB;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary:disabled {
+            background-color: #A1A1AA;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Tracking Result Area */
+        #tracking-result {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--color-tertiary);
+            text-align: left;
+            min-height: 150px;
+            display: none; /* Initially hidden */
+        }
+        .result-header {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-secondary);
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 0.3rem 0.75rem;
+            border-radius: 9999px; /* full rounded */
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+        .status-badge.pending { background-color: #FEF3C7; color: #D97706; } /* Yellow */
+        .status-badge.transit { background-color: #DBEAFE; color: #2563EB; } /* Blue */
+        .status-badge.delivered { background-color: #D1FAE5; color: #059669; } /* Green */
+        .status-badge.error { background-color: #FEE2E2; color: #DC2626; } /* Red */
+
+        .status-timeline {
+            margin-top: 1rem;
+        }
+        .timeline-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        .timeline-item:not(:last-child)::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 20px;
+            bottom: -1rem;
+            width: 2px;
+            background-color: #D1D5DB; /* gray-300 */
+        }
+        .timeline-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #D1D5DB;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-right: 1rem;
+            z-index: 10;
+        }
+        .timeline-dot.active {
+            background-color: var(--color-secondary);
+            box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.3);
+        }
+        .timeline-content p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: var(--color-text-dark);
+            line-height: 1.4;
+        }
+        .timeline-content small {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--color-text-light);
+        }
+
+        /* Loading Spinner (Simple SVG) */
+        .spinner {
+            border: 4px solid var(--color-tertiary);
+            border-top: 4px solid var(--color-primary);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loading-text {
+            color: var(--color-text-dark);
+            font-weight: 600;
+        }
+
+        /* Back Button */
+        .btn-back {
+            display: inline-block;
+            margin-top: 1.5rem;
+            color: var(--color-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        .btn-back:hover {
+            color: var(--color-primary);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="track-card">
+        <h1>Track Your Shipment</h1>
+        <p class="subtitle">Enter your 3GL tracking number below.</p>
+
+        <!-- Tracking Form -->
+        <form id="tracking-form">
+            <div class="form-group">
+                <input type="text" id="tracking-number" required placeholder="e.g., 3GL-10045920" pattern="[A-Za-z0-9-]+" title="Please use letters, numbers, and hyphens only.">
+            </div>
+            <button type="submit" id="track-button" class="btn-primary">
+                Search
+            </button>
+        </form>
+        
+        <!-- Tracking Results and Timeline -->
+        <div id="tracking-result" style="display: none;">
+            <!-- Content will be injected here -->
+        </div>
+
+        <div id="loading-indicator" style="display: none; margin-top: 2rem;">
+            <span class="spinner"></span> <span class="loading-text">Searching...</span>
+        </div>
+
+        <a href="index.html" class="btn-back">← Back to Portal Home</a>
+    </div>
+
+    <script>
+        const trackingForm = document.getElementById('tracking-form');
+        const trackingInput = document.getElementById('tracking-number');
+        const trackingResult = document.getElementById('tracking-result');
+        const trackButton = document.getElementById('track-button');
+        const loadingIndicator = document.getElementById('loading-indicator');
+
+        // Mock data structure for demonstration
+        const mockShipments = {
+            '3GL-10045920': {
+                status: 'Delivered',
+                description: 'Your shipment has been successfully delivered and signed for.',
+                badgeClass: 'delivered',
+                timeline: [
+                    { time: '2025-10-10 14:30', location: 'Philadelphia, PA', details: 'Delivered to recipient.' },
+                    { time: '2025-10-10 08:00', location: 'Philadelphia Distribution Center', details: 'Out for delivery.' },
+                    { time: '2025-10-09 23:45', location: 'Newark, NJ Hub', details: 'Arrived at local sorting facility.' },
+                    { time: '2025-10-08 10:15', location: 'Los Angeles, CA', details: 'Shipment picked up and in transit.' }
+                ]
+            },
+            '3GL-10045921': {
+                status: 'In Transit',
+                description: 'The package is currently in transit to a local distribution center.',
+                badgeClass: 'transit',
+                timeline: [
+                    { time: '2025-10-10 23:45', location: 'Chicago, IL Hub', details: 'Departed from sorting facility.' },
+                    { time: '2025-10-10 16:20', location: 'Chicago, IL Hub', details: 'Arrived at major sorting facility.' },
+                    { time: '2025-10-09 11:00', location: 'Miami, FL', details: 'Shipment received and processing.' }
+                ]
+            },
+            '3GL-10045922': {
+                status: 'Pending',
+                description: 'The tracking number has been created, but the shipment has not yet been picked up.',
+                badgeClass: 'pending',
+                timeline: [
+                    { time: '2025-10-11 10:00', location: 'Customer System', details: 'Tracking number created.' }
+                ]
+            }
+            // All other numbers will be treated as 'Not Found'
+        };
+
+        const renderTrackingResult = (data) => {
+            const currentStatus = data.timeline[0]; // Most recent update is first
+            const timelineHTML = data.timeline.map((item, index) => `
+                <div class="timeline-item">
+                    <div class="timeline-dot ${index === 0 ? 'active' : ''}"></div>
+                    <div class="timeline-content">
+                        <small>${item.time}</small>
+                        <p>${item.details} (${item.location})</p>
+                    </div>
+                </div>
+            `).join('');
+
+            trackingResult.innerHTML = `
+                <div class="result-header">
+                    <span>Tracking Number: <strong>${trackingInput.value}</strong></span>
+                    <span class="status-badge ${data.badgeClass}">${data.status}</span>
+                </div>
+                <p style="margin-top: 0.5rem; color: var(--color-text-light);">${data.description}</p>
+                
+                <div class="status-timeline">
+                    ${timelineHTML}
+                </div>
+            `;
+            trackingResult.className = 'track-card-result'; // Reset class for styling
+            trackingResult.style.display = 'block';
+        };
+
+        const renderNotFound = (trackingId) => {
+             trackingResult.innerHTML = `
+                <div class="result-header" style="justify-content: center;">
+                    <span class="status-badge error">Not Found</span>
+                </div>
+                <p style="margin-top: 1rem; color: var(--color-text-dark); font-weight: 600;">
+                    Tracking ID ${trackingId} could not be found.
+                </p>
+                <p style="color: var(--color-text-light);">
+                    Please verify the number and try again, or contact customer support for assistance.
+                </p>
+            `;
+            trackingResult.className = 'track-card-result'; // Reset class for styling
+            trackingResult.style.display = 'block';
+        };
+
+        trackingForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const trackingId = trackingInput.value.toUpperCase().trim();
+            trackingResult.style.display = 'none';
+            loadingIndicator.style.display = 'block';
+            trackButton.disabled = true;
+            trackButton.textContent = 'Searching...';
+
+            // Simulate an API call delay
+            setTimeout(() => {
+                const shipment = mockShipments[trackingId];
+
+                loadingIndicator.style.display = 'none';
+                trackButton.disabled = false;
+                trackButton.textContent = 'Search';
+
+                if (shipment) {
+                    renderTrackingResult(shipment);
+                } else {
+                    renderNotFound(trackingId);
+                }
+            }, 1500); // 1.5 second loading delay
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Configuration</title>
+    <!-- Load Tailwind CSS from CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Styles to enhance the look and feel */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+        :root {
+            --primary-color: #10B981; /* Emerald Green */
+            --primary-light: #D1FAE5;
+            --primary-dark: #059669;
+            --danger-color: #EF4444; /* Red */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fbf8;
+        }
+
+        /* Utility Classes (Shadows and Rounded Corners) */
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Button Styling */
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        /* Input Styling for better focus effect */
+        input[type="number"] {
+            -moz-appearance: textfield; /* Firefox */
+        }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <!-- Header -->
+        <div class="card p-6 mb-8 flex justify-between items-center flex-wrap gap-4">
+            <h1 class="text-3xl font-bold text-gray-800">System Configuration</h1>
+            <!-- CORRECTION MADE HERE -->
+            <a href="dashboard.html" class="px-4 py-2 text-sm font-semibold rounded-lg bg-gray-200 hover:bg-gray-300 transition">
+                <i data-lucide="layout-dashboard" class="w-4 h-4 mr-2"></i> Back to Dashboard
+            </a>
+        </div>
+
+        <!-- Authentication Status -->
+        <div id="status-message" class="text-center p-4 bg-yellow-100 text-yellow-800 rounded-lg mb-4 hidden">
+            Authenticating...
+        </div>
+
+        <!-- Configuration Panel -->
+        <div id="config-panel" class="card p-6" style="display: none;">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-6 border-b pb-3">Dynamic Delivery Settings</h2>
+
+            <form id="config-form" class="space-y-6">
+
+                <!-- Base Delivery Fee -->
+                <div>
+                    <label for="baseFee" class="block text-sm font-medium text-gray-700 mb-1">Base Delivery Fee ($)</label>
+                    <input type="number" id="baseFee" name="baseFee" step="0.01" min="0" required 
+                           class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500 transition" 
+                           placeholder="e.g., 5.00">
+                    <p class="mt-1 text-xs text-gray-500">The fixed cost applied to all orders before surge pricing.</p>
+                </div>
+
+                <!-- Surge Multiplier -->
+                <div>
+                    <label for="surgeMultiplier" class="block text-sm font-medium text-gray-700 mb-1">Surge Multiplier (x)</label>
+                    <input type="number" id="surgeMultiplier" name="surgeMultiplier" step="0.1" min="1.0" required 
+                           class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500 transition" 
+                           placeholder="e.g., 1.5">
+                    <p class="mt-1 text-xs text-gray-500">Factor applied to the Base Fee during high-demand periods. (1.0 = No Surge)</p>
+                </div>
+                
+                <!-- Status & Save Button -->
+                <div class="pt-4 flex items-center justify-between">
+                    <p id="save-status" class="text-sm font-medium text-gray-500"></p>
+                    <button type="submit" id="save-button" class="btn-primary px-6 py-3 font-semibold rounded-lg disabled:opacity-50 transition">
+                        Save Configuration
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- Firebase Imports and Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { 
+            getAuth, 
+            onAuthStateChanged
+            // signInWithCustomToken, // Not needed for a directly accessed admin page
+            // signInAnonymously // Not needed for an admin page
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { 
+            getFirestore, 
+            setLogLevel,
+            doc, 
+            onSnapshot, 
+            setDoc
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Set log level for debugging
+        setLogLevel('Debug');
+
+        // DOM Elements
+        const statusMessageEl = document.getElementById('status-message');
+        const configPanel = document.getElementById('config-panel');
+        const configForm = document.getElementById('config-form');
+        const baseFeeInput = document.getElementById('baseFee');
+        const surgeMultiplierInput = document.getElementById('surgeMultiplier');
+        const saveButton = document.getElementById('save-button');
+        const saveStatusEl = document.getElementById('save-status');
+        
+        // Global variables provided by the canvas environment
+        // NOTE: If you are not using a specific canvas environment that defines __app_id,
+        // you might need to set your projectId here directly or pass it differently.
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'grandslogistics-8af41'; // Using your project ID as a fallback
+        const CONFIG_DOC_PATH = `artifacts/${appId}/public/data/config/delivery_fees`; // Public, single document path
+
+        let auth, db;
+        let currentUserId = ''; 
+
+        // --- Core Data Functions ---
+
+        /**
+         * Subscribes to the public configuration document for real-time updates.
+         * This data is what the customer app reads to calculate prices.
+         */
+        function subscribeToConfig() {
+            if (!db || !currentUserId) return;
+
+            const configDocRef = doc(db, CONFIG_DOC_PATH);
+
+            onSnapshot(configDocRef, (docSnapshot) => {
+                if (docSnapshot.exists()) {
+                    const config = docSnapshot.data();
+                    // Update form fields with the latest data from the database
+                    baseFeeInput.value = config.baseFee || 5.00; 
+                    surgeMultiplierInput.value = config.surgeMultiplier || 1.0;
+                    // Ensure updated_at exists before trying to format
+                    saveStatusEl.textContent = `Last updated: ${config.updated_at ? new Date(config.updated_at).toLocaleTimeString() : 'N/A'}`;
+                } else {
+                    // Initialize with defaults if the document doesn't exist
+                    console.log("Config document not found. Initializing defaults.");
+                    baseFeeInput.value = 5.00;
+                    surgeMultiplierInput.value = 1.0;
+                    saveStatusEl.textContent = 'Defaults loaded. Save to create document.';
+                }
+            }, (error) => {
+                console.error("Firestore Subscription Error:", error);
+                saveStatusEl.textContent = `Error loading config: ${error.message}`;
+            });
+        }
+        
+        /**
+         * Saves the current form values back to the single public configuration document.
+         */
+        async function saveConfig(event) {
+            event.preventDefault();
+
+            if (!db) {
+                console.error("Database not initialized.");
+                return;
+            }
+
+            saveButton.disabled = true;
+            saveButton.textContent = "Saving...";
+            saveStatusEl.textContent = "Saving changes...";
+
+            try {
+                const baseFee = parseFloat(baseFeeInput.value);
+                const surgeMultiplier = parseFloat(surgeMultiplierInput.value);
+
+                if (isNaN(baseFee) || isNaN(surgeMultiplier) || baseFee < 0 || surgeMultiplier < 1.0) {
+                    throw new Error("Invalid input: Base Fee must be >= 0 and Surge Multiplier must be >= 1.0.");
+                }
+
+                const configDocRef = doc(db, CONFIG_DOC_PATH);
+
+                // Use setDoc with merge:true to create or update the single configuration document
+                await setDoc(configDocRef, {
+                    baseFee: baseFee,
+                    surgeMultiplier: surgeMultiplier,
+                    updated_by: currentUserId,
+                    updated_at: new Date().toISOString()
+                }, { merge: true });
+
+                saveStatusEl.textContent = "Configuration saved successfully!";
+                // onSnapshot listener will handle updating the UI fields
+            } catch (error) {
+                console.error("Error saving configuration:", error);
+                saveStatusEl.textContent = `Save Failed: ${error.message}`;
+                // Use alert as a last resort error display
+                const errorMessage = `Failed to save configuration. Please check the console for details. Error: ${error.message}`;
+                const errorModal = document.createElement('div');
+                errorModal.className = 'fixed inset-0 bg-red-500 bg-opacity-90 flex items-center justify-center z-50 p-4';
+                errorModal.innerHTML = `
+                    <div class="card p-6 w-full max-w-md text-center">
+                        <h3 class="text-xl font-bold text-red-700 mb-4">Database Error</h3>
+                        <p class="text-gray-700 mb-6">${errorMessage}</p>
+                        <button onclick="this.parentNode.parentNode.remove()" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">Close</button>
+                    </div>
+                `;
+                document.body.appendChild(errorModal);
+            } finally {
+                saveButton.disabled = false;
+                saveButton.textContent = "Save Configuration";
+            }
+        }
+
+
+        // --- Authentication & Initialization ---
+
+        /**
+         * Initializes Firebase services and authentication.
+         */
+        async function initializeFirebase() {
+            // Your actual Firebase project config
+            const YOUR_FIREBASE_CONFIG = {
+                apiKey: "AIzaSyAtT_XsWP_uumlBO2yrVzAIKZK25PzClWw",
+                authDomain: "grandslogistics-8af41.firebaseapp.com",
+                projectId: "grandslogistics-8af41",
+                storageBucket: "grandslogistics-8af41.appspot.com",
+                messagingSenderId: "267189664335",
+                appId: "1:267189664335:web:bf0536ef521ace642e883a"
+            };
+           
+            try {
+                const app = initializeApp(YOUR_FIREBASE_CONFIG); // Use your actual config directly
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                // Auth State Listener (Crucial for redirection if not authenticated)
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        currentUserId = user.uid;
+                        console.log("Admin authenticated. User ID:", currentUserId);
+                        statusMessageEl.classList.add('hidden');
+                        configPanel.style.display = 'block';
+                        subscribeToConfig(); // Start listening for data
+                    } else {
+                        console.log("User not authenticated in delivery_configuration.html. Redirecting to login.html for login.");
+                        statusMessageEl.textContent = "Authentication required. Redirecting to login...";
+                        // Redirect to the admin dashboard (which contains the login form)
+                        window.location.href = 'login.html'; // CORRECTED REDIRECT HERE
+                    }
+                });
+            } catch (error) {
+                console.error("Firebase Initialization Error:", error.message);
+                statusMessageEl.textContent = `Initialization Failed: ${error.message}`;
+                statusMessageEl.classList.remove('hidden');
+            }
+        }
+
+
+        // --- Event Listeners ---
+        configForm.addEventListener('submit', saveConfig);
+        
+        // Initialize application
+        initializeFirebase();
+
+    </script>
+</body>
+</html>
+
+

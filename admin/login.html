@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3 Grands Logistics | Admin Login</title>
+    <!-- Tailwind CSS (Direct CDN import) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles to match your admin pages' aesthetic */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fbf8; /* Very light green/white background */
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+        .login-card {
+            background-color: #ffffff;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+        }
+        .form-input {
+            appearance: none;
+            border: 1px solid #D1D5DB; /* Gray-300 */
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            width: 100%;
+            font-size: 1rem;
+            line-height: 1.5rem;
+            transition: all 0.2s;
+            outline: none;
+        }
+        .form-input:focus {
+            border-color: #10B981; /* Emerald-500 */
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2); /* Emerald-500 with opacity */
+        }
+        .btn-primary {
+            background-color: #10B981; /* Emerald-500 */
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem;
+            width: 100%;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #059669; /* Emerald-600 */
+            transform: translateY(-1px);
+        }
+        .error-message {
+            color: #EF4444; /* Red-500 */
+            font-size: 0.875rem;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <h2 class="text-3xl font-bold mb-6 text-[#047857]">Admin Login</h2>
+        <form id="admin-login-form">
+            <div class="mb-4 text-left">
+                <label for="email" class="block text-gray-700 text-sm font-medium mb-1">Email Address</label>
+                <input type="email" id="email" class="form-input" placeholder="admin@example.com" required>
+            </div>
+            <div class="mb-6 text-left">
+                <label for="password" class="block text-gray-700 text-sm font-medium mb-1">Password</label>
+                <input type="password" id="password" class="form-input" placeholder="********" required>
+            </div>
+            <button type="submit" class="btn-primary">Sign In</button>
+            <p id="login-error-message" class="error-message hidden"></p>
+            <p id="status-message" class="text-gray-500 text-sm mt-4 hidden">Processing...</p>
+        </form>
+    </div>
+
+    <!-- Firebase Imports and Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { 
+            getAuth, 
+            signInWithEmailAndPassword, 
+            onAuthStateChanged 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { 
+            getFirestore, // Firestore is not strictly needed for just login, but included for consistency
+            setLogLevel 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // === YOUR ACTUAL FIREBASE CONFIG HERE ===
+        const firebaseConfig = {
+          apiKey: "AIzaSyAtT_XsWP_uumlBO2yrVzAIKZK25PzClWw",
+          authDomain: "grandslogistics-8af41.firebaseapp.com",
+          projectId: "grandslogistics-8af41",
+          storageBucket: "grandslogistics-8af41.appspot.com",
+          messagingSenderId: "267189664335",
+          appId: "1:267189664335:web:bf0536ef521ace642e883a"
+        };
+        // =======================================
+
+        setLogLevel('Debug'); // Enable Firebase SDK logging for debugging
+
+        // DOM Elements
+        const loginForm = document.getElementById('admin-login-form');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const loginErrorMessage = document.getElementById('login-error-message');
+        const statusMessage = document.getElementById('status-message');
+
+        let auth;
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        const db = getFirestore(app); // Initialize Firestore as well for consistency across admin pages
+
+        // Auth State Listener - Handles redirection if already logged in or after successful login
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in. Redirect to the main admin dashboard.
+                console.log("User already authenticated or just logged in. Redirecting to dashboard.");
+                window.location.href = 'dashboard.html'; // Redirect to admin dashboard
+            } else {
+                // No user signed in. Show the login form.
+                console.log("No user authenticated. Displaying login form.");
+                statusMessage.classList.add('hidden'); // Hide status if it was showing
+                loginForm.classList.remove('hidden'); // Ensure form is visible
+            }
+        });
+
+        // Login Form Submission Handler
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Prevent default form submission
+
+            const email = emailInput.value;
+            const password = passwordInput.value;
+
+            loginErrorMessage.classList.add('hidden'); // Hide previous error messages
+            statusMessage.textContent = "Signing in...";
+            statusMessage.classList.remove('hidden');
+
+            try {
+                // Attempt to sign in with email and password
+                await signInWithEmailAndPassword(auth, email, password);
+                // The onAuthStateChanged listener above will handle the redirection to dashboard.html
+                console.log("Login successful! Redirecting...");
+            } catch (error) {
+                console.error("Login Error:", error.code, error.message);
+                let displayMessage = "Login failed. Please check your email and password.";
+                if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
+                    displayMessage = "No user found with this email or incorrect password.";
+                } else if (error.code === 'auth/wrong-password') {
+                    displayMessage = "Incorrect password.";
+                } else if (error.code === 'auth/invalid-email') {
+                    displayMessage = "Invalid email format.";
+                } else if (error.code === 'auth/user-disabled') {
+                    displayMessage = "This user account has been disabled.";
+                }
+                loginErrorMessage.textContent = displayMessage;
+                loginErrorMessage.classList.remove('hidden');
+                statusMessage.classList.add('hidden'); // Hide processing status on error
+            }
+        });
+    </script>
+</body>
+</html>

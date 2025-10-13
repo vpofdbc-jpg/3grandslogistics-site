@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3 Grands Logistics | Staff Portal</title>
+    <!-- 
+        *** IMPORTANT ***
+        Link to the main stylesheet. We use '../' because this file is in a subdirectory.
+    -->
+    <link rel="stylesheet" href="../style.css">
+    <link rel="icon" href="https://placehold.co/32x32/10B981/FFFFFF?text=3G">
+    <!-- Google Fonts for 'Inter' -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="portal-container">
+        
+        <div class="header">
+            <h1>Staff Administration Portal</h1>
+            <!-- Logout button placeholder -->
+            <a href="#" class="btn btn-secondary" id="logout-btn">Log Out of 3 Grands Logistics Portal</a>
+        </div>
+
+        <!-- Main Dashboard View -->
+        <div id="dashboard-view">
+
+            <!-- Operational Oversight Card -->
+            <div class="card">
+                <h2>Operational Oversight</h2>
+                <p>Real-time reports for staff access.</p>
+                <a href="#" class="btn btn-primary" id="view-reports-btn">View Incident Reports</a>
+            </div>
+
+            <!-- General User Access Card -->
+            <div class="card">
+                <h2>General User Access</h2>
+                <p>This area contains standard company documents and information available to all authenticated personnel.</p>
+                <a href="#" class="btn btn-secondary" id="view-docs-btn">Access Documents</a>
+            </div>
+
+            <!-- Submit Incident Card -->
+            <div class="card">
+                <h2>Submit New Incident Report</h2>
+                <form id="submit-incident-form">
+                    <div class="form-group">
+                        <label for="incident-title">Incident Title (e.g., Warehouse Fire, Vehicle Damage)</label>
+                        <input type="text" id="incident-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="incident-description">Detailed description of the issue...</label>
+                        <textarea id="incident-description" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Report Critical Incident</button>
+                    <div id="message-box" style="display: none;"></div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Incident Reports View (Hidden by default) -->
+        <div id="incident-reports-section" style="display: none;">
+            
+            <a href="#" class="back-btn" id="back-to-dashboard-btn">
+                <!-- Icon for back arrow -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path fill-rule="evenodd" d="M11.03 5.47a.75.75 0 0 1 0 1.06L7.56 10.5h11.69a.75.75 0 0 1 0 1.5H7.56l3.47 3.97a.75.75 0 1 1-1.06 1.06l-4.75-5.5a.75.75 0 0 1 0-1.06l4.75-5.5a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+                </svg>
+                Back to Dashboard
+            </a>
+
+            <h2>Real-time Incident Tracking</h2>
+
+            <div class="incident-list">
+                <!-- Incident items will be loaded here via JavaScript -->
+                <p>Loading incidents...</p>
+            </div>
+
+        </div>
+
+    </div>
+    
+    <!-- Placeholder for JavaScript logic -->
+    <script>
+        // JS will be added here in the next step
+    </script>
+</body>
+</html>
+

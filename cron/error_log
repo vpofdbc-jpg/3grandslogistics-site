@@ -1,0 +1,25 @@
+[03-Sep-2025 03:43:08 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'hearmysm_Delivery_app.notifications_queue' doesn't exist in /home/hearmysm/public_html/cron/send_notifications.php:15
+Stack trace:
+#0 /home/hearmysm/public_html/cron/send_notifications.php(15): mysqli->query('\r\n  SELECT nq.i...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/cron/send_notifications.php on line 15
+[03-Sep-2025 03:43:11 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'hearmysm_Delivery_app.notifications_queue' doesn't exist in /home/hearmysm/public_html/cron/send_notifications.php:15
+Stack trace:
+#0 /home/hearmysm/public_html/cron/send_notifications.php(15): mysqli->query('\r\n  SELECT nq.i...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/cron/send_notifications.php on line 15
+[03-Sep-2025 03:43:12 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'hearmysm_Delivery_app.notifications_queue' doesn't exist in /home/hearmysm/public_html/cron/send_notifications.php:15
+Stack trace:
+#0 /home/hearmysm/public_html/cron/send_notifications.php(15): mysqli->query('\r\n  SELECT nq.i...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/cron/send_notifications.php on line 15
+[03-Sep-2025 03:43:12 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'hearmysm_Delivery_app.notifications_queue' doesn't exist in /home/hearmysm/public_html/cron/send_notifications.php:15
+Stack trace:
+#0 /home/hearmysm/public_html/cron/send_notifications.php(15): mysqli->query('\r\n  SELECT nq.i...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/cron/send_notifications.php on line 15
+[03-Sep-2025 03:43:12 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'hearmysm_Delivery_app.notifications_queue' doesn't exist in /home/hearmysm/public_html/cron/send_notifications.php:15
+Stack trace:
+#0 /home/hearmysm/public_html/cron/send_notifications.php(15): mysqli->query('\r\n  SELECT nq.i...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/cron/send_notifications.php on line 15

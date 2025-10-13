@@ -1,0 +1,56 @@
+[29-Sep-2025 17:34:55 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 17:34:55 UTC] Unknown column 'location' in 'field list'
+[29-Sep-2025 17:39:46 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 17:39:46 UTC] Unknown column 'location' in 'field list'
+[29-Sep-2025 17:45:02 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 17:45:02 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 17:45:02 UTC] Unknown column 'location' in 'field list'
+[29-Sep-2025 17:45:08 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 17:45:08 UTC] Unknown column 'location' in 'field list'
+[29-Sep-2025 17:45:09 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 17:45:09 UTC] Unknown column 'location' in 'field list'
+[29-Sep-2025 17:45:09 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 17:45:09 UTC] Unknown column 'location' in 'field list'
+[29-Sep-2025 18:18:23 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 18:18:23 UTC] Unknown column 'location' in 'field list'
+[29-Sep-2025 18:18:24 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 18:18:24 UTC] Unknown column 'location' in 'field list'
+[29-Sep-2025 18:18:24 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 18:18:24 UTC] Unknown column 'location' in 'field list'
+[29-Sep-2025 18:18:24 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 18:18:24 UTC] Unknown column 'location' in 'field list'
+[29-Sep-2025 18:18:25 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 18:18:25 UTC] Unknown column 'location' in 'field list'
+[29-Sep-2025 18:18:25 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 18:18:25 UTC] Unknown column 'location' in 'field list'
+[29-Sep-2025 18:18:25 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 18:18:25 UTC] Unknown column 'location' in 'field list'
+[29-Sep-2025 18:18:25 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 18:18:25 UTC] Unknown column 'location' in 'field list'
+[29-Sep-2025 18:18:25 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 18:18:25 UTC] Unknown column 'location' in 'field list'
+[29-Sep-2025 18:18:25 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 18:18:25 UTC] Unknown column 'location' in 'field list'
+[29-Sep-2025 18:19:23 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 18:19:23 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 18:19:23 UTC] Unknown column 'location' in 'field list'
+[29-Sep-2025 18:19:32 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 18:19:32 UTC] Unknown column 'location' in 'field list'
+[29-Sep-2025 18:19:34 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 18:19:34 UTC] Unknown column 'location' in 'field list'
+[29-Sep-2025 18:19:34 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 18:19:34 UTC] Unknown column 'location' in 'field list'
+[29-Sep-2025 18:19:34 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 18:19:34 UTC] Unknown column 'location' in 'field list'
+[29-Sep-2025 18:19:35 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 18:19:35 UTC] Unknown column 'location' in 'field list'
+[29-Sep-2025 18:19:35 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 18:19:35 UTC] Unknown column 'location' in 'field list'
+[29-Sep-2025 18:19:35 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 18:19:35 UTC] Unknown column 'location' in 'field list'
+[29-Sep-2025 18:19:36 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 18:19:36 UTC] Unknown column 'location' in 'field list'
+[29-Sep-2025 18:19:36 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 18:19:36 UTC] Unknown column 'location' in 'field list'
+[29-Sep-2025 18:19:36 UTC] user_billing migrate: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 1
+[29-Sep-2025 18:19:36 UTC] Unknown column 'location' in 'field list'

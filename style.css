@@ -1,0 +1,256 @@
+/*
+ * 3 Grands Logistics Global Stylesheet
+ * Applies a clean, modern aesthetic to all HTML pages (index, admin portal, etc.)
+ */
+
+/* 1. Global Reset & Typography */
+:root {
+    --color-primary: #10B981; /* Emerald Green */
+    --color-secondary: #059669; /* Darker Emerald */
+    --color-text: #1F2937; /* Dark Grey */
+    --color-bg: #F9FAFB; /* Light Grey/Off-White */
+    --color-white: #FFFFFF;
+    --color-accent-blue: #3B82F6; /* Blue for links/buttons */
+    --color-shadow: rgba(0, 0, 0, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif; /* Using Inter for a modern look */
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.6;
+}
+
+/* 2. Button Styling (Used on index.html and admin_portal.html) */
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 0.5rem; /* Rounded corners */
+    transition: background-color 0.3s, transform 0.1s, box-shadow 0.3s;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    box-shadow: 0 4px 6px -1px var(--color-shadow);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-secondary);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 10px -1px var(--color-shadow);
+}
+
+.btn-secondary {
+    background-color: var(--color-white);
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    box-shadow: 0 4px 6px -1px var(--color-shadow);
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 10px -1px var(--color-shadow);
+}
+
+/* 3. Hero Section (Landing Page Specific) */
+.hero {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    background: linear-gradient(135deg, #E0F2F1 0%, #A7F3D0 100%); /* Light gradient background */
+}
+
+.hero h1 {
+    font-size: clamp(2rem, 5vw, 4rem);
+    margin-bottom: 1rem;
+    color: #065F46; /* Darker green for contrast */
+}
+
+.hero p {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    max-width: 600px;
+    margin-bottom: 2rem;
+}
+
+.hero nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* 4. Footer Styling (Global) */
+footer {
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--color-white);
+    background-color: #1F2937; /* Dark background */
+}
+
+footer a {
+    color: #9CA3AF;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+footer a:hover {
+    color: var(--color-primary);
+}
+
+/* ======================================= */
+/* 5. Admin Portal Styling (admin_portal.html) */
+/* ======================================= */
+
+.portal-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 0;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.header h1 {
+    font-size: 1.75rem;
+    color: #065F46;
+}
+
+.card {
+    background-color: var(--color-white);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px -3px var(--color-shadow), 0 4px 6px -2px var(--color-shadow);
+    margin-bottom: 2rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+    color: #1F2937;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--color-primary);
+    display: inline-block;
+    padding-bottom: 0.25rem;
+}
+
+/* Incident Reports Section */
+#incident-reports-section {
+    display: none; /* Hide by default, will be shown via JS when 'View' is clicked */
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-accent-blue);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+}
+
+.back-btn:hover {
+    text-decoration: underline;
+}
+
+.back-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+.incident-list {
+    margin-top: 1rem;
+}
+
+.incident-item {
+    border: 1px solid #E5E7EB;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+
+.incident-item:hover {
+    background-color: #F3F4F6;
+}
+
+.incident-item strong {
+    font-size: 1.1rem;
+}
+
+.incident-item small {
+    color: #6B7280;
+}
+
+/* Submit Form Section */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #D1D5DB;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+    border-color: var(--color-primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Alert/Message Box for Form Feedback (NOT alert()) */
+#message-box {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    text-align: center;
+    background-color: #FEF3C7; /* Yellow background for warnings/info */
+    color: #92400E; /* Dark brown text */
+    display: none; /* Hidden by default */
+}
+
