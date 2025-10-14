@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3 Grands Logistics Customer Portal</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        
+        :root {
+            --primary-color: #FBBF24; /* Amber */
+            --success-color: #10B981; /* Emerald */
+            --danger-color: #EF4444; /* Red */
+            --gray-100: #f3f4f6;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --green-50: #ECFDF5;
+            --amber-50: #fffbeb;
+            --amber-300: #fdba74;
+            --amber-400: #fbbf24;
+            --amber-500: #f59e0b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fbf8;
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 960px; /* max-w-4xl */
+            margin: 0 auto; /* mx-auto */
+            padding: 1rem; /* p-4 */
+        }
+        @media (min-width: 768px) { /* md */
+            .container {
+                padding: 2rem; /* md:p-8 */
+            }
+        }
+        
+        /* Utility card style */
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 4px solid var(--amber-400);
+        }
+        @media (min-width: 640px) { /* sm */
+            .header {
+                flex-direction: row;
+                align-items: center;
+            }
+        }
+
+        .header h1 {
+            font-size: 1.5rem; /* text-2xl */
+            font-weight: 700; /* font-bold */
+            color: var(--gray-800);
+        }
+        .header p {
+            font-size: 0.875rem; /* text-sm */
+            color: var(--gray-500);
+            margin-top: 0.125rem; /* mt-0.5 */
+        }
+        
+        .user-display-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem; /* space-x-2 */
+            margin-top: 0.75rem; /* mt-3 */
+        }
+        @media (min-width: 640px) { /* sm */
+            .user-display-container {
+                margin-top: 0;
+            }
+        }
+        
+        #user-display {
+            font-size: 0.875rem; /* text-sm */
+            font-weight: 500; /* font-medium */
+            color: var(--gray-600);
+        }
+
+        .card-body {
+            padding: 1.5rem; /* p-6 */
+        }
+        @media (min-width: 768px) { /* md */
+            .card-body {
+                padding: 2rem; /* md:p-8 */
+            }
+        }
+        
+        h2 {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 600; /* font-semibold */
+            color: var(--gray-700);
+            border-bottom: 1px solid var(--gray-100);
+            padding-bottom: 0.75rem; /* pb-3 */
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-700);
+            margin-bottom: 0.25rem;
+        }
+        .form-group input, .form-group textarea, .form-group .display-box {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--amber-500);
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+        }
+        
+        .form-group .display-box {
+            background-color: var(--gray-100);
+            color: var(--gray-700);
+            font-weight: 700;
+        }
+        
+        .pricing-model-container {
+            padding: 1rem; /* p-4 */
+            border: 1px solid var(--amber-300);
+            background-color: var(--amber-50);
+            border-radius: 0.5rem;
+        }
+        .pricing-model-container label.radio-card {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem; /* space-x-3 */
+            padding: 0.75rem; /* p-3 */
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            border: 2px solid transparent;
+            transition: all 0.2s;
+            cursor: pointer;
+            width: 100%;
+        }
+        .pricing-model-container label.radio-card:has(:checked) {
+            border-color: var(--amber-500);
+        }
+        
+        .pricing-model-container label.radio-card input[type="radio"] {
+            width: 1.25rem; /* w-5 */
+            height: 1.25rem; /* h-5 */
+            color: var(--amber-500);
+        }
+        
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        @media (min-width: 768px) {
+            .input-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+        .fee-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            border: 1px solid var(--gray-100);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background-color: var(--gray-100);
+        }
+        @media (min-width: 768px) {
+            .fee-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        #estimated-fee {
+            transform: scale(1.01);
+            border: 2px solid var(--gray-100);
+            background-color: var(--green-50); /* Green 50 */
+            transition: all 0.3s ease-out;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .submit-button:hover {
+            background-color: #ca8a04;
+        }
+        
+        .active-order-section h2 {
+            margin-top: 1.5rem;
+            padding-top: 0.75rem;
+        }
+
+        .order-details-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+        }
+        .order-details-grid div {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            color: var(--gray-700);
+            padding: 0.25rem 0;
+        }
+        
+        .order-details-grid div strong {
+            font-weight: 600;
+        }
+
+        .cancel-button {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background-color: var(--danger-color);
+            color: white;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background-color 0.2s;
+        }
+        .cancel-button:hover {
+            background-color: #b91c1c;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="container min-h-screen">
+
+        <!-- Header -->
+        <div class="card header">
+            <div>
+                <h1>3 Grands Logistics Customer Portal</h1>
+                <p>Place a new delivery order and track its status.</p>
+            </div>
+            <div class="user-display-container">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--amber-500);"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <p id="user-display">Loading User...</p>
+            </div>
+        </div>
+
+        <!-- Order Submission Section -->
+        <div id="order-form-section" class="card card-body">
+            <h2>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--amber-500);"><path d="M15 5v2m4 4v2m-4 4v2m-4-10v2m-4 4v2m-4-10v2M12 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1"></path></svg>
+                <span>New Delivery Request Details</span>
+            </h2>
+            
+            <form id="order-form" class="space-y-4">
+                
+                <!-- Pricing Model Selector -->
+                <div class="pricing-model-container">
+                    <label class="block text-sm font-bold text-gray-800 mb-2" style="color: var(--gray-800);">Select Storage/Fulfillment Pricing Model</label>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <label class="radio-card">
+                            <input type="radio" name="pricingModel" value="subscription" id="price-subscription" style="color: var(--amber-500);" checked>
+                            <span style="font-size: 0.875rem; font-weight: 500; color: var(--gray-700);">Monthly Subscription (Storage fee covered)</span>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="pricingModel" value="per_package" id="price-per-package" style="color: var(--amber-500);">
+                            <span style="font-size: 0.875rem; font-weight: 500; color: var(--gray-700);">Per-Package Fee ($15.00/pkg for fulfillment)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Address Inputs -->
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div class="form-group">
+                        <label for="pickupAddress">Pickup Address (Start Location)</label>
+                        <input type="text" id="pickupAddress" required placeholder="e.g., 123 Main St, City">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dropoffAddress">Drop-off Address (Destination)</label>
+                        <input type="text" id="dropoffAddress" required placeholder="e.g., 456 Oak Ave, City">
+                    </div>
+                </div>
+
+                <!-- Logistics Inputs: Miles and Quantity -->
+                <div class="input-grid">
+                    <div class="form-group">
+                        <label for="milesToPickup">Miles to Pickup</label>
+                        <input type="number" id="milesToPickup" min="0" value="5" required placeholder="5">
+                    </div>
+                    <div class="form-group">
+                        <label for="milesToDestination">Miles to Destination</label>
+                        <input type="number" id="milesToDestination" min="1" value="15" required placeholder="15">
+                    </div>
+                    <div class="form-group">
+                        <label for="totalMiles">Total Trip Miles</label>
+                        <div id="total-miles-display" class="display-box">
+                            20 mi
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="packageQuantity">Package Quantity</label>
+                        <input type="number" id="packageQuantity" min="1" value="1" required placeholder="1">
+                    </div>
+                </div>
+
+
+                <!-- Item & Pricing Inputs -->
+                <div class="form-group">
+                    <label for="itemDescription">Item Description</label>
+                    <textarea id="itemDescription" rows="2" required placeholder="e.g., Small box of books (Fragile), 1 Large plant"></textarea>
+                </div>
+                
+                <!-- Pricing Grid: VWC, Miles, Final Fee -->
+                <div class="fee-grid">
+                    
+                    <!-- VWC Input -->
+                    <div class="form-group">
+                        <label for="vwc">Package Volume/Weight (VWC - Max 100)</label>
+                        <input type="number" id="vwc" min="1" max="100" value="10" required placeholder="10">
+                    </div>
+
+                    <!-- Fee by Storage/Package -->
+                    <div class="form-group">
+                        <label id="fee-by-vwc-label">Storage/Package Fee (Rate Applied)</label>
+                        <div id="storage-fee-display" class="display-box">
+                            $0.00
+                        </div>
+                    </div>
+
+                    <!-- Fee by Miles -->
+                    <div class="form-group">
+                        <label>Delivery Fee by Miles ($0.75/mi + $10 Base)</label>
+                        <div id="delivery-fee-display" class="display-box">
+                            $25.00
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Final Estimated Fee -->
+                <div id="estimated-fee" class="form-group card">
+                    <label style="font-weight: 700; color: var(--gray-800);">Estimated Total Fee (Greater of the two)</label>
+                    <div id="final-fee-display" style="font-size: 1.5rem; font-weight: 700; color: var(--gray-800);">
+                        $25.00
+                    </div>
+                </div>
+                
+                <button type="submit" id="submit-order-button" class="submit-button">Submit New Delivery Order</button>
+            </form>
+        </div>
+        
+        <!-- Active Order Section -->
+        <div id="active-order-section" class="card card-body active-order-section">
+            <h2>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--amber-500);"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+                <span>Your Active Order</span>
+            </h2>
+            <div class="order-details-grid">
+                <div><span>Order ID:</span><strong id="active-order-id">N/A</strong></div>
+                <div><span>Destination:</span><strong id="active-order-destination">N/A</strong></div>
+                <div><span>Logistics Details:</span><strong id="active-order-details">N/A</strong></div>
+                <div><span>Total Miles:</span><strong id="active-order-miles">N/A</strong></div>
+                <div><span>VWC:</span><strong id="active-order-vwc">N/A</strong></div>
+                <div><span>Packages:</span><strong id="active-order-packages">N/A</strong></div>
+                <div><span>Estimated Fee:</span><strong id="active-order-fee">N/A</strong></div>
+                <div style="margin-top: 1rem;"><span>Driver Information</span><strong id="driver-status">Awaiting update...</strong></div>
+                <div style="flex-direction: column; align-items: flex-start;">
+                    <span>Driver ID:</span>
+                    <strong id="driver-id" style="font-size: 1.25rem;">N/A</strong>
+                </div>
+            </div>
+            <button id="cancel-order-button" class="cancel-button">Cancel Order</button>
+        </div>
+
+    </div>
+
+</body>
+</html>
+
+

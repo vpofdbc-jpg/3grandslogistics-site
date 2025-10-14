@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intake & Stow - 3 Grands Logistics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Define Colors for Green & White Theme (Copied from Dashboard) */
+        :root {
+            --color-primary-green: #0F766E; /* Dark Teal Green */
+            --color-accent-green: #10B981;  /* Emerald Green */
+            --color-light-green: #D1FAE5;   /* Light Green BG */
+            --color-white: #ffffff;
+            --color-black: #1F2937;
+            --color-gray-dark: #374151;
+            --color-gray-medium: #6B7280;
+            --color-gray-light: #E5E7EB;
+            --color-danger: #EF4444; /* Red for alerts/logout */
+            --color-danger-hover: #DC2626;
+        }
+
+        /* General Styles */
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-light-green);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            color: var(--color-black);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Layout Container */
+        .container {
+            max-width: 1280px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            width: 100%;
+        }
+
+        /* Utility Classes */
+        .hidden { display: none !important; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .justify-center { justify-content: center; }
+        .flex-shrink-0 { flex-shrink: 0; }
+        .text-center { text-align: center; }
+        .mt-4 { margin-top: 1rem; }
+        .mt-8 { margin-top: 2rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+        .gap-6 { gap: 1.5rem; }
+
+        /* Typography */
+        .text-sm { font-size: 0.875rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-3xl { font-size: 1.875rem; }
+        .font-semibold { font-weight: 600; }
+        .font-bold { font-weight: 700; }
+        .font-extrabold { font-weight: 800; }
+        .text-white { color: var(--color-white); }
+        .text-gray-medium { color: var(--color-gray-medium); }
+        .text-primary-green { color: var(--color-primary-green); }
+        .text-accent-green { color: var(--color-accent-green); }
+        
+        /* Elements */
+        .rounded-lg { border-radius: 0.5rem; }
+        .rounded-full { border-radius: 9999px; }
+        .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06); }
+        .bg-white { background-color: var(--color-white); }
+        
+        /* Navigation Bar (Copied from Dashboard) */
+        .nav-bar { background-color: var(--color-white); box-shadow: var(--shadow-md); }
+        .nav-content { height: 4rem; }
+        .nav-brand { font-size: 1.25rem; font-weight: 800; color: var(--color-primary-green); }
+        .nav-links-group { display: none; }
+        .nav-link {
+            display: inline-flex; align-items: center; padding: 0.25rem 0.75rem 0.25rem 0.75rem; 
+            font-size: 0.875rem; font-weight: 500; color: var(--color-gray-medium); text-decoration: none;
+            border-bottom: 2px solid transparent; transition: color 0.15s, border-color 0.15s; margin-left: 2rem;
+        }
+        .nav-link:hover { color: var(--color-gray-dark); border-color: var(--color-gray-light); }
+        .nav-link.active { color: var(--color-black); border-color: var(--color-accent-green); font-weight: 600; }
+        .logout-button {
+            padding: 0.375rem 0.75rem; font-size: 0.875rem; font-weight: 500; border: none;
+            background-color: var(--color-danger); color: var(--color-white); border-radius: 9999px;
+            box-shadow: var(--shadow-md); cursor: pointer; transition: background-color 0.15s ease;
+        }
+        .logout-button:hover { background-color: var(--color-danger-hover); }
+
+        /* Main Content Styling */
+        main { flex-grow: 1; padding-top: 1.5rem; padding-bottom: 1.5rem; }
+        .content-card {
+            background-color: var(--color-white);
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--color-gray-dark);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--color-gray-light);
+            border-radius: 0.375rem;
+            font-size: 1rem;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--color-accent-green);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        /* Submit Button */
+        .submit-button {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--color-accent-green);
+            color: var(--color-white);
+            font-weight: 700;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.15s ease, transform 0.1s ease;
+            width: 100%;
+            font-size: 1.125rem;
+        }
+        .submit-button:hover:not(:disabled) {
+            background-color: #059669; /* Darker emerald */
+            transform: translateY(-1px);
+        }
+        .submit-button:disabled {
+            background-color: var(--color-gray-medium);
+            cursor: not-allowed;
+        }
+
+        /* Notification Box */
+        .notification-box {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            display: none;
+        }
+        .notification-box.success {
+            background-color: #D1FAE5; /* Light green */
+            color: var(--color-primary-green);
+            border: 1px solid var(--color-accent-green);
+        }
+        .notification-box.error {
+            background-color: #FEE2E2; /* Light red */
+            color: var(--color-danger);
+            border: 1px solid var(--color-danger);
+        }
+        .notification-box.show {
+            display: block;
+        }
+
+        /* Responsive Layouts */
+        @media (min-width: 640px) { /* sm breakpoint */
+            .nav-links-group { display: flex; }
+            .grid-2 { grid-template-columns: repeat(2, 1fr); }
+            .grid-3 { grid-template-columns: repeat(3, 1fr); }
+            .submit-button { width: auto; }
+        }
+        
+        /* Unauthorized Message (Copied from Dashboard) */
+        .unauthorized-message {
+            margin-top: 3rem; padding: 3rem; border: 2px solid var(--color-danger);
+            background-color: #FEE2E2; border-radius: 0.5rem; box-shadow: var(--shadow-xl);
+        }
+        .unauthorized-message h2 { color: #B91C1C; font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; }
+        .unauthorized-message p { color: var(--color-danger); font-size: 1.125rem; }
+        .unauthorized-button {
+            margin-top: 1.5rem; background-color: var(--color-danger); color: var(--color-white);
+            font-weight: 600; padding: 0.75rem 1.5rem; border-radius: 0.5rem; border: none;
+            cursor: pointer; transition: background-color 0.15s ease;
+        }
+        .unauthorized-button:hover { background-color: var(--color-danger-hover); }
+
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navigation Bar --><nav class="nav-bar">
+        <div class="container">
+            <div class="flex justify-between items-center nav-content">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <span class="nav-brand">3 Grands Admin</span>
+                    </div>
+                    <div class="nav-links-group">
+                        <!-- Note: Dashboard link points to its file, Intake is active -->
+                        <a href="admin/dashboard.html" class="nav-link">Dashboard</a>
+                        <a href="admin/intake.html" class="nav-link active">Intake & Stow</a>
+                        <a href="#" class="nav-link">Orders</a>
+                        <a href="#" class="nav-link">Drivers</a>
+                        <a href="#" class="nav-link">Customers</a>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <button id="logout-button" class="logout-button">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area --><main class="container">
+        
+        <!-- Intake Content (hidden by default) --><div id="intake-content" class="content-card hidden">
+            <h1 class="text-2xl font-bold text-gray-dark mb-4 text-primary-green">Customer Intake & Package Stow</h1>
+            <p class="text-gray-medium text-sm mb-8">Record new shipments upon arrival and assign a temporary stow location.</p>
+
+            <form id="intake-form">
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="customerName">Customer Name</label>
+                        <input type="text" id="customerName" name="customerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="stowLocation">Temporary Stow Location (e.g., A1-Shelf3)</label>
+                        <input type="text" id="stowLocation" name="stowLocation" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="destination">Shipping Destination Address</label>
+                    <textarea id="destination" name="destination" rows="2" required></textarea>
+                </div>
+
+                <div class="grid-3">
+                    <div class="form-group">
+                        <label for="weightKg">Weight (kg)</label>
+                        <input type="number" id="weightKg" name="weightKg" min="0.1" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lengthCm">Length (cm)</label>
+                        <input type="number" id="lengthCm" name="lengthCm" min="1" step="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="widthCm">Width (cm)</label>
+                        <input type="number" id="widthCm" name="widthCm" min="1" step="1" required>
+                    </div>
+                </div>
+
+                <div id="notification" class="notification-box mt-4" role="alert"></div>
+
+                <button type="submit" id="submit-button" class="submit-button mt-8">
+                    Process & Stow Package
+                </button>
+            </form>
+        </div>
+
+        <!-- Unauthorized Message (Copied from Dashboard) --><div id="unauthorized-message" class="hidden unauthorized-message text-center">
+            <h2>Access Denied</h2>
+            <p>You must be logged in as an administrator to access package intake.</p>
+            <button id="go-to-login" class="unauthorized-button">
+                Go to Login Page
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Firebase SDKs and Logic --><script type="module">
+        import { initializeApp, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- GLOBAL VARIABLES & CONFIG ---
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        const loginUrl = 'admin/login.html'; 
+
+        // DOM elements
+        const intakeContent = document.getElementById('intake-content');
+        const unauthorizedMessage = document.getElementById('unauthorized-message');
+        const logoutButton = document.getElementById('logout-button');
+        const goToLoginButton = document.getElementById('go-to-login');
+        const intakeForm = document.getElementById('intake-form');
+        const submitButton = document.getElementById('submit-button');
+        const notificationBox = document.getElementById('notification');
+
+        let auth;
+        let db;
+        let userId = null;
+
+        // --- FIREBASE INITIALIZATION & AUTH GUARD ---
+        function initializeFirebase() {
+            setLogLevel('debug'); // Enable Firebase logging
+            if (!firebaseConfig) {
+                console.error("Configuration Error: Firebase config missing.");
+                showUnauthorized(true); 
+                return;
+            }
+
+            try {
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+
+                const signIn = async () => {
+                    try {
+                        if (initialAuthToken) {
+                            await signInWithCustomToken(auth, initialAuthToken);
+                        } else {
+                            await signInAnonymously(auth);
+                        }
+                    } catch (e) {
+                        console.error("Initial sign-in failed:", e.message);
+                    }
+                };
+
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        userId = user.uid;
+                        console.log("Admin session active. User ID:", userId);
+                        showIntakeForm();
+                    } else {
+                        console.log("No authenticated user found. Redirecting to login.");
+                        showUnauthorized();
+                    }
+                });
+
+                signIn();
+
+                // Set up event listeners
+                logoutButton.addEventListener('click', handleLogout);
+                goToLoginButton.addEventListener('click', () => {
+                    window.location.href = loginUrl;
+                });
+                intakeForm.addEventListener('submit', handlePackageSubmit);
+
+            } catch (error) {
+                console.error("Firebase initialization failed:", error);
+                showUnauthorized(true);
+            }
+        }
+
+        // --- FORM SUBMISSION LOGIC ---
+
+        /** Generates a simple unique ID for the package. */
+        function generatePackageId() {
+            const date = new Date();
+            const year = date.getFullYear().toString().slice(-2);
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const day = date.getDate().toString().padStart(2, '0');
+            const time = date.getTime().toString().slice(-5); // Last 5 digits of timestamp
+            const random = Math.random().toString(36).substring(2, 5).toUpperCase();
+            return `PKG-${year}${month}${day}-${time}${random}`;
+        }
+
+        /** Handles form submission and writes data to Firestore. */
+        async function handlePackageSubmit(event) {
+            event.preventDefault();
+            if (!db || !userId) return;
+
+            submitButton.disabled = true;
+            submitButton.textContent = 'Saving...';
+            notificationBox.classList.remove('show', 'success', 'error');
+            
+            const form = event.target;
+            const packageId = generatePackageId();
+            
+            const packageData = {
+                packageId: packageId,
+                customerName: form.customerName.value.trim(),
+                destination: form.destination.value.trim(),
+                stowLocation: form.stowLocation.value.trim().toUpperCase(),
+                weightKg: parseFloat(form.weightKg.value),
+                dimensionsCm: `${form.lengthCm.value}x${form.widthCm.value}`,
+                status: 'Stowed/Awaiting Dispatch',
+                intakeUserId: userId,
+                intakeTimestamp: serverTimestamp(),
+            };
+
+            // Path: /artifacts/{appId}/public/data/packages
+            const packagesCollectionRef = collection(db, `artifacts/${appId}/public/data/packages`);
+
+            try {
+                // Add the document to the packages collection
+                await addDoc(packagesCollectionRef, packageData);
+
+                showNotification('success', `Package ${packageId} successfully processed and stowed at location ${packageData.stowLocation}.`);
+                form.reset(); // Clear the form
+            } catch (e) {
+                console.error("Error adding document: ", e);
+                showNotification('error', `Error saving package: ${e.message}`);
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Process & Stow Package';
+            }
+        }
+
+        /** Shows a temporary notification message. */
+        function showNotification(type, message) {
+            notificationBox.className = `notification-box mt-4 show ${type}`;
+            notificationBox.textContent = message;
+            setTimeout(() => {
+                notificationBox.classList.remove('show');
+            }, 5000);
+        }
+
+        // --- UI STATE MANAGEMENT ---
+
+        /** Shows the intake form content. */
+        function showIntakeForm() {
+            unauthorizedMessage.classList.add('hidden');
+            intakeContent.classList.remove('hidden');
+        }
+
+        /** Shows the unauthorized message and hides content. */
+        function showUnauthorized(isError = false) {
+            intakeContent.classList.add('hidden');
+            unauthorizedMessage.classList.remove('hidden');
+            
+            if (!isError) {
+                // Only redirect if it's a standard unauthorized state, not an initialization error
+                setTimeout(() => {
+                    window.location.href = loginUrl;
+                }, 1000); 
+            }
+        }
+
+        /** Handles the logout process. */
+        async function handleLogout() {
+            try {
+                logoutButton.textContent = 'Logging out...';
+                logoutButton.disabled = true;
+                await signOut(auth);
+            } catch (error) {
+                console.error("Logout failed:", error);
+                logoutButton.textContent = 'Logout Failed';
+                logoutButton.disabled = false;
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initializeFirebase);
+    </script>
+</body>
+</html>

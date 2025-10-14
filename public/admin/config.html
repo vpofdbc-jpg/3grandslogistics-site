@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Pricing Configuration</title>
+    <!-- Load Tailwind CSS from CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Styles for aesthetics */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        
+        :root {
+            --primary-color: #10B981; /* Emerald Green */
+            --primary-dark: #059669;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fbf8;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+        
+        .input-style {
+            padding: 0.75rem;
+            border: 1px solid #D1D5DB;
+            border-radius: 0.5rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input-style:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mx-auto p-4 md:p-8 max-w-2xl">
+
+        <!-- Header -->
+        <div class="card p-6 mb-8 flex justify-between items-center bg-white border-b-4 border-emerald-500">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-800">Pricing Configuration</h1>
+                <p class="text-sm text-gray-500 mt-1">Adjust delivery base fee and surge multiplier globally.</p>
+            </div>
+            <div class="text-right">
+                <p id="user-display" class="text-sm font-medium text-gray-600">Authenticating...</p>
+            </div>
+        </div>
+
+        <!-- Configuration Form -->
+        <div class="card p-6">
+            <h2 class="text-xl font-semibold text-gray-700 mb-6">Current Delivery Settings</h2>
+
+            <form id="config-form" class="space-y-6">
+
+                <!-- Base Fee -->
+                <div>
+                    <label for="baseFee" class="block text-sm font-medium text-gray-700 mb-1">
+                        Base Delivery Fee (USD)
+                    </label>
+                    <input type="number" id="baseFee" step="0.01" min="0" required 
+                           class="w-full input-style text-lg font-mono" placeholder="5.00">
+                    <p class="text-xs text-gray-500 mt-1">The fixed starting price for all deliveries.</p>
+                </div>
+
+                <!-- Surge Multiplier -->
+                <div>
+                    <label for="surgeMultiplier" class="block text-sm font-medium text-gray-700 mb-1">
+                        Surge Multiplier (x)
+                    </label>
+                    <input type="number" id="surgeMultiplier" step="0.1" min="1.0" required 
+                           class="w-full input-style text-lg font-mono" placeholder="1.0">
+                    <p class="text-xs text-gray-500 mt-1">Applied to the Base Fee during high demand (e.g., 1.5x, 2.0x).</p>
+                </div>
+                
+                <!-- Calculated Fee Display -->
+                <div class="p-4 bg-emerald-50 rounded-lg border border-emerald-200">
+                    <p class="text-sm font-semibold text-emerald-800">
+                        Calculated Current Fee: 
+                        <span id="calculated-fee" class="text-xl font-bold ml-2">$0.00</span>
+                    </p>
+                </div>
+
+                <!-- Save Button and Status -->
+                <button type="submit" id="save-button" class="btn-primary w-full py-3 font-semibold rounded-lg disabled:opacity-50 transition" disabled>
+                    Save Configuration
+                </button>
+                <p id="status-message" class="text-center text-sm pt-2"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase Imports and Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { 
+            getAuth, 
+            onAuthStateChanged, 
+            signInWithCustomToken, 
+            signInAnonymously 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { 
+            getFirestore, 
+            setLogLevel,
+            doc, 
+            onSnapshot, 
+            setDoc
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Set log level for debugging
+        setLogLevel('Debug');
+
+        // --- DOM Elements ---
+        const userDisplay = document.getElementById('user-display');
+        const baseFeeInput = document.getElementById('baseFee');
+        const surgeMultiplierInput = document.getElementById('surgeMultiplier');
+        const calculatedFeeDisplay = document.getElementById('calculated-fee');
+        const saveButton = document.getElementById('save-button');
+        const statusMessage = document.getElementById('status-message');
+        const configForm = document.getElementById('config-form');
+        
+        // --- Global State ---
+        let db;
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const CONFIG_DOC_PATH = `artifacts/${appId}/public/data/config/delivery_fees`;
+
+        // --- Utility Functions ---
+
+        /**
+         * Calculates and updates the display of the effective delivery fee.
+         */
+        function updateCalculatedFee() {
+            const baseFee = parseFloat(baseFeeInput.value) || 0;
+            const surge = parseFloat(surgeMultiplierInput.value) || 1.0;
+            const calculatedFee = (baseFee * surge).toFixed(2);
+            calculatedFeeDisplay.textContent = `$${calculatedFee}`;
+        }
+        
+        /**
+         * Real-time listener to load current configuration data.
+         */
+        function subscribeToConfig() {
+            if (!db) return;
+
+            const configDocRef = doc(db, CONFIG_DOC_PATH);
+
+            onSnapshot(configDocRef, (docSnapshot) => {
+                if (docSnapshot.exists()) {
+                    const config = docSnapshot.data();
+                    
+                    // Update form fields with real-time data
+                    baseFeeInput.value = config.baseFee !== undefined ? config.baseFee.toFixed(2) : 5.00;
+                    surgeMultiplierInput.value = config.surgeMultiplier !== undefined ? config.surgeMultiplier.toFixed(1) : 1.0;
+                } else {
+                    console.warn("Delivery config document does not exist. Using defaults.");
+                    // Initialize with default values if doc doesn't exist
+                    baseFeeInput.value = 5.00.toFixed(2);
+                    surgeMultiplierInput.value = 1.0.toFixed(1);
+                }
+                updateCalculatedFee();
+                saveButton.disabled = false; // Enable button once initial data is loaded
+                statusMessage.textContent = 'Ready to save changes.';
+            }, (error) => {
+                console.error("Config Subscription Error:", error);
+                statusMessage.textContent = `Error loading config: ${error.message}`;
+                saveButton.disabled = true;
+            });
+        }
+        
+        /**
+         * Handles saving the new configuration to Firestore.
+         */
+        async function handleSaveConfig(event) {
+            event.preventDefault();
+            
+            const newBaseFee = parseFloat(baseFeeInput.value);
+            const newSurgeMultiplier = parseFloat(surgeMultiplierInput.value);
+            
+            if (isNaN(newBaseFee) || newBaseFee < 0 || isNaN(newSurgeMultiplier) || newSurgeMultiplier < 1.0) {
+                statusMessage.textContent = "Error: Please enter valid numbers (Base Fee >= 0, Surge Multiplier >= 1.0).";
+                return;
+            }
+
+            statusMessage.classList.remove('text-red-600', 'text-green-600');
+            statusMessage.textContent = "Saving changes...";
+            saveButton.disabled = true;
+
+            try {
+                const configDocRef = doc(db, CONFIG_DOC_PATH);
+                
+                await setDoc(configDocRef, {
+                    baseFee: newBaseFee,
+                    surgeMultiplier: newSurgeMultiplier,
+                    lastUpdated: new Date().toISOString()
+                }, { merge: true }); // Use merge: true to only update these fields
+
+                statusMessage.classList.add('text-green-600');
+                statusMessage.textContent = `Configuration saved successfully! New fee: $${(newBaseFee * newSurgeMultiplier).toFixed(2)}`;
+            } catch (e) {
+                console.error("Error saving configuration:", e);
+                statusMessage.classList.add('text-red-600');
+                statusMessage.textContent = `Failed to save changes: ${e.message}`;
+            } finally {
+                saveButton.disabled = false;
+            }
+        }
+
+
+        // --- Authentication & Initialization ---
+
+        /**
+         * Initializes Firebase services and authentication.
+         */
+        async function initializeFirebase() {
+            let firebaseConfig = {};
+            if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+                try {
+                    firebaseConfig = JSON.parse(__firebase_config);
+                } catch (e) {
+                    userDisplay.textContent = "Configuration Error: Invalid Firebase config.";
+                    return;
+                }
+            } else {
+                firebaseConfig = { apiKey: "AIzaSy_TESTING_ONLY", projectId: "test-project-id" };
+            }
+
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                const auth = getAuth(app);
+
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        userDisplay.textContent = `Admin User ID: ${user.uid.substring(0, 8)}...`;
+                        subscribeToConfig(); 
+                    } else {
+                        userDisplay.textContent = "Authentication Failed. Please refresh.";
+                    }
+                });
+            } catch (error) {
+                console.error("Firebase Initialization Error:", error.message);
+                userDisplay.textContent = `Initialization Failed: ${error.message}`;
+            }
+        }
+
+
+        // --- Event Listeners ---
+        baseFeeInput.addEventListener('input', updateCalculatedFee);
+        surgeMultiplierInput.addEventListener('input', updateCalculatedFee);
+        configForm.addEventListener('submit', handleSaveConfig);
+
+        // --- App Start ---
+        initializeFirebase();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1130 @@
+[09-Sep-2025 15:55:18 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:18 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:18 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/customer/db.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/customer/order_view.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:19 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:19 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:19 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/customer/db.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/customer/order_view.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:19 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:19 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:19 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/customer/db.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/customer/order_view.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:19 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:19 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:19 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/customer/db.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/customer/order_view.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:19 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:19 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:19 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/customer/db.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/customer/order_view.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:19 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:19 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:19 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/customer/db.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/customer/order_view.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:20 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:20 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:20 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/customer/db.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/customer/order_view.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:20 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:20 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:20 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/customer/db.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/customer/order_view.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:20 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:20 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:20 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/customer/db.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/customer/order_view.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:20 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:20 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 15:55:20 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/customer/db.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/customer/order_view.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 8
+[09-Sep-2025 16:23:22 UTC] PHP Parse error:  syntax error, unexpected token "<", expecting end of file in /home/hearmysm/public_html/customer/orders.php on line 19
+[09-Sep-2025 16:23:23 UTC] PHP Parse error:  syntax error, unexpected token "<", expecting end of file in /home/hearmysm/public_html/customer/orders.php on line 19
+[09-Sep-2025 16:23:23 UTC] PHP Parse error:  syntax error, unexpected token "<", expecting end of file in /home/hearmysm/public_html/customer/orders.php on line 19
+[09-Sep-2025 16:23:24 UTC] PHP Parse error:  syntax error, unexpected token "<", expecting end of file in /home/hearmysm/public_html/customer/orders.php on line 19
+[09-Sep-2025 16:23:24 UTC] PHP Parse error:  syntax error, unexpected token "<", expecting end of file in /home/hearmysm/public_html/customer/orders.php on line 19
+[09-Sep-2025 16:23:32 UTC] PHP Parse error:  syntax error, unexpected token "<", expecting end of file in /home/hearmysm/public_html/customer/orders.php on line 19
+[09-Sep-2025 16:23:35 UTC] PHP Parse error:  syntax error, unexpected token "<", expecting end of file in /home/hearmysm/public_html/customer/orders.php on line 19
+[09-Sep-2025 16:23:35 UTC] PHP Parse error:  syntax error, unexpected token "<", expecting end of file in /home/hearmysm/public_html/customer/orders.php on line 19
+[09-Sep-2025 16:23:35 UTC] PHP Parse error:  syntax error, unexpected token "<", expecting end of file in /home/hearmysm/public_html/customer/orders.php on line 19
+[10-Sep-2025 03:10:43 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'id' in 'field list' in /home/hearmysm/public_html/customer/order_view.php:48
+Stack trace:
+#0 /home/hearmysm/public_html/customer/order_view.php(48): mysqli->prepare('\r\n  SELECT\r\n   ...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 48
+[10-Sep-2025 03:10:45 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'id' in 'field list' in /home/hearmysm/public_html/customer/order_view.php:48
+Stack trace:
+#0 /home/hearmysm/public_html/customer/order_view.php(48): mysqli->prepare('\r\n  SELECT\r\n   ...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 48
+[10-Sep-2025 03:10:45 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'id' in 'field list' in /home/hearmysm/public_html/customer/order_view.php:48
+Stack trace:
+#0 /home/hearmysm/public_html/customer/order_view.php(48): mysqli->prepare('\r\n  SELECT\r\n   ...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 48
+[10-Sep-2025 03:10:45 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'id' in 'field list' in /home/hearmysm/public_html/customer/order_view.php:48
+Stack trace:
+#0 /home/hearmysm/public_html/customer/order_view.php(48): mysqli->prepare('\r\n  SELECT\r\n   ...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 48
+[10-Sep-2025 03:10:45 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'id' in 'field list' in /home/hearmysm/public_html/customer/order_view.php:48
+Stack trace:
+#0 /home/hearmysm/public_html/customer/order_view.php(48): mysqli->prepare('\r\n  SELECT\r\n   ...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 48
+[10-Sep-2025 03:10:45 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'id' in 'field list' in /home/hearmysm/public_html/customer/order_view.php:48
+Stack trace:
+#0 /home/hearmysm/public_html/customer/order_view.php(48): mysqli->prepare('\r\n  SELECT\r\n   ...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 48
+[10-Sep-2025 03:10:46 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'id' in 'field list' in /home/hearmysm/public_html/customer/order_view.php:48
+Stack trace:
+#0 /home/hearmysm/public_html/customer/order_view.php(48): mysqli->prepare('\r\n  SELECT\r\n   ...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 48
+[10-Sep-2025 03:10:46 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'id' in 'field list' in /home/hearmysm/public_html/customer/order_view.php:48
+Stack trace:
+#0 /home/hearmysm/public_html/customer/order_view.php(48): mysqli->prepare('\r\n  SELECT\r\n   ...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 48
+[10-Sep-2025 03:10:46 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'id' in 'field list' in /home/hearmysm/public_html/customer/order_view.php:48
+Stack trace:
+#0 /home/hearmysm/public_html/customer/order_view.php(48): mysqli->prepare('\r\n  SELECT\r\n   ...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 48
+[10-Sep-2025 03:10:46 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'id' in 'field list' in /home/hearmysm/public_html/customer/order_view.php:48
+Stack trace:
+#0 /home/hearmysm/public_html/customer/order_view.php(48): mysqli->prepare('\r\n  SELECT\r\n   ...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 48
+[10-Sep-2025 03:10:46 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'id' in 'field list' in /home/hearmysm/public_html/customer/order_view.php:48
+Stack trace:
+#0 /home/hearmysm/public_html/customer/order_view.php(48): mysqli->prepare('\r\n  SELECT\r\n   ...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 48
+[10-Sep-2025 03:10:46 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'id' in 'field list' in /home/hearmysm/public_html/customer/order_view.php:48
+Stack trace:
+#0 /home/hearmysm/public_html/customer/order_view.php(48): mysqli->prepare('\r\n  SELECT\r\n   ...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 48
+[10-Sep-2025 03:10:47 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'id' in 'field list' in /home/hearmysm/public_html/customer/order_view.php:48
+Stack trace:
+#0 /home/hearmysm/public_html/customer/order_view.php(48): mysqli->prepare('\r\n  SELECT\r\n   ...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 48
+[10-Sep-2025 03:10:49 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'id' in 'field list' in /home/hearmysm/public_html/customer/order_view.php:48
+Stack trace:
+#0 /home/hearmysm/public_html/customer/order_view.php(48): mysqli->prepare('\r\n  SELECT\r\n   ...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 48
+[10-Sep-2025 03:10:49 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'id' in 'field list' in /home/hearmysm/public_html/customer/order_view.php:48
+Stack trace:
+#0 /home/hearmysm/public_html/customer/order_view.php(48): mysqli->prepare('\r\n  SELECT\r\n   ...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 48
+[10-Sep-2025 03:10:51 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'id' in 'field list' in /home/hearmysm/public_html/customer/order_view.php:48
+Stack trace:
+#0 /home/hearmysm/public_html/customer/order_view.php(48): mysqli->prepare('\r\n  SELECT\r\n   ...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 48
+[10-Sep-2025 16:07:42 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:42 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:42 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/customer/db.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/customer/order_view.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:45 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:45 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:45 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/customer/db.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/customer/order_view.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:46 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:46 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:46 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/customer/db.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/customer/order_view.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:46 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:46 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:46 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/customer/db.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/customer/order_view.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:46 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:46 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:46 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/customer/db.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/customer/order_view.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:46 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:46 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:46 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/customer/db.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/customer/order_view.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:46 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:46 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:46 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/customer/db.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/customer/order_view.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:46 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:46 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:46 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/customer/db.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/customer/order_view.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:47 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:47 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:47 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/customer/db.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/customer/order_view.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:53 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:53 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:07:53 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/customer/db.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/customer/order_view.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:08:08 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:08:08 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:08:08 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/customer/db.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/customer/order_view.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:09:01 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:09:01 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:09:01 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/customer/db.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/customer/order_view.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:22:06 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:22:06 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:22:06 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/customer/db.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/customer/order_view.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:22:07 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:22:07 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:22:07 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/customer/db.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/customer/order_view.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:22:07 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:22:07 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:22:07 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/customer/db.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/customer/order_view.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:22:07 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:22:07 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:22:07 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/customer/db.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/customer/order_view.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:22:13 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:22:13 UTC] PHP Warning:  require(/home/hearmysm/public_html/customer/db.php): Failed to open stream: No such file or directory in /home/hearmysm/public_html/customer/order_view.php on line 7
+[10-Sep-2025 16:22:13 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/hearmysm/public_html/customer/db.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/hearmysm/public_html/customer/order_view.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/order_view.php on line 7
+[18-Sep-2025 03:36:53 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'line1' in 'field list' in /home/hearmysm/public_html/customer/profile.php:37
+Stack trace:
+#0 /home/hearmysm/public_html/customer/profile.php(37): mysqli->prepare('SELECT line1,li...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/profile.php on line 37
+[18-Sep-2025 03:38:38 UTC] PHP Parse error:  syntax error, unexpected string content "_" in /home/hearmysm/public_html/customer/profile.php on line 92
+[18-Sep-2025 03:38:40 UTC] PHP Parse error:  syntax error, unexpected string content "_" in /home/hearmysm/public_html/customer/profile.php on line 92
+[18-Sep-2025 03:38:40 UTC] PHP Parse error:  syntax error, unexpected string content "_" in /home/hearmysm/public_html/customer/profile.php on line 92
+[18-Sep-2025 03:38:40 UTC] PHP Parse error:  syntax error, unexpected string content "_" in /home/hearmysm/public_html/customer/profile.php on line 92
+[18-Sep-2025 03:38:40 UTC] PHP Parse error:  syntax error, unexpected string content "_" in /home/hearmysm/public_html/customer/profile.php on line 92
+[18-Sep-2025 03:38:41 UTC] PHP Parse error:  syntax error, unexpected string content "_" in /home/hearmysm/public_html/customer/profile.php on line 92
+[18-Sep-2025 03:42:41 UTC] PHP Parse error:  Unclosed '(' on line 78 in /home/hearmysm/public_html/customer/profile.php on line 81
+[18-Sep-2025 03:42:42 UTC] PHP Parse error:  Unclosed '(' on line 78 in /home/hearmysm/public_html/customer/profile.php on line 81
+[18-Sep-2025 03:42:42 UTC] PHP Parse error:  Unclosed '(' on line 78 in /home/hearmysm/public_html/customer/profile.php on line 81
+[18-Sep-2025 03:42:42 UTC] PHP Parse error:  Unclosed '(' on line 78 in /home/hearmysm/public_html/customer/profile.php on line 81
+[18-Sep-2025 03:42:43 UTC] PHP Parse error:  Unclosed '(' on line 78 in /home/hearmysm/public_html/customer/profile.php on line 81
+[18-Sep-2025 03:42:43 UTC] PHP Parse error:  Unclosed '(' on line 78 in /home/hearmysm/public_html/customer/profile.php on line 81
+[18-Sep-2025 03:42:43 UTC] PHP Parse error:  Unclosed '(' on line 78 in /home/hearmysm/public_html/customer/profile.php on line 81
+[18-Sep-2025 03:42:43 UTC] PHP Parse error:  Unclosed '(' on line 78 in /home/hearmysm/public_html/customer/profile.php on line 81
+[18-Sep-2025 03:42:43 UTC] PHP Parse error:  Unclosed '(' on line 78 in /home/hearmysm/public_html/customer/profile.php on line 81
+[18-Sep-2025 03:43:15 UTC] PHP Parse error:  Unclosed '(' on line 78 in /home/hearmysm/public_html/customer/profile.php on line 81
+[18-Sep-2025 03:43:15 UTC] PHP Parse error:  Unclosed '(' on line 78 in /home/hearmysm/public_html/customer/profile.php on line 81
+[18-Sep-2025 03:43:17 UTC] PHP Parse error:  Unclosed '(' on line 78 in /home/hearmysm/public_html/customer/profile.php on line 81
+[21-Sep-2025 03:14:03 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'o.total' in 'field list' in /home/hearmysm/public_html/customer/checkout.php:73
+Stack trace:
+#0 /home/hearmysm/public_html/customer/checkout.php(73): mysqli->prepare('\r\n    SELECT o....')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/checkout.php on line 73
+[24-Sep-2025 02:46:02 UTC] PHP Warning:  Undefined variable $SMS_DISPLAY in /home/hearmysm/public_html/customer/dashboard.php on line 224
+[24-Sep-2025 02:46:03 UTC] PHP Warning:  Undefined variable $SMS_DISPLAY in /home/hearmysm/public_html/customer/dashboard.php on line 224
+[24-Sep-2025 02:46:03 UTC] PHP Warning:  Undefined variable $SMS_DISPLAY in /home/hearmysm/public_html/customer/dashboard.php on line 224
+[24-Sep-2025 02:46:03 UTC] PHP Warning:  Undefined variable $SMS_DISPLAY in /home/hearmysm/public_html/customer/dashboard.php on line 224
+[24-Sep-2025 02:46:03 UTC] PHP Warning:  Undefined variable $SMS_DISPLAY in /home/hearmysm/public_html/customer/dashboard.php on line 224
+[24-Sep-2025 02:46:03 UTC] PHP Warning:  Undefined variable $SMS_DISPLAY in /home/hearmysm/public_html/customer/dashboard.php on line 224
+[24-Sep-2025 02:46:04 UTC] PHP Warning:  Undefined variable $SMS_DISPLAY in /home/hearmysm/public_html/customer/dashboard.php on line 224
+[24-Sep-2025 03:22:44 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:22:46 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:22:47 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:22:47 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:22:47 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:22:47 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:22:47 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:22:47 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:22:48 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:22:48 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:22:48 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:22:48 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:22:48 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:22:48 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:22:49 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:22:49 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:22:49 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:22:49 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:22:49 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:22:50 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:22:50 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:22:50 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:22:50 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:22:50 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:22:50 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:22:51 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:22:51 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:35:53 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:35:54 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:35:54 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:35:55 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:35:55 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:35:55 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:35:55 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:35:55 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:35:55 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:35:56 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:35:56 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:35:58 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:35:58 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[24-Sep-2025 03:36:19 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'meta_id' in 'order clause' in /home/hearmysm/public_html/customer/dashboard.php:126
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(126): mysqli->prepare('\r\n  SELECT o.or...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 126
+[27-Sep-2025 00:52:17 UTC] PHP Parse error:  syntax error, unexpected token "<" in /home/hearmysm/public_html/emails.php on line 25
+[27-Sep-2025 00:52:21 UTC] PHP Parse error:  syntax error, unexpected token "<" in /home/hearmysm/public_html/emails.php on line 25
+[29-Sep-2025 01:19:53 UTC] PHP Parse error:  syntax error, unexpected single-quoted string ";     // Price id, NOT prod_", expecting "=" in /home/hearmysm/public_html/customer/subscribe.php on line 13
+[29-Sep-2025 01:19:53 UTC] PHP Parse error:  syntax error, unexpected single-quoted string ";     // Price id, NOT prod_", expecting "=" in /home/hearmysm/public_html/customer/subscribe.php on line 13
+[29-Sep-2025 01:19:54 UTC] PHP Parse error:  syntax error, unexpected single-quoted string ";     // Price id, NOT prod_", expecting "=" in /home/hearmysm/public_html/customer/subscribe.php on line 13
+[29-Sep-2025 01:19:55 UTC] PHP Parse error:  syntax error, unexpected single-quoted string ";     // Price id, NOT prod_", expecting "=" in /home/hearmysm/public_html/customer/subscribe.php on line 13
+[29-Sep-2025 01:19:55 UTC] PHP Parse error:  syntax error, unexpected single-quoted string ";     // Price id, NOT prod_", expecting "=" in /home/hearmysm/public_html/customer/subscribe.php on line 13
+[29-Sep-2025 01:19:55 UTC] PHP Parse error:  syntax error, unexpected single-quoted string ";     // Price id, NOT prod_", expecting "=" in /home/hearmysm/public_html/customer/subscribe.php on line 13
+[29-Sep-2025 01:19:56 UTC] PHP Parse error:  syntax error, unexpected single-quoted string ";     // Price id, NOT prod_", expecting "=" in /home/hearmysm/public_html/customer/subscribe.php on line 13
+[29-Sep-2025 01:19:56 UTC] PHP Parse error:  syntax error, unexpected single-quoted string ";     // Price id, NOT prod_", expecting "=" in /home/hearmysm/public_html/customer/subscribe.php on line 13
+[29-Sep-2025 01:20:12 UTC] PHP Parse error:  syntax error, unexpected single-quoted string ";     // Price id, NOT prod_", expecting identifier in /home/hearmysm/public_html/customer/subscribe.php on line 13
+[29-Sep-2025 01:20:13 UTC] PHP Parse error:  syntax error, unexpected single-quoted string ";     // Price id, NOT prod_", expecting identifier in /home/hearmysm/public_html/customer/subscribe.php on line 13
+[29-Sep-2025 01:20:13 UTC] PHP Parse error:  syntax error, unexpected single-quoted string ";     // Price id, NOT prod_", expecting identifier in /home/hearmysm/public_html/customer/subscribe.php on line 13
+[29-Sep-2025 01:20:13 UTC] PHP Parse error:  syntax error, unexpected single-quoted string ";     // Price id, NOT prod_", expecting identifier in /home/hearmysm/public_html/customer/subscribe.php on line 13
+[29-Sep-2025 01:20:13 UTC] PHP Parse error:  syntax error, unexpected single-quoted string ";     // Price id, NOT prod_", expecting identifier in /home/hearmysm/public_html/customer/subscribe.php on line 13
+[29-Sep-2025 01:20:13 UTC] PHP Parse error:  syntax error, unexpected single-quoted string ";     // Price id, NOT prod_", expecting identifier in /home/hearmysm/public_html/customer/subscribe.php on line 13
+[29-Sep-2025 01:20:14 UTC] PHP Parse error:  syntax error, unexpected single-quoted string ";     // Price id, NOT prod_", expecting identifier in /home/hearmysm/public_html/customer/subscribe.php on line 13
+[29-Sep-2025 01:20:14 UTC] PHP Parse error:  syntax error, unexpected single-quoted string ";     // Price id, NOT prod_", expecting identifier in /home/hearmysm/public_html/customer/subscribe.php on line 13
+[29-Sep-2025 01:20:14 UTC] PHP Parse error:  syntax error, unexpected single-quoted string ";     // Price id, NOT prod_", expecting identifier in /home/hearmysm/public_html/customer/subscribe.php on line 13
+[29-Sep-2025 01:20:14 UTC] PHP Parse error:  syntax error, unexpected single-quoted string ";     // Price id, NOT prod_", expecting identifier in /home/hearmysm/public_html/customer/subscribe.php on line 13
+[29-Sep-2025 01:20:14 UTC] PHP Parse error:  syntax error, unexpected single-quoted string ";     // Price id, NOT prod_", expecting identifier in /home/hearmysm/public_html/customer/subscribe.php on line 13
+[29-Sep-2025 01:36:05 UTC] PHP Parse error:  syntax error, unexpected token "^" in /home/hearmysm/public_html/customer/subscribe.php on line 9
+[29-Sep-2025 16:49:31 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'plan_price_id' in 'field list' in /home/hearmysm/public_html/customer/dashboard.php:87
+Stack trace:
+#0 /home/hearmysm/public_html/customer/dashboard.php(87): mysqli->prepare('INSERT INTO use...')
+#1 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 87
+[30-Sep-2025 01:24:42 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 177
+[30-Sep-2025 01:25:15 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 177
+[30-Sep-2025 01:25:17 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 177
+[30-Sep-2025 01:25:32 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 177
+[30-Sep-2025 01:27:12 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 177
+[30-Sep-2025 01:27:46 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 177
+[30-Sep-2025 01:27:48 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 177
+[30-Sep-2025 01:27:48 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 177
+[30-Sep-2025 01:27:48 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 177
+[30-Sep-2025 01:28:36 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 177
+[30-Sep-2025 01:28:37 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 177
+[30-Sep-2025 01:28:37 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 177
+[30-Sep-2025 01:28:38 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 177
+[30-Sep-2025 01:28:39 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 177
+[30-Sep-2025 01:33:04 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 174
+[30-Sep-2025 01:33:08 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 174
+[30-Sep-2025 01:33:08 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 174
+[30-Sep-2025 01:33:08 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 174
+[30-Sep-2025 01:33:08 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 174
+[30-Sep-2025 01:33:09 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 174
+[30-Sep-2025 01:33:09 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 174
+[30-Sep-2025 01:33:09 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 174
+[30-Sep-2025 01:33:09 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 174
+[30-Sep-2025 01:33:11 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 174
+[30-Sep-2025 01:33:11 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 174
+[30-Sep-2025 01:33:25 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 174
+[30-Sep-2025 01:53:41 UTC] PHP Fatal error:  Uncaught Error: Undefined constant "EALL" in /home/hearmysm/public_html/customer/dashboard.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 5
+[30-Sep-2025 01:53:46 UTC] PHP Fatal error:  Uncaught Error: Undefined constant "EALL" in /home/hearmysm/public_html/customer/dashboard.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 5
+[30-Sep-2025 01:53:46 UTC] PHP Fatal error:  Uncaught Error: Undefined constant "EALL" in /home/hearmysm/public_html/customer/dashboard.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 5
+[30-Sep-2025 01:53:46 UTC] PHP Fatal error:  Uncaught Error: Undefined constant "EALL" in /home/hearmysm/public_html/customer/dashboard.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 5
+[30-Sep-2025 01:53:46 UTC] PHP Fatal error:  Uncaught Error: Undefined constant "EALL" in /home/hearmysm/public_html/customer/dashboard.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 5
+[30-Sep-2025 01:53:47 UTC] PHP Fatal error:  Uncaught Error: Undefined constant "EALL" in /home/hearmysm/public_html/customer/dashboard.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 5
+[30-Sep-2025 01:53:47 UTC] PHP Fatal error:  Uncaught Error: Undefined constant "EALL" in /home/hearmysm/public_html/customer/dashboard.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 5
+[30-Sep-2025 01:53:47 UTC] PHP Fatal error:  Uncaught Error: Undefined constant "EALL" in /home/hearmysm/public_html/customer/dashboard.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 5
+[30-Sep-2025 01:53:47 UTC] PHP Fatal error:  Uncaught Error: Undefined constant "EALL" in /home/hearmysm/public_html/customer/dashboard.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 5
+[30-Sep-2025 01:53:47 UTC] PHP Fatal error:  Uncaught Error: Undefined constant "EALL" in /home/hearmysm/public_html/customer/dashboard.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 5
+[30-Sep-2025 01:53:47 UTC] PHP Fatal error:  Uncaught Error: Undefined constant "EALL" in /home/hearmysm/public_html/customer/dashboard.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 5
+[30-Sep-2025 01:53:48 UTC] PHP Fatal error:  Uncaught Error: Undefined constant "EALL" in /home/hearmysm/public_html/customer/dashboard.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 5
+[30-Sep-2025 01:53:48 UTC] PHP Fatal error:  Uncaught Error: Undefined constant "EALL" in /home/hearmysm/public_html/customer/dashboard.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 5
+[30-Sep-2025 01:53:48 UTC] PHP Fatal error:  Uncaught Error: Undefined constant "EALL" in /home/hearmysm/public_html/customer/dashboard.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 5
+[30-Sep-2025 01:53:48 UTC] PHP Fatal error:  Uncaught Error: Undefined constant "EALL" in /home/hearmysm/public_html/customer/dashboard.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 5
+[30-Sep-2025 01:53:48 UTC] PHP Fatal error:  Uncaught Error: Undefined constant "EALL" in /home/hearmysm/public_html/customer/dashboard.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 5
+[30-Sep-2025 01:53:49 UTC] PHP Fatal error:  Uncaught Error: Undefined constant "EALL" in /home/hearmysm/public_html/customer/dashboard.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 5
+[30-Sep-2025 01:57:41 UTC] PHP Fatal error:  Uncaught Error: Undefined constant "EALL" in /home/hearmysm/public_html/customer/dashboard.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 5
+[30-Sep-2025 03:18:51 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 164
+[30-Sep-2025 03:18:52 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 164
+[30-Sep-2025 03:18:52 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 164
+[30-Sep-2025 03:18:53 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 164
+[30-Sep-2025 03:18:53 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 164
+[30-Sep-2025 03:18:53 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 164
+[30-Sep-2025 03:18:53 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 164
+[30-Sep-2025 03:18:53 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 164
+[30-Sep-2025 03:18:53 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 164
+[30-Sep-2025 03:18:54 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 164
+[30-Sep-2025 03:18:54 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 164
+[30-Sep-2025 03:18:54 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 164
+[30-Sep-2025 03:18:54 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 164
+[30-Sep-2025 03:18:55 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 164
+[30-Sep-2025 03:18:56 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 164
+[30-Sep-2025 03:18:56 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 164
+[30-Sep-2025 03:19:15 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 164
+[30-Sep-2025 03:19:16 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 164
+[30-Sep-2025 03:19:16 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 164
+[30-Sep-2025 03:19:17 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 164
+[30-Sep-2025 03:19:17 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 164
+[30-Sep-2025 03:19:17 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 164
+[30-Sep-2025 03:33:33 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:33:41 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:12 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:14 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:14 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:14 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:15 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:15 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:15 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:15 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:15 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:16 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:16 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:16 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:16 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:16 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:16 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:17 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:17 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:17 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:17 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:17 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:18 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:18 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:18 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:18 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:18 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:18 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:19 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:19 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:19 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:20 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:20 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:20 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:20 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:20 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:21 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:21 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:21 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:21 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:21 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:22 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:22 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:22 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:22 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:22 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:22 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 03:47:33 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 14:37:25 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 14:37:32 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 14:57:40 UTC] PHP Parse error:  syntax error, unexpected token "foreach" in /home/hearmysm/public_html/customer/dashboard.php on line 22
+[30-Sep-2025 14:57:41 UTC] PHP Parse error:  syntax error, unexpected token "foreach" in /home/hearmysm/public_html/customer/dashboard.php on line 22
+[30-Sep-2025 14:57:42 UTC] PHP Parse error:  syntax error, unexpected token "foreach" in /home/hearmysm/public_html/customer/dashboard.php on line 22
+[30-Sep-2025 14:57:42 UTC] PHP Parse error:  syntax error, unexpected token "foreach" in /home/hearmysm/public_html/customer/dashboard.php on line 22
+[30-Sep-2025 14:57:42 UTC] PHP Parse error:  syntax error, unexpected token "foreach" in /home/hearmysm/public_html/customer/dashboard.php on line 22
+[30-Sep-2025 14:57:44 UTC] PHP Parse error:  syntax error, unexpected token "foreach" in /home/hearmysm/public_html/customer/dashboard.php on line 22
+[30-Sep-2025 14:58:10 UTC] PHP Parse error:  syntax error, unexpected token "foreach" in /home/hearmysm/public_html/customer/dashboard.php on line 22
+[30-Sep-2025 14:58:12 UTC] PHP Parse error:  syntax error, unexpected token "foreach" in /home/hearmysm/public_html/customer/dashboard.php on line 22
+[30-Sep-2025 14:58:14 UTC] PHP Parse error:  syntax error, unexpected token "foreach" in /home/hearmysm/public_html/customer/dashboard.php on line 22
+[30-Sep-2025 15:00:00 UTC] PHP Parse error:  syntax error, unexpected token "foreach" in /home/hearmysm/public_html/customer/dashboard.php on line 22
+[30-Sep-2025 15:00:01 UTC] PHP Parse error:  syntax error, unexpected token "foreach" in /home/hearmysm/public_html/customer/dashboard.php on line 22
+[30-Sep-2025 15:10:16 UTC] PHP Parse error:  syntax error, unexpected token "foreach" in /home/hearmysm/public_html/customer/dashboard.php on line 22
+[30-Sep-2025 15:10:16 UTC] PHP Parse error:  syntax error, unexpected token "foreach" in /home/hearmysm/public_html/customer/dashboard.php on line 22
+[30-Sep-2025 15:18:31 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:19:36 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:19:45 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:21:23 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:25:14 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:25:52 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:26:27 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:27:47 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:46:15 UTC] PHP Parse error:  syntax error, unexpected token "foreach" in /home/hearmysm/public_html/customer/dashboard.php on line 22
+[30-Sep-2025 15:46:19 UTC] PHP Parse error:  syntax error, unexpected token "foreach" in /home/hearmysm/public_html/customer/dashboard.php on line 22
+[30-Sep-2025 15:46:20 UTC] PHP Parse error:  syntax error, unexpected token "foreach" in /home/hearmysm/public_html/customer/dashboard.php on line 22
+[30-Sep-2025 15:46:36 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:46:38 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:46:38 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:46:39 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:46:39 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:24 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:26 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:27 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:27 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:27 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:37 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:37 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:37 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:38 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:38 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:38 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:38 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:38 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:39 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:39 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:39 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:39 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:39 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:40 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:40 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:40 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:40 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:40 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:40 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:41 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:41 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:41 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:41 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:41 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:42 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:42 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:42 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:42 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:42 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:42 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:51:43 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 15:57:29 UTC] PHP Parse error:  syntax error, unexpected token "foreach" in /home/hearmysm/public_html/customer/dashboard.php on line 27
+[30-Sep-2025 15:57:30 UTC] PHP Parse error:  syntax error, unexpected token "foreach" in /home/hearmysm/public_html/customer/dashboard.php on line 27
+[30-Sep-2025 15:57:30 UTC] PHP Parse error:  syntax error, unexpected token "foreach" in /home/hearmysm/public_html/customer/dashboard.php on line 27
+[30-Sep-2025 15:57:31 UTC] PHP Parse error:  syntax error, unexpected token "foreach" in /home/hearmysm/public_html/customer/dashboard.php on line 27
+[30-Sep-2025 15:57:32 UTC] PHP Parse error:  syntax error, unexpected token "foreach" in /home/hearmysm/public_html/customer/dashboard.php on line 27
+[30-Sep-2025 16:00:21 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:06:11 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:06:13 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 258
+[30-Sep-2025 16:06:14 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 258
+[30-Sep-2025 16:06:14 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 258
+[30-Sep-2025 16:06:14 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 258
+[30-Sep-2025 16:06:15 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 258
+[30-Sep-2025 16:06:15 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 258
+[30-Sep-2025 16:06:15 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 258
+[30-Sep-2025 16:06:15 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 258
+[30-Sep-2025 16:06:15 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 258
+[30-Sep-2025 16:06:15 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 258
+[30-Sep-2025 16:06:17 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 258
+[30-Sep-2025 16:06:17 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 258
+[30-Sep-2025 16:06:18 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 258
+[30-Sep-2025 16:06:18 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 258
+[30-Sep-2025 16:06:18 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 258
+[30-Sep-2025 16:06:39 UTC] PHP Parse error:  Unmatched '}' in /home/hearmysm/public_html/customer/dashboard.php on line 258
+[30-Sep-2025 16:17:05 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:17:05 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:17:05 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:17:22 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:20:01 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:23:57 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:27:59 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:28:01 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:28:01 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:28:01 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:29:11 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:29:12 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:29:13 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:32:59 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:32:59 UTC] You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TH0 THEN 1 ELSE 0 END) AS out_for_delivery
+        FROM packages' at line 5
+[30-Sep-2025 16:33:02 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:33:02 UTC] You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TH0 THEN 1 ELSE 0 END) AS out_for_delivery
+        FROM packages' at line 5
+[30-Sep-2025 16:33:03 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:33:03 UTC] You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TH0 THEN 1 ELSE 0 END) AS out_for_delivery
+        FROM packages' at line 5
+[30-Sep-2025 16:33:03 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:33:03 UTC] You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TH0 THEN 1 ELSE 0 END) AS out_for_delivery
+        FROM packages' at line 5
+[30-Sep-2025 16:33:04 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:33:04 UTC] You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TH0 THEN 1 ELSE 0 END) AS out_for_delivery
+        FROM packages' at line 5
+[30-Sep-2025 16:33:04 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:33:04 UTC] You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TH0 THEN 1 ELSE 0 END) AS out_for_delivery
+        FROM packages' at line 5
+[30-Sep-2025 16:33:29 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:33:29 UTC] You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TH0 THEN 1 ELSE 0 END) AS out_for_delivery
+        FROM packages' at line 5
+[30-Sep-2025 16:34:28 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:34:28 UTC] You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TH0 THEN 1 ELSE 0 END) AS out_for_delivery
+        FROM packages' at line 5
+[30-Sep-2025 16:34:29 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:34:29 UTC] You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TH0 THEN 1 ELSE 0 END) AS out_for_delivery
+        FROM packages' at line 5
+[30-Sep-2025 16:34:29 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:34:29 UTC] You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TH0 THEN 1 ELSE 0 END) AS out_for_delivery
+        FROM packages' at line 5
+[30-Sep-2025 16:34:30 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:34:30 UTC] You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TH0 THEN 1 ELSE 0 END) AS out_for_delivery
+        FROM packages' at line 5
+[30-Sep-2025 16:34:30 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:34:30 UTC] You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TH0 THEN 1 ELSE 0 END) AS out_for_delivery
+        FROM packages' at line 5
+[30-Sep-2025 16:34:30 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:34:30 UTC] You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TH0 THEN 1 ELSE 0 END) AS out_for_delivery
+        FROM packages' at line 5
+[30-Sep-2025 16:34:30 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:34:30 UTC] You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TH0 THEN 1 ELSE 0 END) AS out_for_delivery
+        FROM packages' at line 5
+[30-Sep-2025 16:34:30 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:34:30 UTC] You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TH0 THEN 1 ELSE 0 END) AS out_for_delivery
+        FROM packages' at line 5
+[30-Sep-2025 16:34:30 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:34:30 UTC] You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TH0 THEN 1 ELSE 0 END) AS out_for_delivery
+        FROM packages' at line 5
+[30-Sep-2025 16:34:31 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:34:31 UTC] You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TH0 THEN 1 ELSE 0 END) AS out_for_delivery
+        FROM packages' at line 5
+[30-Sep-2025 16:36:11 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:36:11 UTC] You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TH0 THEN 1 ELSE 0 END) AS out_for_delivery
+        FROM packages' at line 5
+[30-Sep-2025 16:43:24 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:01 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:36 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:37 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:37 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:37 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:37 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:38 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:38 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:38 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:38 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:38 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:38 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:39 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:39 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:39 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:39 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:39 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:39 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:40 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:40 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:40 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:40 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:40 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:41 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:41 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:41 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:41 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:41 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:41 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:44 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:45 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:45 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:45 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:45 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:45 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:47:45 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:48:53 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:48:54 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:48:54 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:48:54 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:48:54 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:48:54 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:48:55 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:48:55 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:48:55 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:48:55 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:48:55 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:48:55 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:48:56 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:48:56 UTC] Unknown column 'location' in 'field list'
+[30-Sep-2025 16:48:56 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:27:45 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:28:15 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:28:17 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:28:18 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:28:18 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:28:19 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:28:19 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:28:19 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:28:19 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:28:20 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:28:20 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:28:20 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:28:21 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:28:21 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:28:21 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:28:22 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:28:22 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:28:22 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:28:24 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:28:24 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:28:24 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:28:25 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:28:25 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:28:25 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:28:25 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:28:26 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:28:26 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:33:09 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:33:10 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:33:10 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 02:33:11 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:05:06 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:08:57 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:08:59 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:08:59 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:08:59 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:08:59 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:09:01 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:09:01 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:09:01 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:09:01 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:09:08 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:09:09 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:09:09 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:09:09 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:09:09 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:39 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:40 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:40 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:40 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:41 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:41 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:41 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:41 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:41 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:41 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:42 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:42 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:42 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:42 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:42 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:43 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:43 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:43 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:43 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:43 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:44 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:44 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:44 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:44 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:44 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:44 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:45 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:45 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:45 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:46 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:46 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:46 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:10:46 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:12:03 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:12:11 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:12:11 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:12:12 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:12:12 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 03:14:50 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 16:49:49 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 16:50:11 UTC] Unknown column 'location' in 'field list'
+[01-Oct-2025 16:50:13 UTC] Unknown column 'location' in 'field list'
+[02-Oct-2025 17:05:45 UTC] Unknown column 'location' in 'field list'
+[03-Oct-2025 01:40:55 UTC] Unknown column 'location' in 'field list'
+[03-Oct-2025 02:08:17 UTC] Unknown column 'location' in 'field list'
+[03-Oct-2025 02:08:19 UTC] Unknown column 'location' in 'field list'
+[03-Oct-2025 02:08:20 UTC] Unknown column 'location' in 'field list'
+[03-Oct-2025 02:08:20 UTC] Unknown column 'location' in 'field list'
+[03-Oct-2025 02:08:20 UTC] Unknown column 'location' in 'field list'
+[03-Oct-2025 02:08:20 UTC] Unknown column 'location' in 'field list'
+[03-Oct-2025 02:08:21 UTC] Unknown column 'location' in 'field list'
+[05-Oct-2025 01:26:14 UTC] Unknown column 'location' in 'field list'
+[07-Oct-2025 01:40:03 UTC] PHP Parse error:  syntax error, unexpected token "const" in /home/hearmysm/public_html/db.php on line 6
+[07-Oct-2025 01:55:12 UTC] PHP Parse error:  syntax error, unexpected identifier "Trecarcas", expecting ")" in /home/hearmysm/public_html/db.php on line 5
+[07-Oct-2025 02:01:02 UTC] PHP Warning:  Undefined variable $conn in /home/hearmysm/public_html/customer/process_login.php on line 10
+[07-Oct-2025 02:01:02 UTC] PHP Warning:  Undefined variable $conn in /home/hearmysm/public_html/customer/process_login.php on line 28
+[07-Oct-2025 02:01:02 UTC] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home/hearmysm/public_html/customer/process_login.php:28
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/process_login.php on line 28
+[07-Oct-2025 02:02:25 UTC] PHP Warning:  Undefined variable $conn in /home/hearmysm/public_html/customer/process_login.php on line 10
+[07-Oct-2025 02:02:25 UTC] PHP Warning:  Undefined variable $conn in /home/hearmysm/public_html/customer/process_login.php on line 28
+[07-Oct-2025 02:02:25 UTC] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home/hearmysm/public_html/customer/process_login.php:28
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/process_login.php on line 28
+[07-Oct-2025 02:17:44 UTC] PHP Warning:  Undefined variable $conn in /home/hearmysm/public_html/customer/process_login.php on line 10
+[07-Oct-2025 02:17:45 UTC] PHP Warning:  Undefined variable $conn in /home/hearmysm/public_html/customer/process_login.php on line 28
+[07-Oct-2025 02:17:45 UTC] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home/hearmysm/public_html/customer/process_login.php:28
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/process_login.php on line 28
+[07-Oct-2025 02:18:37 UTC] PHP Warning:  Undefined variable $conn in /home/hearmysm/public_html/customer/process_login.php on line 10
+[07-Oct-2025 02:18:37 UTC] PHP Warning:  Undefined variable $conn in /home/hearmysm/public_html/customer/process_login.php on line 28
+[07-Oct-2025 02:18:37 UTC] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home/hearmysm/public_html/customer/process_login.php:28
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/process_login.php on line 28
+[07-Oct-2025 02:18:52 UTC] PHP Warning:  Undefined variable $conn in /home/hearmysm/public_html/customer/process_login.php on line 10
+[07-Oct-2025 02:18:52 UTC] PHP Warning:  Undefined variable $conn in /home/hearmysm/public_html/customer/process_login.php on line 28
+[07-Oct-2025 02:18:52 UTC] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home/hearmysm/public_html/customer/process_login.php:28
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/process_login.php on line 28
+[07-Oct-2025 02:18:56 UTC] PHP Warning:  Undefined variable $conn in /home/hearmysm/public_html/customer/process_login.php on line 10
+[07-Oct-2025 02:18:56 UTC] PHP Warning:  Undefined variable $conn in /home/hearmysm/public_html/customer/process_login.php on line 28
+[07-Oct-2025 02:18:56 UTC] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home/hearmysm/public_html/customer/process_login.php:28
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/process_login.php on line 28
+[07-Oct-2025 02:22:04 UTC] Database Connection Error: SQLSTATE[28000] [1045] Access denied for user 'your_database_user'@'localhost' (using password: YES)
+[07-Oct-2025 02:25:30 UTC] PHP Warning:  Undefined variable $conn in /home/hearmysm/public_html/customer/process_login.php on line 10
+[07-Oct-2025 02:25:30 UTC] PHP Warning:  Undefined variable $conn in /home/hearmysm/public_html/customer/process_login.php on line 28
+[07-Oct-2025 02:25:30 UTC] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home/hearmysm/public_html/customer/process_login.php:28
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/process_login.php on line 28
+[07-Oct-2025 02:37:45 UTC] Database Connection Error: SQLSTATE[28000] [1045] Access denied for user 'your_database_user'@'localhost' (using password: YES)
+[07-Oct-2025 02:44:08 UTC] Database Connection Error: SQLSTATE[28000] [1045] Access denied for user 'hearmysm_Delivery_user'@'localhost' (using password: YES)
+[07-Oct-2025 02:46:23 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method PDOStatement::fetch_assoc() in /home/hearmysm/public_html/customer/process_login.php:29
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/process_login.php on line 29
+[07-Oct-2025 02:46:59 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method PDOStatement::fetch_assoc() in /home/hearmysm/public_html/customer/process_login.php:29
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/process_login.php on line 29
+[07-Oct-2025 02:57:01 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method PDOStatement::fetch_assoc() in /home/hearmysm/public_html/customer/process_login.php:29
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/process_login.php on line 29
+[07-Oct-2025 03:16:57 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method PDOStatement::fetch_assoc() in /home/hearmysm/public_html/customer/process_login.php:29
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/process_login.php on line 29
+[07-Oct-2025 03:27:22 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method PDOStatement::fetch_assoc() in /home/hearmysm/public_html/customer/process_login.php:29
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/process_login.php on line 29
+[07-Oct-2025 03:31:58 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method PDOStatement::fetch_assoc() in /home/hearmysm/public_html/customer/process_login.php:29
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/process_login.php on line 29
+[07-Oct-2025 03:41:35 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method PDO::real_escape_string() in /home/hearmysm/public_html/customer/dashboard.php:50
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 50
+[07-Oct-2025 03:42:50 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method PDO::real_escape_string() in /home/hearmysm/public_html/customer/dashboard.php:50
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 50
+[07-Oct-2025 03:42:51 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method PDO::real_escape_string() in /home/hearmysm/public_html/customer/dashboard.php:50
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 50
+[07-Oct-2025 03:42:51 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method PDO::real_escape_string() in /home/hearmysm/public_html/customer/dashboard.php:50
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 50
+[07-Oct-2025 03:42:52 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method PDO::real_escape_string() in /home/hearmysm/public_html/customer/dashboard.php:50
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 50
+[07-Oct-2025 03:42:52 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method PDO::real_escape_string() in /home/hearmysm/public_html/customer/dashboard.php:50
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 50
+[07-Oct-2025 03:42:52 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method PDO::real_escape_string() in /home/hearmysm/public_html/customer/dashboard.php:50
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 50
+[07-Oct-2025 03:42:52 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method PDO::real_escape_string() in /home/hearmysm/public_html/customer/dashboard.php:50
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 50
+[07-Oct-2025 03:42:53 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method PDO::real_escape_string() in /home/hearmysm/public_html/customer/dashboard.php:50
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 50
+[07-Oct-2025 03:42:53 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method PDO::real_escape_string() in /home/hearmysm/public_html/customer/dashboard.php:50
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 50
+[07-Oct-2025 03:42:54 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method PDO::real_escape_string() in /home/hearmysm/public_html/customer/dashboard.php:50
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 50
+[07-Oct-2025 03:46:46 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method PDO::real_escape_string() in /home/hearmysm/public_html/customer/dashboard.php:50
+Stack trace:
+#0 {main}
+  thrown in /home/hearmysm/public_html/customer/dashboard.php on line 50
+[07-Oct-2025 03:50:01 UTC] PHP Parse error:  syntax error, unexpected variable "$_SESSION" in /home/hearmysm/public_html/customer/login.php on line 14
+[07-Oct-2025 03:50:02 UTC] PHP Parse error:  syntax error, unexpected variable "$_SESSION" in /home/hearmysm/public_html/customer/login.php on line 14
+[07-Oct-2025 03:50:02 UTC] PHP Parse error:  syntax error, unexpected variable "$_SESSION" in /home/hearmysm/public_html/customer/login.php on line 14
+[07-Oct-2025 03:50:03 UTC] PHP Parse error:  syntax error, unexpected variable "$_SESSION" in /home/hearmysm/public_html/customer/login.php on line 14
+[07-Oct-2025 03:50:03 UTC] PHP Parse error:  syntax error, unexpected variable "$_SESSION" in /home/hearmysm/public_html/customer/login.php on line 14
+[07-Oct-2025 13:29:25 UTC] PHP Parse error:  syntax error, unexpected variable "$_SESSION" in /home/hearmysm/public_html/customer/login.php on line 14
+[07-Oct-2025 13:35:35 UTC] PHP Parse error:  syntax error, unexpected variable "$_SESSION" in /home/hearmysm/public_html/customer/login.php on line 14
+[07-Oct-2025 13:35:37 UTC] PHP Parse error:  syntax error, unexpected variable "$_SESSION" in /home/hearmysm/public_html/customer/login.php on line 14
+[07-Oct-2025 13:36:11 UTC] PHP Parse error:  syntax error, unexpected variable "$_SESSION" in /home/hearmysm/public_html/customer/login.php on line 14
+[07-Oct-2025 15:27:10 UTC] PHP Parse error:  syntax error, unexpected variable "$_SESSION" in /home/hearmysm/public_html/customer/login.php on line 14
+[07-Oct-2025 15:27:13 UTC] PHP Parse error:  syntax error, unexpected variable "$_SESSION" in /home/hearmysm/public_html/customer/login.php on line 14
+[07-Oct-2025 16:06:54 UTC] PHP Parse error:  syntax error, unexpected variable "$_SESSION" in /home/hearmysm/public_html/customer/login.php on line 14
+[07-Oct-2025 16:16:59 UTC] PHP Parse error:  syntax error, unexpected variable "$_SESSION" in /home/hearmysm/public_html/customer/login.php on line 14
+[07-Oct-2025 16:17:14 UTC] PHP Parse error:  syntax error, unexpected variable "$_SESSION" in /home/hearmysm/public_html/customer/login.php on line 14
+[07-Oct-2025 16:24:40 UTC] PHP Parse error:  syntax error, unexpected variable "$_SESSION" in /home/hearmysm/public_html/customer/login.php on line 14
+[07-Oct-2025 16:24:41 UTC] PHP Parse error:  syntax error, unexpected variable "$_SESSION" in /home/hearmysm/public_html/customer/login.php on line 14
+[07-Oct-2025 16:24:41 UTC] PHP Parse error:  syntax error, unexpected variable "$_SESSION" in /home/hearmysm/public_html/customer/login.php on line 14
+[07-Oct-2025 16:24:41 UTC] PHP Parse error:  syntax error, unexpected variable "$_SESSION" in /home/hearmysm/public_html/customer/login.php on line 14

@@ -1,0 +1,4 @@
+# AuthType Basic
+# AuthName "Admin Area"
+# AuthUserFile "/home/hearmysm/.htpasswds/public_html/passwd"
+# Require valid-user

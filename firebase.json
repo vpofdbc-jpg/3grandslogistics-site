@@ -1,0 +1,34 @@
+{
+  "hosting": {
+    "public": "public", // Changed from 'y' for standard practice.
+                        // With rewrites to appHostingBackend, this 'public' dir typically remains empty
+                        // or contains minimal static content not handled by the backend.
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**", // This still means ALL requests
+        "run": {
+          "serviceId": "app3grands", // The name of your App Hosting backend / Cloud Run service
+          "region": "us-east4"       // The region where your App Hosting backend is deployed
+        }
+      }
+    ]
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ]
+    }
+  ]
+}
