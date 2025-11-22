@@ -1,5 +1,6 @@
-name: 'Firebase Hosting Deploy (Live)'
-'on':
+name: Firebase Hosting Deploy (Live)
+
+on:
   push:
     branches:
       - main 
@@ -11,26 +12,28 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
         
-      # === FIX START: Set up environment and separate install/build steps ===
+      # === Setup Environment and Build Steps (Necessary for Web App) ===
       - name: Setup Node.js Environment
         uses: actions/setup-node@v4
         with:
-          node-version: '18' # Ensures 'npm' is correctly configured
+          node-version: '20' # Using v20 as per remote for modern compatibility
+          cache: 'npm' # Use npm cache for faster installs
         
       - name: Install Project Dependencies
-        # Changed from combined command to separate steps
+        # Must run npm ci to install all dependencies before building
         run: npm ci
         
       - name: Build Project (npm run build)
+        # This step runs the build script defined in your package.json
         run: npm run build
-      # === FIX END ===
+      # ================================================================
         
       - name: Deploy to Firebase Hosting Live Channel
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          # NOTE: Replace 'FIREBASE_SERVICE_ACCOUNT_PROJECT_NAME' and 'your-firebase-project-id' 
-          # with your actual service account secret name and Firebase project ID.
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_PROJECT_NAME }}'
-          projectId: your-firebase-project-id
+          # Using the specific project ID and service account from the remote branch
+          firebaseServiceAccount: '${{ secrets.GCP_SA_KEY }}'
+          projectId: grandslogistics-8af41
           channelId: live # Deploys to your primary site URL (live)
+          target: customer-app-mobile # Deploying to the specific target hosting site
