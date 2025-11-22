@@ -1,6 +1,5 @@
-name: Firebase Hosting Deploy
+name: Deploy to Firebase Hosting
 
-# Triggers the workflow on pushes to the 'main' branch
 on:
   push:
     branches:
@@ -8,9 +7,7 @@ on:
 
 jobs:
   deploy:
-    # Use the latest Ubuntu runner
     runs-on: ubuntu-latest
-    
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -19,10 +16,12 @@ jobs:
         # Assuming a modern Node.js environment for the app
         uses: actions/setup-node@v4
         with:
-          node-version: '20' 
+          node-version: '20'
           cache: 'npm' # Use npm cache for faster installs
 
-      
+      # --- REMOVED: Install Dependencies (npm install) ---
+
+      # --- REMOVED: Build Project (npm run build) ---
 
       - name: Deploy to Firebase Hosting
         # Uses the official action for Firebase deployment
@@ -33,9 +32,10 @@ jobs:
           firebaseServiceAccount: ${{ secrets.GCP_SA_KEY }}
           # The project ID used during setup
           projectId: grandslogistics-8af41
-          # The ID of the Hosting site (usually matches the project ID)
-          channelId: live 
-          # You may need to adjust the 'public' directory path if your build output is different (e.g., 'dist' or 'out')
+          # The ID of the hosting site (usually matches the project ID)
+          channelId: live
+          # This assumes your content is in the root of the repository. 
+          # You may need to adjust the 'public' directory path if your build output is different (e.g., 'dist' or 'build')
           # This should match the 'public' setting in your firebase.json file.
-          target: customer-app-mobile 
-          entryPoint: c:\Users\accou\customer_app_mobile
+          target: customer-app-mobile
+          # The entry point is usually index.html, but this is often derived from the firebase.json public setting.
