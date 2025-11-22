@@ -1,0 +1,8 @@
+<?php
+function send_mail_simple(string $to, string $subject, string $text): bool {
+  $headers = "From: 3 Grands Logistics <contact@3grandslogistics.com>\r\n".
+             "Reply-To: contact@3grandslogistics.com\r\n".
+             "MIME-Version: 1.0\r\n".
+             "Content-Type: text/plain; charset=UTF-8\r\n";
+  return mail($to, $subject, $text, $headers);
+}

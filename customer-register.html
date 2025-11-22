@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Untitled Page</title>
+<meta name="GENERATOR" content="Created by BlueVoda Website builder http://www.bluevoda.com">
+<meta name="HOSTING" content="Hosting Provided By VodaHost http://www.vodahost.com">
+<style type="text/css">
+div#container
+{
+   width: 800px;
+   height: 600px;
+   margin-top: 0px;
+   margin-left: 0px;
+   text-align: left;
+}
+</style>
+<style type="text/css">
+body
+{
+   background-color: #FFFFFF;
+   color: #000000;
+}
+</style>
+<style type="text/css">
+a:hover
+{
+   color: #620300;
+}
+</style>
+</head>
+<body>
+<div id="container">
+<div id="Html1" style="position:absolute;left:775px;top:254px;width:150px;height:150px;z-index:0">
+<iframe 
+  src="https://databutton.com/projects/ac423dbe-11ac-49ec-9f21-7831733623e7/ui/customer-register/build" 
+  style="border:none; width:100%; max-width: 600px; height: 800px;" 
+  title="Customer Registration Form">
+</iframe>
+</div>
+</div>
+<!-- Tawk.to (Customers) -->
+<div id="tawk-fallback" style="position:fixed;right:16px;bottom:16px;display:none;z-index:999999">
+  <a href="https://tawk.to/chat/68be0071f58c911925a74404/1j4j33eos" target="_blank" rel="noopener"
+     style="background:#28a745;color:#fff;padding:10px 14px;border-radius:999px;font-weight:700;text-decoration:none;">
+    Open Chat
+  </a>
+</div>
+<script>
+  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+  Tawk_API.onLoad=function(){
+    try{
+      Tawk_API.setAttributes({
+        role: 'customer',
+        customer_id: <?= (int)($_SESSION['user_id'] ?? 0) ?>,
+        name: <?= json_encode($_SESSION['user_name'] ?? 'Guest') ?>,
+        email: <?= json_encode($_SESSION['user_email'] ?? '') ?>
+      }, function(){});
+      if (Tawk_API.addTags) Tawk_API.addTags(['customer']);
+    }catch(e){}
+  };
+  (function(){
+    var s1=document.createElement("script"), s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/68be0071f58c911925a74404/1j4j33eos';
+    s1.charset='UTF-8'; s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+  })();
+  // show fallback button if widget is blocked
+  setTimeout(function(){
+    if(!window.Tawk_API || !document.getElementById('tawkchat-container')){
+      var fb=document.getElementById('tawk-fallback'); if(fb) fb.style.display='block';
+    }
+  }, 6000);
+</script>
+
+</body>
+</html>

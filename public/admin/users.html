@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - 3 Grands Logistics</title>
+    <!-- Load Tailwind CSS from CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Styles to enhance the look and feel */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+        :root {
+            --primary-color: #10B981; /* Emerald Green */
+            --primary-light: #D1FAE5;
+            --primary-dark: #059669;
+            --danger-color: #EF4444; /* Red */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fbf8;
+        }
+
+        /* Utility Classes (Shadows and Rounded Corners) */
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Button Styling */
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        /* Role Badges */
+        .badge-admin { background-color: #FEE2E2; color: #EF4444; font-weight: 600; }
+        .badge-driver { background-color: #FEF3C7; color: #F59E0B; font-weight: 600; }
+        .badge-customer { background-color: #D1FAE5; color: #059669; font-weight: 600; }
+        .badge-pending { background-color: #E0F2F1; color: #14B8A6; font-weight: 600; }
+        .badge-suspended { background-color: #FEE2E2; color: #B91C1C; font-weight: 600; }
+        .badge-active { background-color: #D1FAE5; color: #059669; font-weight: 600; }
+        .badge {
+            padding: 0.25rem 0.6rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            display: inline-block;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+        }
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: fadeIn 0.3s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Table Responsiveness */
+        @media (max-width: 768px) {
+            .table-container {
+                overflow-x: auto;
+            }
+            table {
+                min-width: 700px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <!-- Header -->
+        <div class="card p-6 mb-8 flex justify-between items-center flex-wrap gap-4">
+            <h1 class="text-3xl font-bold text-gray-800">User Management</h1>
+            <div class="flex gap-2">
+                <a href="login.html" class="px-4 py-2 text-sm font-semibold rounded-lg bg-gray-200 hover:bg-gray-300 transition">
+                    < Back to Dashboard
+                </a>
+                <button id="logout-button" class="px-4 py-2 text-sm font-semibold rounded-lg bg-red-500 text-white hover:bg-red-600 transition">
+                    Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- Authentication Status -->
+        <div id="auth-status-message" class="text-center p-4 bg-yellow-100 text-yellow-800 rounded-lg mb-4">
+            Checking authentication...
+        </div>
+
+        <!-- Main User List Content -->
+        <div id="user-list-container" class="card p-6" style="display: none;">
+
+            <!-- Controls (Search and Filter) -->
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+                <input type="text" id="user-search" placeholder="Search by User ID or Email..." 
+                       class="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition max-w-sm md:max-w-md">
+                
+                <div class="flex gap-4">
+                    <select id="role-filter" class="p-3 border border-gray-300 rounded-lg">
+                        <option value="all">Filter by Role (All)</option>
+                        <option value="customer">Customer</option>
+                        <option value="driver">Driver</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- User Table -->
+            <div class="table-container">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User ID</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="user-table-body" class="bg-white divide-y divide-gray-200">
+                        <!-- User rows will be injected here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="no-users-message" class="text-center p-8 text-gray-500 hidden">
+                No users found matching the filter criteria.
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Edit User Modal -->
+    <div id="edit-user-modal" class="modal-overlay hidden" aria-modal="true" role="dialog">
+        <div class="modal-content">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">Edit User Details</h2>
+            <form id="edit-user-form" class="space-y-4">
+                <!-- Hidden input to store document ID -->
+                <input type="hidden" id="edit-doc-id">
+                
+                <!-- User ID Display -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">User ID</label>
+                    <p id="edit-user-id" class="mt-1 p-2 text-sm bg-gray-50 border border-gray-200 rounded-md"></p>
+                </div>
+
+                <!-- Role Selector -->
+                <div>
+                    <label for="edit-role" class="block text-sm font-medium text-gray-700">User Role</label>
+                    <select id="edit-role" name="role" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
+                        <option value="customer">Customer</option>
+                        <option value="driver">Driver</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+
+                <!-- Status Selector -->
+                <div>
+                    <label for="edit-status" class="block text-sm font-medium text-gray-700">Account Status</label>
+                    <select id="edit-status" name="status" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
+                        <option value="active">Active</option>
+                        <option value="suspended">Suspended</option>
+                        <option value="pending">Pending Review</option>
+                    </select>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex justify-end gap-3 pt-4">
+                    <button type="button" id="close-modal-btn" class="px-4 py-2 text-sm font-semibold rounded-lg bg-gray-200 hover:bg-gray-300 transition">
+                        Cancel
+                    </button>
+                    <button type="submit" id="save-user-btn" class="btn-primary px-4 py-2 text-sm font-semibold rounded-lg">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase Imports and Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { 
+            getAuth, 
+            signOut, 
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { 
+            getFirestore, 
+            collection, 
+            onSnapshot, 
+            doc, 
+            updateDoc,
+            query,
+            setLogLevel 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // === YOUR ACTUAL FIREBASE CONFIG HERE ===
+        const firebaseConfig = {
+          apiKey: "AIzaSyAtT_XsWP_uumlBO2yrVzAIKZK25PzClWw",
+          authDomain: "grandslogistics-8af41.firebaseapp.com",
+          projectId: "grandslogistics-8af41",
+          storageBucket: "grandslogistics-8af41.appspot.com",
+          messagingSenderId: "267189664335",
+          appId: "1:267189664335:web:bf0536ef521ace642e883a"
+        };
+        // =======================================
+
+        setLogLevel('Debug'); // Set log level for debugging
+
+        // DOM Elements
+        const authStatusMessageEl = document.getElementById('auth-status-message');
+        const userListContainer = document.getElementById('user-list-container');
+        const userTableBody = document.getElementById('user-table-body');
+        const noUsersMessage = document.getElementById('no-users-message');
+        const userSearchInput = document.getElementById('user-search');
+        const roleFilter = document.getElementById('role-filter');
+        const logoutButton = document.getElementById('logout-button'); // Added for direct logout from this page
+        
+        // Modal Elements
+        const editUserModal = document.getElementById('edit-user-modal');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const editUserForm = document.getElementById('edit-user-form');
+        const editDocIdInput = document.getElementById('edit-doc-id');
+        const editUserIdDisplay = document.getElementById('edit-user-id');
+        const editRoleSelect = document.getElementById('edit-role');
+        const editStatusSelect = document.getElementById('edit-status');
+        const saveUserBtn = document.getElementById('save-user-btn');
+
+        let auth, db;
+        let allUsers = []; // Stores all users fetched from Firestore
+        
+        // --- Core Data Functions ---
+        
+        /**
+         * Subscribes to the 'users' collection for real-time updates.
+         */
+        function subscribeToUsers() {
+            if (!db) {
+                console.error("Firestore DB not initialized.");
+                return;
+            }
+
+            // Fetch from the top-level 'users' collection as we configured it
+            const usersCollectionRef = collection(db, 'users');
+            const q = query(usersCollectionRef); 
+
+            onSnapshot(q, (snapshot) => {
+                const fetchedUsers = [];
+                if (snapshot.empty) {
+                     console.log("Firestore 'users' collection is empty.");
+                     // No mock data generated; user will see 'No users found' message
+                } else {
+                    snapshot.forEach(doc => {
+                        const userData = doc.data();
+                        // IMPORTANT: We use the Firestore Document ID (doc.id) as the unique identifier for updating
+                        fetchedUsers.push({ docId: doc.id, ...userData });
+                    });
+                }
+                
+                allUsers = fetchedUsers;
+                filterAndRenderUsers();
+
+            }, (error) => {
+                console.error("Firestore Subscription Error:", error);
+                authStatusMessageEl.textContent = `Error fetching users: ${error.message}`;
+                authStatusMessageEl.style.display = 'block'; // Ensure error is visible
+            });
+        }
+        
+        /**
+         * Updates a user's role and status in Firestore.
+         * @param {string} docId The Firestore document ID.
+         * @param {string} newRole The new role ('customer', 'driver', 'admin').
+         * @param {string} newStatus The new status ('active', 'suspended', 'pending').
+         */
+        async function updateUserInFirestore(docId, newRole, newStatus) {
+            if (!db) {
+                console.error("Database not initialized.");
+                return;
+            }
+
+            try {
+                // Reference the user document in the top-level 'users' collection
+                const userDocRef = doc(db, 'users', docId); 
+                await updateDoc(userDocRef, {
+                    role: newRole,
+                    status: newStatus,
+                    updated_at: new Date().toISOString()
+                });
+                console.log(`User ${docId} successfully updated to role: ${newRole}, status: ${newStatus}`);
+                closeModal(); // Close modal on success
+                // onSnapshot will handle the UI update automatically
+            } catch (error) {
+                console.error("Error updating user document:", error);
+                alert(`Failed to save changes: ${error.message}`); 
+            }
+        }
+
+
+        // --- UI & Rendering Functions ---
+
+        /**
+         * Renders the full user table based on current filters and search term.
+         */
+        function filterAndRenderUsers() {
+            const searchTerm = userSearchInput.value.toLowerCase();
+            const selectedRole = roleFilter.value;
+
+            let filteredUsers = allUsers.filter(user => {
+                // 1. Role Filter
+                const roleMatches = selectedRole === 'all' || user.role === selectedRole;
+                
+                // 2. Search Filter
+                const searchMatches = 
+                    user.docId?.toLowerCase().includes(searchTerm) || // Search by Firestore Doc ID
+                    user.email?.toLowerCase().includes(searchTerm) ||
+                    user.displayName?.toLowerCase().includes(searchTerm) || // Search by display name if present
+                    user.role?.toLowerCase().includes(searchTerm); // Allow searching by role too
+                
+                return roleMatches && searchMatches;
+            });
+            
+            // Sort by role then email for stable display (client-side sort)
+            filteredUsers.sort((a, b) => {
+                if (a.role < b.role) return -1;
+                if (a.role > b.role) return 1;
+                if (a.email < b.email) return -1;
+                if (a.email > b.email) return 1;
+                return 0;
+            });
+
+            renderUserTable(filteredUsers);
+        }
+
+        /**
+         * Dynamically updates the user table HTML.
+         */
+        function renderUserTable(users) {
+            userTableBody.innerHTML = ''; // Clear existing rows
+
+            if (users.length === 0) {
+                noUsersMessage.classList.remove('hidden');
+                return;
+            }
+            noUsersMessage.classList.add('hidden');
+
+            users.forEach(user => {
+                const roleClass = `badge-${user.role}`;
+                const statusClass = `badge-${user.status}`;
+                
+                const row = `
+                    <tr class="hover:bg-gray-50 transition">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${user.docId || 'N/A'}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${user.email || 'N/A'}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="badge ${roleClass}">${(user.role || 'N/A').toUpperCase()}</span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="badge ${statusClass}">${(user.status || 'N/A').toUpperCase()}</span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <button data-doc-id="${user.docId}" 
+                                    data-email="${user.email}"
+                                    data-display-name="${user.displayName || ''}"
+                                    data-role="${user.role}" 
+                                    data-status="${user.status}" 
+                                    class="text-emerald-600 hover:text-emerald-900 font-semibold edit-btn">
+                                Edit
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                userTableBody.insertAdjacentHTML('beforeend', row);
+            });
+            
+            // Re-attach listeners to the new edit buttons
+            document.querySelectorAll('.edit-btn').forEach(button => {
+                button.addEventListener('click', openEditModal);
+            });
+        }
+
+        // --- Modal Control ---
+
+        /**
+         * Opens the modal and pre-fills it with the selected user's data.
+         */
+        function openEditModal(event) {
+            const button = event.currentTarget;
+            const docId = button.getAttribute('data-doc-id');
+            const userEmail = button.getAttribute('data-email'); // Using email to display in modal
+            const role = button.getAttribute('data-role');
+            const status = button.getAttribute('data-status');
+
+            // Fill form fields
+            editDocIdInput.value = docId;
+            editUserIdDisplay.textContent = userEmail; // Display email for clarity
+            editRoleSelect.value = role;
+            editStatusSelect.value = status;
+            
+            editUserModal.classList.remove('hidden');
+        }
+
+        /**
+         * Closes the edit modal.
+         */
+        function closeModal() {
+            editUserModal.classList.add('hidden');
+        }
+
+
+        // --- Authentication & Initialization ---
+
+        /**
+         * Initializes Firebase services and authentication.
+         */
+        async function initializeFirebase() {
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        // User is signed in.
+                        console.log("Admin authenticated. User ID:", user.uid);
+                        authStatusMessageEl.style.display = 'none'; // Hide auth message
+                        userListContainer.style.display = 'block'; // Show content
+                        subscribeToUsers(); // Start listening for data
+                    } else {
+                        // User is signed out. Redirect to login page.
+                        console.log("User not authenticated. Redirecting to login.");
+                        window.location.href = 'login.html'; // Redirect to your admin login page
+                    }
+                });
+
+            } catch (error) {
+                console.error("Firebase Initialization Error:", error.message);
+                authStatusMessageEl.textContent = `Initialization Failed: ${error.message}`;
+                authStatusMessageEl.style.display = 'block';
+            }
+        }
+
+
+        // --- Event Listeners ---
+
+        // Listen for changes in search or filter
+        userSearchInput.addEventListener('input', filterAndRenderUsers);
+        roleFilter.addEventListener('change', filterAndRenderUsers);
+
+        // Modal close listeners
+        closeModalBtn.addEventListener('click', closeModal);
+        editUserModal.addEventListener('click', (e) => {
+            // Close modal if overlay is clicked, but not the content itself
+            if (e.target.classList.contains('modal-overlay')) {
+                closeModal();
+            }
+        });
+
+        // Modal form submission
+        editUserForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const docId = editDocIdInput.value;
+            const newRole = editRoleSelect.value;
+            const newStatus = editStatusSelect.value;
+
+            if (!docId || !newRole || !newStatus) {
+                alert("Missing user data for update.");
+                return;
+            }
+
+            saveUserBtn.disabled = true;
+            saveUserBtn.textContent = "Saving...";
+
+            await updateUserInFirestore(docId, newRole, newStatus);
+            
+            saveUserBtn.disabled = false;
+            saveUserBtn.textContent = "Save Changes";
+        });
+        
+        // Logout Event Listener (for this page)
+        logoutButton.addEventListener('click', async () => {
+            if (auth) {
+                logoutButton.disabled = true;
+                logoutButton.textContent = "Signing Out...";
+                try {
+                    await signOut(auth); 
+                    // onAuthStateChanged will handle redirection to login.html
+                } catch (error) {
+                    console.error("Logout Error:", error.message);
+                    alert("Logout failed: " + error.message);
+                } finally {
+                    logoutButton.disabled = false;
+                    logoutButton.textContent = "Logout";
+                }
+            }
+        });
+
+
+        // Initialize application
+        initializeFirebase();
+
+    </script>
+</body>
+</html>

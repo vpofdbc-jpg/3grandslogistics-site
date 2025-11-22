@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard | 3Grands Logistics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
+    
+    <style>
+        /* ---------------------------------------------------- */
+        /* BASE & THEME (Native CSS) */
+        /* ---------------------------------------------------- */
+        :root {
+            --primary-color: #059669; /* Emerald Green */
+            --primary-dark: #047857;
+            --background-color: #F4F7F9; /* Light background */
+            --text-color: #1F2937;
+            --secondary-text: #6B7280;
+            --card-background: #ffffff;
+            --border-color: #E5E7EB;
+            --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+            --radius: 0.5rem;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+        }
+
+        /* ---------------------------------------------------- */
+        /* HEADER & NAVIGATION */
+        /* ---------------------------------------------------- */
+        .header {
+            background-color: var(--card-background);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--text-color); }
+        .logo-accent { color: var(--primary-color); }
+        
+        /* Consistent Button Styling in Header */
+        .header-button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background-color 0.2s;
+        }
+        
+        .nav-button-profile {
+            background: #6B7280;
+            color: white;
+        }
+        .nav-button-profile:hover { background: #4B5563; }
+        
+        .nav-button-logout {
+            background: #FEE2E2; /* Light Red/Danger background */
+            color: #B91C1C; /* Dark Red text */
+        }
+        .nav-button-logout:hover { background: #FECACA; }
+
+        /* ---------------------------------------------------- */
+        /* 1. DASHBOARD OVERVIEW & LIST */
+        /* ---------------------------------------------------- */
+        .welcome-section { margin-bottom: 2rem; }
+        .page-title { font-size: 2.25rem; font-weight: 800; margin: 0 0 0.25rem; }
+        .page-subtitle { color: var(--secondary-text); margin: 0; font-size: 1rem; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        .stat-card {
+            background-color: var(--card-background);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--card-shadow);
+            border-left: 5px solid;
+        }
+        .stat-label { font-size: 0.875rem; font-weight: 600; color: var(--secondary-text); }
+        .stat-value { font-size: 2rem; font-weight: 800; margin-top: 0.25rem; }
+        .stat-card.active { border-left-color: #3B82F6; }
+        .stat-card.out-for-delivery { border-left-color: #F59E0B; }
+        .stat-card.completed { border-left-color: var(--primary-color); }
+
+        .section-header-list { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; }
+        #delivery-list { display: flex; flex-direction: column; gap: 0.75rem; }
+        
+        .delivery-item {
+            background-color: var(--card-background);
+            padding: 1.25rem 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--card-shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+        .delivery-item:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary-color);
+        }
+        .delivery-item.selected {
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.2);
+        }
+
+        .item-details { flex: 1; min-width: 300px; }
+        .tracking-number { font-size: 0.75rem; color: var(--secondary-text); font-weight: 500; }
+        .package-description { font-size: 1.1rem; font-weight: 700; margin: 0.25rem 0; }
+        .delivery-window { font-size: 0.875rem; font-weight: 600; color: var(--primary-color); }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .status-in-transit { background-color: #E0F2FE; color: #000000; }
+        .status-out-for-delivery { background-color: #FEF3C7; color: #B45309; }
+        .status-delayed { background-color: #FEE2E2; color: #B91C1C; }
+        .status-delivered { background-color: #D1FAE5; color: var(--primary-dark); }
+
+
+        /* ---------------------------------------------------- */
+        /* 2. DETAILED TRACKING */
+        /* ---------------------------------------------------- */
+        #detail-view {
+            margin-top: 3rem;
+            background-color: var(--card-background);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--card-shadow);
+        }
+        .detail-flex {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        .timeline-section {
+            flex: 2 1 400px;
+            padding-right: 2rem;
+            border-right: 1px solid var(--border-color);
+        }
+        .info-section {
+            flex: 1 1 300px;
+        }
+        
+        /* Timeline */
+        .progress-indicator { position: relative; padding-left: 20px; }
+        .progress-indicator::before {
+            content: ''; position: absolute; top: 0; left: 5px; width: 2px;
+            height: 100%; background-color: var(--border-color);
+        }
+        .timeline-event { position: relative; margin-bottom: 1.5rem; padding-left: 20px; }
+        .timeline-dot {
+            position: absolute; left: -3px; top: 5px; width: 12px; height: 12px;
+            border-radius: 50%; background-color: var(--primary-color);
+            border: 3px solid var(--card-background);
+        }
+        .timeline-event.active .timeline-dot { background-color: #F59E0B; }
+        .timeline-status { font-weight: 700; color: var(--text-color); }
+        .timeline-location-time { font-size: 0.85rem; color: var(--secondary-text); }
+        
+        /* Map & POD Placeholder */
+        .map-placeholder {
+            height: 200px; background-color: #E0F2FE; border: 1px solid #93C5FD;
+            border-radius: var(--radius); display: flex; flex-direction: column;
+            align-items: center; justify-content: center; color: #1E40AF;
+            font-weight: 600; margin-top: 1rem;
+        }
+        .pod-image-placeholder {
+            max-width: 100%; height: 200px; background-color: #D1FAE5;
+            border: 1px solid var(--primary-color); border-radius: var(--radius);
+            margin-top: 1rem; display: flex; align-items: center;
+            justify-content: center; color: var(--primary-dark); font-weight: 600;
+        }
+        
+        /* Post-Delivery Buttons */
+        .post-delivery-actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
+        .action-button {
+            flex: 1; padding: 0.75rem 1rem; border: none; border-radius: var(--radius);
+            font-weight: 600; cursor: pointer; transition: background-color 0.2s;
+            display: flex; align-items: center; justify-content: center;
+            gap: 8px; font-size: 0.9rem; 
+        }
+        .btn-return { background-color: #3B82F6; color: white; }
+        .btn-return:hover { background-color: #2563EB; }
+        .btn-report { background-color: #EF4444; color: white; }
+        .btn-report:hover { background-color: #DC2626; }
+        .btn-rate { background-color: #F59E0B; color: white; }
+        .btn-rate:hover { background-color: #D97706; }
+        
+        /* ---------------------------------------------------- */
+        /* 3. PROFILE SETTINGS VIEW */
+        /* ---------------------------------------------------- */
+        .settings-card {
+            background-color: var(--card-background);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--card-shadow);
+            margin-bottom: 1.5rem;
+        }
+        .setting-item, .setting-item-full {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 15px;
+        }
+        .setting-item label {
+            flex-shrink: 0;
+            width: 150px;
+            font-weight: 500;
+            color: var(--secondary-text);
+        }
+        .setting-item input, .setting-item select {
+            flex-grow: 1;
+            padding: 0.6rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            font-size: 1rem;
+        }
+        .setting-item button, .setting-button {
+            padding: 0.6rem 1rem;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: 600;
+            background-color: #E5E7EB;
+            color: var(--text-color);
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .setting-button:hover { background-color: #D1D5DB; }
+        .setting-button.btn-confirm { background-color: var(--primary-color); color: white; }
+        .setting-button.btn-confirm:hover { background-color: var(--primary-dark); }
+        .setting-item-full { flex-direction: column; align-items: flex-start; }
+        .setting-item-full label {
+            width: 100%; margin-bottom: 5px; font-weight: 600; color: var(--text-color);
+        }
+        .setting-item-full textarea, .setting-item-full select {
+            width: 100%; min-height: 80px; box-sizing: border-box;
+        }
+
+        /* NEW: Unique Address Box Styles */
+        .address-box {
+            background-color: #f7f9fb;
+            border: 1px solid #D1D5DB;
+            padding: 1rem;
+            border-radius: var(--radius);
+            font-family: 'Courier New', monospace; /* Monospace font for mailing address clarity */
+            font-size: 1.0rem;
+            line-height: 1.4;
+            font-weight: 600;
+            color: #1F2937;
+        }
+        .address-box p {
+            margin: 0;
+        }
+
+        /* General Utility */
+        .section-heading { font-size: 1.1rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px;}
+        .section-heading i { color: var(--primary-color); }
+        .preferences-box {
+            background-color: #f7f9fb; border: 1px solid var(--border-color);
+            padding: 1rem; border-radius: var(--radius); color: var(--secondary-text);
+            font-style: italic;
+        }
+        .hidden { display: none !important; }
+
+        /* ---------------------------------------------------- */
+        /* 4. CUSTOM MODAL (Replaces alert()) */
+        /* ---------------------------------------------------- */
+        .custom-modal-backdrop {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); z-index: 1000;
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; visibility: hidden; transition: opacity 0.3s;
+        }
+        .custom-modal-backdrop.visible { opacity: 1; visibility: visible; }
+        
+        .custom-modal-content {
+            background: var(--card-background); padding: 2rem; border-radius: var(--radius);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); max-width: 400px;
+            width: 90%; transform: scale(0.9); transition: transform 0.3s;
+        }
+        .custom-modal-backdrop.visible .custom-modal-content { transform: scale(1); }
+        
+        .modal-title { font-size: 1.5rem; font-weight: 700; margin-top: 0; margin-bottom: 0.75rem; color: var(--primary-dark); }
+        .modal-body { margin-bottom: 1.5rem; color: var(--secondary-text); }
+        .modal-action-button {
+            padding: 0.75rem 1.5rem; background-color: var(--primary-color); color: white;
+            border: none; border-radius: var(--radius); cursor: pointer;
+            font-weight: 600; transition: background-color 0.2s; width: 100%;
+        }
+        .modal-action-button:hover { background-color: var(--primary-dark); }
+
+
+        /* Responsive Breakpoint */
+        @media (max-width: 768px) {
+            .setting-item { flex-direction: column; align-items: flex-start; }
+            .setting-item label, .setting-item input, .setting-item select, .setting-item button {
+                width: 100%; margin-top: 5px;
+            }
+            .timeline-section { border-right: none; padding-right: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-accent">3Grands</span> Logistics
+            </div>
+            <!-- UPDATED NAVIGATION: Added Logout Button -->
+            <nav style="display: flex; align-items: center; gap: 1rem;">
+                <a href="#" onclick="showView('dashboard')" class="nav-link" style="text-decoration: none; color: var(--text-color); font-weight: 500;">Order History</a>
+                
+                <button onclick="showView('profile')" class="header-button nav-button-profile">
+                    <i class="fas fa-user-circle"></i> My Profile
+                </button>
+                
+                <!-- This is the button that now uses the fixed handleLogout() function -->
+                <button onclick="handleLogout()" class="header-button nav-button-logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+                
+                <button style="background: var(--primary-color); color: white; padding: 0.5rem 1rem; border: none; border-radius: var(--radius); cursor: pointer; font-weight: 600;" onclick="showModal('New Order', 'Simulating New Order creation...')">
+                    <i class="fas fa-plus"></i> New Order
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <div id="dashboard-view">
+            <div class="welcome-section" id="welcome-section">
+                <h1 class="page-title">Welcome, Alex!</h1>
+                <p class="page-subtitle">Your centralized tracking for all current and upcoming deliveries.</p>
+            </div>
+
+            <div class="stats-grid" id="stats-grid">
+                <div class="stat-card active">
+                    <p class="stat-label">Active Deliveries</p>
+                    <p class="stat-value" id="active-count">0</p>
+                </div>
+                <div class="stat-card out-for-delivery">
+                    <p class="stat-label">Out for Delivery (Live)</p>
+                    <p class="stat-value" id="out-for-delivery-count">0</p>
+                </div>
+                <div class="stat-card completed">
+                    <p class="stat-label">Delivered (Last 7 Days)</p>
+                    <p class="stat-value" id="completed-count">0</p>
+                </div>
+            </div>
+
+            <div id="delivery-list-section">
+                <h2 class="section-header-list">Current & Upcoming Packages</h2>
+                <div id="delivery-list">
+                    <p style="text-align: center; color: var(--secondary-text);">Loading deliveries...</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="detail-view" class="hidden">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 style="font-size: 1.5rem; margin: 0;"><span id="detail-package-description">Tracking Details</span></h2>
+                <button onclick="showView('dashboard')" style="background: #E5E7EB; color: var(--text-color); padding: 0.5rem 1rem; border: none; border-radius: var(--radius); cursor: pointer;">
+                    <i class="fas fa-arrow-left"></i> Back to List
+                </button>
+            </div>
+            <div class="detail-flex">
+                <div class="timeline-section">
+                    <h3 class="section-heading"><i class="fas fa-route"></i> Delivery Journey History</h3>
+                    <div id="timeline-container" class="progress-indicator">
+                        </div>
+                </div>
+
+                <div class="info-section">
+                    
+                    <div id="driver-map-section" class="hidden">
+                        <h3 class="section-heading"><i class="fas fa-truck-moving"></i> Real-time Driver Map</h3>
+                        <div class="map-placeholder">
+                            <i class="fas fa-location-dot" style="font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                            <span id="map-message">Driver Map Active: ETA 30 minutes. (Simulation)</span>
+                        </div>
+                        <p style="font-size: 0.8rem; color: var(--secondary-text); margin-top: 0.5rem;">Updates every 60 seconds.</p>
+                    </div>
+
+                    <h3 class="section-heading"><i class="fas fa-user-check"></i> Package Preferences</h3>
+                    <div id="preferences-display" class="preferences-box">
+                        No specific instructions given.
+                    </div>
+                    
+                    <div id="pod-section" class="hidden">
+                        <h3 class="section-heading"><i class="fas fa-camera"></i> Proof of Delivery (POD)</h3>
+                        <div id="pod-image-container" class="pod-image-placeholder">
+                            <i class="fas fa-box-open" style="font-size: 2rem;"></i> Image Placeholder
+                        </div>
+                    </div>
+                    
+                    <div id="post-delivery-options" class="hidden">
+                        <h3 class="section-heading"><i class="fas fa-star-half-stroke"></i> Post-Delivery Options</h3>
+                        <div class="post-delivery-actions">
+                            <button class="action-button btn-return" onclick="simulateReturnLabel()"><i class="fas fa-print"></i> Print Return Label</button>
+                            <button class="action-button btn-rate" onclick="showModal('Rate & Review', 'Rate and review clicked!')"><i class="fas fa-star"></i> Rate & Review</button>
+                            <button class="action-button btn-report" onclick="showModal('Report Issue', 'Report Issue clicked!')"><i class="fas fa-bug"></i> Report an Issue</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div id="profile-settings-view" class="hidden">
+            <h2 class="page-title" style="margin-bottom: 2rem;">Account Settings</h2>
+            
+            <div class="settings-card">
+                <h3 class="section-heading"><i class="fas fa-warehouse"></i> Your Personal Intake & Stow Address</h3>
+                <p style="color: var(--secondary-text); margin-bottom: 1rem; font-size: 0.95rem;">
+                    Use this **unique address exactly as shown** when placing orders with any retailer. Your unique code ensures packages are correctly matched to your account.
+                </p>
+                <div class="address-box" id="unique-address-box">
+                    <p>3Grands Logistics [Client Intake]</p>
+                    <p>Attn: Alex R. **(A-R-1234)**</p>
+                    <p>123 Global Way, Suite 400</p>
+                    <p>Philadelphia, PA 19106</p>
+                </div>
+                <button class="setting-button btn-confirm" style="margin-top: 15px;" onclick="copyAddress()"><i class="fas fa-copy"></i> Copy Full Address</button>
+            </div>
+
+            <div class="settings-card">
+                <h3 class="section-heading"><i class="fas fa-envelope"></i> Email & Contact</h3>
+                <div class="setting-item">
+                    <label>Current Email Address:</label>
+                    <input type="email" value="alex.r@example.com" disabled>
+                    <button class="setting-button" onclick="showModal('Update Email', 'Email update form opened.')"><i class="fas fa-edit"></i> Update Email</button>
+                </div>
+                <div class="setting-item">
+                    <label>Phone Number (for SMS alerts):</label>
+                    <input type="tel" value="(555) 123-4567" disabled>
+                    <button class="setting-button" onclick="showModal('Update Phone', 'Phone number update form opened.')"><i class="fas fa-edit"></i> Update Phone</button>
+                </div>
+            </div>
+
+            <div class="settings-card">
+                <h3 class="section-heading"><i class="fas fa-key"></i> Security</h3>
+                <div class="setting-item">
+                    <label>Change Password:</label>
+                    <input type="password" placeholder="Enter new password">
+                    <button class="setting-button btn-confirm" onclick="showModal('Change Password', 'Password change initiated.')"><i class="fas fa-lock"></i> Change Password</button>
+                </div>
+            </div>
+
+            <div class="settings-card">
+                <h3 class="section-heading"><i class="fas fa-map-marker-alt"></i> Default Delivery Preferences</h3>
+                <div class="setting-item-full">
+                    <label for="default-instructions">Default Instructions for 3Grands Drivers:</label>
+                    <textarea id="default-instructions">Leave package behind the large plant near the front door.</textarea>
+                </div>
+                <div class="setting-item-full">
+                    <label for="default-pod">Default Proof of Delivery (POD) Preference:</label>
+                    <select id="default-pod">
+                        <option>Photo Required (Default)</option>
+                        <option>Signature Required</option>
+                        <option>No Photo Required</option>
+                    </select>
+                </div>
+                <button class="setting-button btn-confirm" style="margin-top: 10px;" onclick="showModal('Preferences Saved', 'Default preferences saved.')"><i class="fas fa-save"></i> Save Preferences</button>
+            </div>
+
+            <button onclick="showView('dashboard')" style="margin-top: 30px;" class="action-button btn-return"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+        </div>
+
+
+        <p style="text-align: center; margin-top: 3rem; color: var(--secondary-text);">
+            <i class="fas fa-bell"></i> **Proactive Communication:** You are currently set up for **SMS/Text** notifications and **Email** alerts for critical status changes.
+        </p>
+
+    </main>
+    
+    <!-- CUSTOM MODAL HTML STRUCTURE -->
+    <div id="custom-modal-backdrop" class="custom-modal-backdrop" onclick="hideModal()">
+        <div class="custom-modal-content" onclick="event.stopPropagation()">
+            <h3 id="modal-title" class="modal-title"></h3>
+            <p id="modal-body" class="modal-body"></p>
+            <button class="modal-action-button" onclick="hideModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Mock data remains the same...
+        const mockDeliveries = [
+            // 1. Out for Delivery (Live Map Active)
+            {
+                id: 'D001', trackingNumber: '3G-109283-A', packageDescription: 'Amazon Order: Computer Monitor',
+                deliveryWindow: 'Today, 2:00 PM - 4:00 PM', currentStatus: 'Out for Delivery', deliveryDate: null,
+                preferences: 'Please leave with the building concierge.', podUrl: null,
+                history: [
+                    { status: 'Received by 3Grands', location: 'Dispatch Hub 1', time: 'Yesterday 5:00 PM' },
+                    { status: 'In Transit', location: 'Processing Facility 3', time: '08:00 AM Today' },
+                    { status: 'Out for Delivery', location: 'Driver D-40', time: '10:00 AM Today' }
+                ]
+            },
+            // 2. Delivered (POD Available - Can print label)
+            {
+                id: 'D002', trackingNumber: '3G-109910-B', packageDescription: 'Petco Order #1234: Dog Food',
+                deliveryWindow: 'Yesterday, 9:00 AM - 12:00 PM', currentStatus: 'Delivered', deliveryDate: new Date(Date.now() - 86400000).toISOString(),
+                preferences: 'Ring the doorbell but do not knock.', podUrl: 'https://placehold.co/400x300/059669/ffffff?text=Delivered+at+Doorstep',
+                history: [
+                    { status: 'Received by 3Grands', location: 'Regional Sort Center', time: '2 days ago' },
+                    { status: 'Out for Delivery', location: 'Driver D-20', time: 'Yesterday 8:00 AM' },
+                    { status: 'Delivered', location: 'Customer Home', time: 'Yesterday 11:30 AM' }
+                ]
+            },
+            // 3. In Transit (Standard Active)
+            {
+                id: 'D003', trackingNumber: '3G-108705-C', packageDescription: 'Target Pickup: Household Goods',
+                deliveryWindow: 'Tomorrow, 1:00 PM - 3:00 PM', currentStatus: 'In Transit', deliveryDate: null,
+                preferences: 'Leave with doorman.', podUrl: null,
+                history: [
+                    { status: 'Manifest Created', location: 'Vendor Warehouse', time: '2 days ago' },
+                    { status: 'In Transit', location: '3Grands Sort Center', time: 'This Morning 6:00 AM' }
+                ]
+            },
+            // 4. Delayed
+            {
+                id: 'D004', trackingNumber: '3G-108000-D', packageDescription: 'Apple Store: iPhone 17 Pro',
+                deliveryWindow: 'Delayed (New ETA: 3 Days)', currentStatus: 'Delayed', deliveryDate: null,
+                preferences: 'Require Signature.', podUrl: null,
+                history: [
+                    { status: 'In Transit', location: 'International Hub', time: '3 days ago' },
+                    { status: 'Delayed', location: 'Regional Hub', time: '1 day ago (Weather)' }
+                ]
+            }
+        ];
+
+        // --- CUSTOM MODAL FUNCTIONS (Replaces alert()) ---
+
+        let modalCallback = null;
+        
+        /**
+         * Shows a custom modal with provided title and message.
+         * @param {string} title - The title of the modal.
+         * @param {string} message - The body text of the modal.
+         * @param {function} [callback] - Optional function to execute when the modal is closed.
+         */
+        function showModal(title, message, callback = null) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-body').textContent = message;
+            
+            modalCallback = callback;
+            
+            const backdrop = document.getElementById('custom-modal-backdrop');
+            backdrop.classList.add('visible');
+            
+            // Update button to run callback on close
+            const closeButton = backdrop.querySelector('.modal-action-button');
+            closeButton.textContent = callback ? 'Confirm & Continue' : 'Close';
+        }
+
+        /**
+         * Hides the custom modal and executes any associated callback.
+         */
+        function hideModal() {
+            document.getElementById('custom-modal-backdrop').classList.remove('visible');
+            if (modalCallback) {
+                // Execute the callback function if it exists
+                modalCallback();
+                modalCallback = null; // Clear callback after execution
+            }
+        }
+
+        // --- CORE FUNCTIONS (FIXED LOGOUT) ---
+
+        /**
+         * Utility to map status to CSS class and icon.
+         */
+        function getStatusInfo(status) {
+            const lowerStatus = status.toLowerCase();
+            if (lowerStatus.includes('delivered')) return { className: 'status-delivered', displayText: 'Delivered', icon: 'fas fa-check-circle' };
+            if (lowerStatus.includes('out for delivery')) return { className: 'status-out-for-delivery', displayText: 'Out For Delivery', icon: 'fas fa-truck-fast' };
+            if (lowerStatus.includes('delayed')) return { className: 'status-delayed', displayText: 'Delayed', icon: 'fas fa-triangle-exclamation' };
+            if (lowerStatus.includes('attempted')) return { className: 'status-attempted', displayText: 'Attempted', icon: 'fas fa-exclamation-circle' };
+            return { className: 'status-in-transit', displayText: 'In Transit', icon: 'fas fa-box-open' };
+        }
+        
+        /**
+         * Handles the LOGOUT. 
+         * FIX: Performs a simulated session sign-out by displaying a confirmation modal and reloading the page.
+         */
+        function handleLogout() {
+            console.log("Logout button clicked. Attempting simulated sign-out.");
+            
+            // 1. Display confirmation/success modal
+            showModal(
+                'Logout Confirmed',
+                'You have been successfully signed out of 3Grands Logistics. The page will now reload to simulate redirection to the login screen.',
+                () => {
+                    // 2. This callback runs when the user closes the modal
+                    // In a real app: destroy local token, call Firebase/Auth0 signout()
+                    // Here: Simulate session end by forcing a page reload
+                    window.location.reload(); 
+                }
+            );
+        }
+
+        /**
+         * Placeholder for the return label generation.
+         */
+        function simulateReturnLabel() {
+            showModal('Return Label Generated', 'A PDF return label for 3Grands Logistics has been downloaded for printing.');
+        }
+
+        /**
+         * Copies the full unique mailing address to the clipboard.
+         */
+        function copyAddress() {
+            const addressText = document.getElementById('unique-address-box').innerText;
+            
+            // Remove extra spaces/newlines from the innerText for clean copy
+            const cleanAddress = addressText.split('\n').map(line => line.trim()).filter(line => line.length > 0).join('\n');
+            
+            // Use execCommand('copy') as navigator.clipboard might fail in some environments
+            const tempInput = document.createElement('textarea');
+            tempInput.value = cleanAddress;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            
+            showModal('Address Copied', 'Unique mailing address copied to clipboard!');
+            
+            // Optional: Visually confirm the copy on the button
+            const button = document.querySelector('.settings-card button[onclick="copyAddress()"]');
+            button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            setTimeout(() => {
+                button.innerHTML = '<i class="fas fa-copy"></i> Copy Full Address';
+            }, 2000);
+        }
+
+        /**
+         * Toggles between the three main views: dashboard, tracking detail, and profile.
+         */
+        function showView(viewName, delivery = null) {
+            // Hide all main view containers
+            document.getElementById('dashboard-view').classList.add('hidden');
+            document.getElementById('detail-view').classList.add('hidden');
+            document.getElementById('profile-settings-view').classList.add('hidden');
+
+            // Show the requested view
+            if (viewName === 'dashboard') {
+                document.getElementById('dashboard-view').classList.remove('hidden');
+                // Deselect any item in the list when navigating back to dashboard
+                document.querySelectorAll('.delivery-item').forEach(item => item.classList.remove('selected'));
+            } else if (viewName === 'profile') {
+                document.getElementById('profile-settings-view').classList.remove('hidden');
+            } else if (viewName === 'detail' && delivery) {
+                document.getElementById('detail-view').classList.remove('hidden');
+                renderDeliveryDetails(delivery);
+            }
+        }
+
+        /**
+         * 1. Generates the scannable list and updates stats.
+         */
+        function renderDashboardOverview(deliveries) {
+            const listContainer = document.getElementById('delivery-list');
+            listContainer.innerHTML = '';
+            
+            let active = 0, outForDelivery = 0, completedLast7Days = 0;
+            const sevenDaysAgo = new Date(Date.now() - 7 * 86400000);
+
+            deliveries.forEach(delivery => {
+                const statusInfo = getStatusInfo(delivery.currentStatus);
+
+                // Update Stats
+                if (delivery.currentStatus !== 'Delivered') {
+                    active++;
+                }
+                if (delivery.currentStatus === 'Out for Delivery') {
+                    outForDelivery++;
+                }
+                if (delivery.currentStatus === 'Delivered' && delivery.deliveryDate && new Date(delivery.deliveryDate) >= sevenDaysAgo) {
+                    completedLast7Days++;
+                }
+
+                // Create List Item
+                const deliveryItem = document.createElement('div');
+                deliveryItem.className = 'delivery-item';
+                deliveryItem.dataset.id = delivery.id;
+                deliveryItem.addEventListener('click', () => {
+                    // Highlight selected item and show detail view
+                    document.querySelectorAll('.delivery-item').forEach(item => item.classList.remove('selected'));
+                    deliveryItem.classList.add('selected');
+                    showView('detail', delivery);
+                });
+
+                deliveryItem.innerHTML = `
+                    <div class="item-details">
+                        <p class="tracking-number"><i class="fas fa-barcode"></i> ${delivery.trackingNumber}</p>
+                        <p class="package-description">${delivery.packageDescription}</p>
+                        <p class="delivery-window"><i class="far fa-clock"></i> ${delivery.deliveryWindow}</p>
+                    </div>
+                    <div class="status-container">
+                        <div class="status-badge ${statusInfo.className}">
+                            <i class="${statusInfo.icon}" style="margin-right: 5px;"></i>${statusInfo.displayText}
+                        </div>
+                    </div>
+                `;
+                listContainer.appendChild(deliveryItem);
+            });
+
+            // Update Stats Display
+            document.getElementById('active-count').textContent = active;
+            document.getElementById('out-for-delivery-count').textContent = outForDelivery;
+            document.getElementById('completed-count').textContent = completedLast7Days;
+
+            // Select the first item by default and show details
+            if (deliveries.length > 0) {
+                // Find the first delivery that is not 'Delivered' to show by default, otherwise show the first one.
+                const defaultDelivery = deliveries.find(d => d.currentStatus !== 'Delivered') || deliveries[0];
+                const itemToSelect = document.querySelector(`.delivery-item[data-id="${defaultDelivery.id}"]`);
+                if (itemToSelect) {
+                    itemToSelect.classList.add('selected');
+                    renderDeliveryDetails(defaultDelivery);
+                }
+            }
+        }
+
+        /**
+         * 2. Renders the detailed tracking view content.
+         */
+        function renderDeliveryDetails(delivery) {
+            document.getElementById('detail-package-description').textContent = delivery.packageDescription;
+            const status = delivery.currentStatus.toLowerCase();
+
+            // --- Dynamic Progress Bar/Timeline ---
+            const timelineContainer = document.getElementById('timeline-container');
+            timelineContainer.innerHTML = delivery.history.map(item => `
+                <div class="timeline-event ${item.status.toLowerCase().includes(status) ? 'active' : ''}">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-status">${item.status}</div>
+                    <div class="timeline-location-time">${item.location} - ${item.time}</div>
+                </div>
+            `).join('');
+
+            // --- Real-time Driver Map ---
+            const mapSection = document.getElementById('driver-map-section');
+            const mapMessage = document.getElementById('map-message');
+            if (status.includes('out for delivery')) {
+                mapSection.classList.remove('hidden');
+                // Simulate a dynamic ETA for the map message
+                mapMessage.textContent = `Driver Map Active: ETA ${Math.floor(Math.random() * 45) + 15} minutes. (Simulation)`;
+            } else {
+                mapSection.classList.add('hidden');
+            }
+
+            // --- Package Preferences ---
+            document.getElementById('preferences-display').textContent = delivery.preferences || 'No specific instructions given.';
+
+            // --- Proof of Delivery (POD) & Post-Delivery Options ---
+            const podSection = document.getElementById('pod-section');
+            const podImageContainer = document.getElementById('pod-image-container');
+            const postDeliveryOptions = document.getElementById('post-delivery-options');
+            
+            if (status.includes('delivered')) {
+                // Only show POD if a URL is available (simulating image availability)
+                if (delivery.podUrl) {
+                    podSection.classList.remove('hidden');
+                    // Render image using the placeholder URL
+                    podImageContainer.innerHTML = `<img src="${delivery.podUrl}" alt="Proof of Delivery Photo" style="width: 100%; height: 100%; object-fit: cover; border-radius: ${getComputedStyle(document.documentElement).getPropertyValue('--radius')};">`;
+                } else {
+                    podSection.classList.add('hidden');
+                }
+                // Show post-delivery options for any delivered package
+                postDeliveryOptions.classList.remove('hidden');
+            } else {
+                podSection.classList.add('hidden');
+                postDeliveryOptions.classList.add('hidden');
+            }
+        } // End of renderDeliveryDetails
+
+        // Initialize the dashboard view on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderDashboardOverview(mockDeliveries);
+            // Ensure the dashboard is visible initially
+            showView('dashboard'); 
+        });
+    </script>
+</body>
+</html>
+

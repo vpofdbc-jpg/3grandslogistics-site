@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3 Grands Logistics Admin Dashboard</title>
+    <!-- Tailwind CSS (No separate link needed, using custom CSS for non-Tailwind elements) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Font Import */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+        /* Utility/Base Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fbf8; /* Very light green/white background */
+            min-height: 100vh;
+            padding: 1rem;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Wavy Background Elements */
+        .wavy-bg {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            z-index: -10;
+        }
+        .wavy-circle-1 {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 400px;
+            background-color: #D1FAE5;
+            opacity: 0.3;
+            border-radius: 9999px;
+            transform: translate(50%, -50%);
+            filter: blur(48px);
+        }
+        .wavy-circle-2 {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 600px;
+            height: 600px;
+            background-color: #ECFDF5;
+            opacity: 0.5;
+            border-radius: 9999px;
+            transform: translate(-50%, 50%);
+            filter: blur(48px);
+        }
+
+        /* Main Container */
+        .container {
+            width: 100%;
+            max-width: 72rem; /* max-w-6xl */
+            padding-top: 2rem;
+            z-index: 10;
+            /* No display:none here, handled by JS */
+        }
+
+        /* Header and Actions */
+        .header {
+            background-color: #ffffff;
+            padding: 1.5rem 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #047857;
+            margin: 0;
+        }
+        
+        .welcome-message {
+            margin: 1rem 0 2rem;
+            color: #374151;
+            font-size: 1.125rem;
+            font-weight: 500;
+        }
+
+        /* Nav/Action Buttons */
+        .nav-actions {
+            margin-top: 1rem;
+        }
+        @media (min-width: 768px) {
+            .nav-actions {
+                margin-top: 0;
+            }
+        }
+
+        .btn {
+            padding: 0.75rem 1.25rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+        }
+        .btn-primary {
+            background-color: #10B981; /* emerald-500 */
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #059669; /* emerald-600 */
+            transform: translateY(-1px);
+        }
+        
+        /* Feature Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid transparent;
+        }
+        .card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+            border-color: #10B981;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            color: #047857; /* emerald-700 */
+            margin-bottom: 1rem;
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1F2937;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: #6B7280;
+            margin: 0;
+        }
+        
+        /* Status message for loading/error */
+        #status-message {
+            text-align: center;
+            padding: 2rem;
+            color: #4B5563;
+            font-style: italic;
+            font-size: 1.2rem;
+        }
+
+        /* Utility classes (using emojis as icons for simplicity) */
+        .icon-users::before { content: '👥'; }
+        .icon-content::before { content: '📝'; }
+        .icon-orders::before { content: '📦'; }
+        .icon-settings::before { content: '⚙️'; }
+        .icon-security::before { content: '🔒'; } /* New icon for security */
+
+    </style>
+</head>
+<body>
+
+    <!-- Wavy background elements for aesthetics -->
+    <div class="wavy-bg">
+        <div class="wavy-circle-1"></div>
+        <div class="wavy-circle-2"></div>
+    </div>
+
+    <!-- Login Container - Initially hidden, then shown by JS if not logged in -->
+    <div id="login-container" class="bg-white p-8 rounded-xl shadow-lg w-full max-w-sm mt-8" style="display:none;">
+        <h2 class="text-2xl font-bold mb-6 text-center text-emerald-700">Admin Login</h2>
+        <form id="login-form">
+            <div class="mb-4">
+                <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                <input type="email" id="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="admin@example.com" required>
+            </div>
+            <div class="mb-6">
+                <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+                <input type="password" id="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" placeholder="********" required>
+            </div>
+            <button type="submit" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full transition duration-200">Sign In</button>
+            <p id="login-error-message" class="text-red-500 text-xs italic mt-4 text-center" style="display:none;"></p>
+        </form>
+    </div>
+
+    <div id="status-message">Authenticating...</div>
+
+    <!-- Main Dashboard Container - Visibility handled by JS -->
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>3 Grands Logistics Admin Dashboard</h1>
+            <div class="nav-actions">
+                <button id="logout-button" class="btn btn-primary">
+                    Logout
+                </button>
+            </div>
+        </div>
+        
+        <!-- Dashboard Content (hidden until authentication is complete) -->
+        <div id="dashboard-content">
+            <p class="welcome-message">
+                Welcome back, <strong id="user-display-name">Admin</strong>. Use the cards below to manage the application's users, content, and settings.
+            </p>
+
+            <div class="card-grid">
+                
+                <!-- Order & Package Management Card -->
+                <a href="/admin/order_management.html" class="card">
+                    <div class="card-icon icon-orders"></div>
+                    <h2>Order & Package Management</h2>
+                    <p>View, track, update status, and manage all ongoing and completed delivery orders.</p>
+                </a>
+
+                <!-- User Management Card -->
+                <a href="/admin/user_management.html" class="card">
+                    <div class="card-icon icon-users"></div>
+                    <h2>User Management</h2>
+                    <p>View, filter, and manage all registered users (Admins, Staff, Customers, Drivers, etc.).</p>
+                </a>
+
+                <!-- Content Management Card -->
+                <a href="/admin/content_management.html" class="card">
+                    <div class="card-icon icon-content"></div>
+                    <h2>Content Management</h2>
+                    <p>Update dynamic text, messages, and site content without modifying any code.</p>
+                </a>
+
+                <!-- Delivery Configuration Card -->
+                <a href="/admin/delivery_configuration.html" class="card">
+                    <div class="card-icon icon-settings"></div>
+                    <h2>Delivery Settings</h2>
+                    <p>Configure base fees, surge multipliers, and other dynamic delivery parameters.</p>
+                </a>
+
+                <!-- NEW: Firebase Security Rules Reminder Card -->
+                <a href="https://console.firebase.google.com/project/grandslogistics-8af41/firestore/rules" target="_blank" class="card" style="border-color: #EF4444;">
+                    <div class="card-icon icon-security" style="color: #EF4444;"></div>
+                    <h2 style="color: #EF4444;">🚨 Urgent: Security Rules!</h2>
+                    <p style="color: #EF4444;">Your Firebase Security Rules need to be configured to protect your data. **This is critical!**</p>
+                    <p class="mt-2 text-sm text-gray-500">Click to go to Firebase Console Firestore Rules.</p>
+                </a>
+
+                <!-- Functional Reporting/Analytics Card -->
+                <a href="analytics.html" class="card">
+                    <div class="card-icon">📊</div>
+                    <h2>Reporting & Analytics</h2>
+                    <p>View key performance indicators and operational data.</p>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+    
+    <!-- Firebase Imports and Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { 
+            getAuth, 
+            signOut, 
+            onAuthStateChanged, 
+            signInWithEmailAndPassword // Added for email/password login
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { 
+            getFirestore, 
+            setLogLevel 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // === YOUR ACTUAL FIREBASE CONFIG HERE ===
+        const firebaseConfig = {
+          apiKey: "AIzaSyAtT_XsWP_uumlBO2yrVzAIKZK25PzClWw",
+          authDomain: "grandslogistics-8af41.firebaseapp.com",
+          projectId: "grandslogistics-8af41",
+          storageBucket: "grandslogistics-8af41.appspot.com",
+          messagingSenderId: "267189664335",
+          appId: "1:267189664335:web:bf0536ef521ace642e883a"
+        };
+        // =======================================
+
+        // Set log level for debugging
+        setLogLevel('Debug');
+
+        // DOM Elements
+        const statusMessageEl = document.getElementById('status-message');
+        const dashboardContent = document.getElementById('dashboard-content');
+        const userDisplayNameEl = document.getElementById('user-display-name');
+        const logoutButton = document.getElementById('logout-button');
+        
+        // New DOM Elements for Login
+        const loginContainer = document.getElementById('login-container');
+        const loginForm = document.getElementById('login-form');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const loginErrorMessage = document.getElementById('login-error-message');
+        
+        let auth, db;
+
+        /**
+         * Initializes Firebase services and authentication.
+         */
+        async function initializeFirebase() {
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                // Auth State Listener (Crucial for redirection and starting data fetch)
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        // User is signed in. Display the dashboard.
+                        console.log("User authenticated. Displaying dashboard for user:", user.uid);
+                        userDisplayNameEl.textContent = user.email || user.displayName || "Admin"; 
+                        document.querySelector('.container').style.display = 'flex'; // Show the main container with flex
+                        dashboardContent.style.display = 'block'; // Show dashboard content within
+                        loginContainer.style.display = 'none';    // Hide login form
+                        statusMessageEl.style.display = 'none';   // Hide any status messages
+                    } else {
+                        // User is signed out. Show the login form.
+                        console.log("User not authenticated. Showing login form.");
+                        document.querySelector('.container').style.display = 'none'; // Hide the main container
+                        dashboardContent.style.display = 'none'; // Ensure dashboard content is hidden
+                        loginContainer.style.display = 'block';  // Show login form
+                        statusMessageEl.textContent = "Please sign in to view the dashboard.";
+                        statusMessageEl.style.display = 'block'; // Show status message
+                    }
+                });
+
+                // Initial check: if no user is signed in, ensure login form is visible
+                // This will be handled by the onAuthStateChanged listener when it first runs.
+                // We'll hide the main container and show login if no user is found.
+                if (!auth.currentUser) {
+                    document.querySelector('.container').style.display = 'none'; // Hide container initially
+                    loginContainer.style.display = 'block'; // Show login form
+                    statusMessageEl.style.display = 'none'; // Hide initial "Authenticating..." if we're waiting for login
+                }
+
+            } catch (error) {
+                console.error("Firebase Initialization Error:", error.message);
+                statusMessageEl.textContent = `Initialization Failed: ${error.message}`;
+                statusMessageEl.style.display = 'block'; // Ensure error message is visible
+                loginContainer.style.display = 'none';   // Hide login form if initialization failed
+                document.querySelector('.container').style.display = 'none'; // Hide dashboard container if init failed
+            }
+        }
+
+        // Login Form Event Listener
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Prevent the browser from refreshing the page
+
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            loginErrorMessage.style.display = 'none'; // Hide any previous error messages
+
+            try {
+                // Attempt to sign in with email and password
+                await signInWithEmailAndPassword(auth, email, password);
+                // The onAuthStateChanged listener above will detect successful login and show the dashboard
+            } catch (error) {
+                console.error("Login Error:", error.code, error.message);
+                let displayMessage = "Login failed. Please check your email and password.";
+                if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
+                    displayMessage = "No user found with this email or incorrect password.";
+                } else if (error.code === 'auth/wrong-password') {
+                    displayMessage = "Incorrect password.";
+                } else if (error.code === 'auth/invalid-email') {
+                    displayMessage = "Invalid email format.";
+                } else if (error.code === 'auth/user-disabled') {
+                    displayMessage = "This user account has been disabled.";
+                }
+                loginErrorMessage.textContent = displayMessage;
+                loginErrorMessage.style.display = 'block'; // Show the error message
+            }
+        });
+
+        // Logout Event Listener
+        logoutButton.addEventListener('click', async () => {
+            if (auth) {
+                logoutButton.disabled = true;
+                logoutButton.textContent = "Signing Out...";
+                try {
+                    await signOut(auth); 
+                    // The onAuthStateChanged listener will handle redirecting to the login form
+                } catch (error) {
+                    console.error("Logout Error:", error.message);
+                    alert("Logout failed: " + error.message); // Simple alert for logout errors
+                } finally {
+                    logoutButton.disabled = false;
+                    logoutButton.textContent = "Logout";
+                }
+            }
+        });
+
+        // Initialize application on load
+        initializeFirebase();
+
+    </script>
+</body>
+</html>
+
+
+

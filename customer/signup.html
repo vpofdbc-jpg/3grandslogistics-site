@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3 Grands Logistics - New Customer Sign Up</title>
+    <style>
+        /* Define a clean, modern color palette, matching the Portal Home page */
+        :root {
+            --color-primary: #3B82F6; /* Blue */
+            --color-secondary: #0F766E; /* Teal */
+            --color-background: #f8fafc; /* Light Gray */
+            --color-card: #ffffff;
+            --color-text-dark: #1F2937;
+            --color-text-light: #6B7280;
+        }
+
+        /* Global Styles & Layout */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-background);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Container Card Styling */
+        .container {
+            background-color: var(--color-card);
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            max-width: 500px;
+            width: 95%;
+            padding: 2rem;
+            margin-top: 40px;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--color-text-dark);
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 2rem;
+        }
+        p {
+            color: var(--color-text-light);
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+            color: var(--color-text-dark);
+            font-size: 0.875rem;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #D1D5DB;
+            border-radius: 0.5rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+        input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Button Styling */
+        button {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            background-color: var(--color-primary);
+            color: var(--color-card);
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+            text-decoration: none; /* Remove underline from button text */
+        }
+        button:hover {
+            background-color: #2563EB; /* Darker blue */
+            transform: translateY(-1px);
+        }
+
+        /* Link Area */
+        .link {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9em;
+            color: var(--color-text-light);
+        }
+        .link a {
+            color: var(--color-primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: auto;
+            padding-top: 2rem;
+            color: #9CA3AF;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>3 Grands Logistics</h1>
+        <h2>New Customer Sign Up</h2>
+
+        <p>
+            Please fill out the form below to create your new customer account.
+        </p>
+
+        <form id="signupForm">
+            <div class="form-group">
+                <label for="companyName">Company Name (Optional)</label>
+                <input type="text" id="companyName" name="companyName">
+            </div>
+            
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" name="fullName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required>
+            </div>
+            
+            <button type="submit">Create Account</button>
+        </form>
+
+        <div class="link">
+            <!-- Updated to point to the new customer login page in the same directory -->
+            Already have an account? <a href="login.html">Login here</a>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        © 2025 3 Grands Logistics. All rights reserved.
+    </footer>
+
+</body>
+</html>
+
+
+
+
+
+
+

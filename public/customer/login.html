@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Login - 3 Grands Logistics</title>
+    <!-- Tailwind CSS (No separate link needed, using custom CSS for non-Tailwind elements) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Font Import */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+        /* Utility/Base Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fbf8; /* Very light green/white background */
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        /* Wavy Background Elements (Optional, for aesthetics) */
+        .wavy-bg {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            z-index: -10;
+        }
+        .wavy-circle-1 {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 400px;
+            background-color: #D1FAE5;
+            opacity: 0.3;
+            border-radius: 9999px;
+            transform: translate(50%, -50%);
+            filter: blur(48px);
+        }
+        .wavy-circle-2 {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 600px;
+            height: 600px;
+            background-color: #ECFDF5;
+            opacity: 0.5;
+            border-radius: 9999px;
+            transform: translate(-50%, 50%);
+            filter: blur(48px);
+        }
+
+        /* Brand Title */
+        .brand-title {
+            font-size: 2.5rem; /* Larger for main brand */
+            font-weight: 800;
+            color: #047857; /* Emerald-700 */
+            margin-bottom: 2rem; /* Spacing below brand name */
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        /* Form Card */
+        .auth-card {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .auth-card h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #047857; /* Emerald-700 */
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #4B5563; /* Gray-700 */
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #D1D5DB; /* Gray-300 */
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            box-sizing: border-box; /* Ensures padding doesn't expand width */
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #10B981; /* Emerald-500 */
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            width: 100%;
+            cursor: pointer;
+            border: none;
+            margin-top: 1.5rem;
+        }
+        .btn-primary:hover {
+            background-color: #059669; /* Emerald-600 */
+            transform: translateY(-1px);
+        }
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .text-link {
+            color: #047857; /* Emerald-700 */
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+            margin-top: 1rem;
+            display: block;
+        }
+        .text-link:hover {
+            color: #059669; /* Emerald-600 */
+        }
+        .message {
+            margin-top: 1rem;
+            font-size: 0.875rem;
+        }
+        .error-message {
+            color: #EF4444; /* Red-500 */
+        }
+        .success-message {
+            color: #047857; /* Emerald-700 */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Wavy background elements for aesthetics -->
+    <div class="wavy-bg">
+        <div class="wavy-circle-1"></div>
+        <div class="wavy-circle-2"></div>
+    </div>
+
+    <!-- Added Brand Title Here -->
+    <h1 class="brand-title">3 Grands Logistics</h1>
+
+    <div class="auth-card">
+        <h2 id="form-title">Customer Login</h2>
+
+        <!-- Login Form -->
+        <form id="login-form">
+            <div class="form-group">
+                <label for="login-email">Email</label>
+                <input type="email" id="login-email" placeholder="customer@example.com" required>
+            </div>
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" placeholder="********" required>
+            </div>
+            <button type="submit" id="login-button" class="btn-primary">Login</button>
+            <p id="login-status-message" class="message error-message" style="display:none;"></p>
+        </form>
+
+        <!-- Signup Form (Initially hidden) -->
+        <form id="signup-form" style="display:none;">
+            <div class="form-group">
+                <label for="signup-email">Email</label>
+                <input type="email" id="signup-email" placeholder="newcustomer@example.com" required>
+            </div>
+            <div class="form-group">
+                <label for="signup-password">Password</label>
+                <input type="password" id="signup-password" placeholder="Min 6 characters" required>
+            </div>
+            <button type="submit" id="signup-button" class="btn-primary">Sign Up</button>
+            <p id="signup-status-message" class="message error-message" style="display:none;"></p>
+        </form>
+
+        <p class="mt-4">
+            <a href="#" id="toggle-auth-mode" class="text-link">New Customer? Sign up here!</a>
+        </p>
+        <p class="mt-4">
+            <a href="/track_shipment.html" class="text-link">Track Shipment (No Login Required)</a>
+        </p>
+    </div>
+
+    <!-- Firebase Imports and Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { 
+            getAuth, 
+            signInWithEmailAndPassword, 
+            createUserWithEmailAndPassword, 
+            onAuthStateChanged 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import {
+            getFirestore,
+            doc,
+            setDoc,
+            serverTimestamp, // For adding createdAt/updatedAt to user profiles
+            setLogLevel
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Set log level for debugging
+        setLogLevel('Debug');
+
+        // === YOUR ACTUAL FIREBASE CONFIG HERE ===
+        const firebaseConfig = {
+          apiKey: "AIzaSyAtT_XsWP_uumlBO2yrVzAIKZK25PzClWw",
+          authDomain: "grandslogistics-8af41.firebaseapp.com",
+          projectId: "grandslogistics-8af41",
+          storageBucket: "grandslogistics-8af41.appspot.com",
+          messagingSenderId: "267189664335",
+          appId: "1:267189664335:web:bf0536ef521ace642e883a"
+        };
+        // =======================================
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // DOM Elements
+        const formTitle = document.getElementById('form-title');
+        const loginForm = document.getElementById('login-form');
+        const signupForm = document.getElementById('signup-form');
+        const toggleAuthModeLink = document.getElementById('toggle-auth-mode');
+
+        const loginEmailInput = document.getElementById('login-email');
+        const loginPasswordInput = document.getElementById('login-password');
+        const loginButton = document.getElementById('login-button');
+        const loginStatusMessage = document.getElementById('login-status-message');
+
+        const signupEmailInput = document.getElementById('signup-email');
+        const signupPasswordInput = document.getElementById('signup-password');
+        const signupButton = document.getElementById('signup-button');
+        const signupStatusMessage = document.getElementById('signup-status-message');
+
+        let isLoginMode = true; // State to track current form mode
+
+        // --- Helper Functions ---
+
+        /**
+         * Clears all status messages.
+         */
+        function clearStatusMessages() {
+            loginStatusMessage.style.display = 'none';
+            signupStatusMessage.style.display = 'none';
+        }
+
+        /**
+         * Displays a message for the current form.
+         * @param {HTMLElement} element The message element.
+         * @param {string} message The message text.
+         * @param {boolean} isError True if it's an error, false for success.
+         */
+        function showStatusMessage(element, message, isError) {
+            element.textContent = message;
+            element.className = 'message ' + (isError ? 'error-message' : 'success-message');
+            element.style.display = 'block';
+        }
+
+        /**
+         * Creates a new user profile document in Firestore upon successful signup.
+         * @param {string} uid User ID from Firebase Auth.
+         * @param {string} email User's email.
+         */
+        async function createUserProfile(uid, email) {
+            try {
+                await setDoc(doc(db, 'users', uid), { // Using 'users' collection for both admin and customer profiles
+                    email: email,
+                    role: 'customer', // Default role for new signups
+                    status: 'active',
+                    createdAt: serverTimestamp(),
+                    lastLoginAt: serverTimestamp()
+                });
+                console.log("User profile created in Firestore for UID:", uid);
+            } catch (error) {
+                console.error("Error creating user profile in Firestore:", error);
+                // Optionally handle this error, though auth is already successful
+            }
+        }
+
+        // --- Event Handlers ---
+
+        /**
+         * Toggles between login and signup forms.
+         */
+        toggleAuthModeLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            clearStatusMessages();
+            isLoginMode = !isLoginMode;
+
+            if (isLoginMode) {
+                formTitle.textContent = 'Customer Login';
+                loginForm.style.display = 'block';
+                signupForm.style.display = 'none';
+                toggleAuthModeLink.textContent = 'New Customer? Sign up here!';
+            } else {
+                formTitle.textContent = 'New Customer Signup';
+                loginForm.style.display = 'none';
+                signupForm.style.display = 'block';
+                toggleAuthModeLink.textContent = 'Already have an account? Login here!';
+            }
+        });
+
+        /**
+         * Handles customer login.
+         */
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearStatusMessages();
+            loginButton.disabled = true;
+            loginButton.textContent = 'Logging in...';
+
+            const email = loginEmailInput.value;
+            const password = loginPasswordInput.value;
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                console.log("User logged in:", userCredential.user.uid);
+                // Redirect to dashboard on successful login
+                // Assuming dashboard.html is in the /customer/ directory,
+                // and this login.html is also in /customer/, a relative path is fine.
+                window.location.href = 'dashboard.html'; 
+            } catch (error) {
+                console.error("Login Error:", error.code, error.message);
+                let errorMessage = "Login failed. Please try again.";
+                if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
+                    errorMessage = "Invalid email or password.";
+                } else if (error.code === 'auth/wrong-password') {
+                    errorMessage = "Incorrect password.";
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage = "Invalid email format.";
+                } else if (error.code === 'auth/user-disabled') {
+                    errorMessage = "This account has been disabled.";
+                }
+                showStatusMessage(loginStatusMessage, errorMessage, true);
+            } finally {
+                loginButton.disabled = false;
+                loginButton.textContent = 'Login';
+            }
+        });
+
+        /**
+         * Handles new customer signup.
+         */
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearStatusMessages();
+            signupButton.disabled = true;
+            signupButton.textContent = 'Signing up...';
+
+            const email = signupEmailInput.value;
+            const password = signupPasswordInput.value;
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                console.log("User signed up:", userCredential.user.uid);
+
+                // Create a user profile in Firestore
+                await createUserProfile(userCredential.user.uid, email);
+
+                showStatusMessage(signupStatusMessage, 'Account created successfully! Redirecting...', false);
+                // Redirect to dashboard on successful signup
+                // Assuming dashboard.html is in the /customer/ directory,
+                // and this login.html is also in /customer/, a relative path is fine.
+                window.location.href = 'dashboard.html'; 
+            } catch (error) {
+                console.error("Signup Error:", error.code, error.message);
+                let errorMessage = "Signup failed. Please try again.";
+                if (error.code === 'auth/email-already-in-use') {
+                    errorMessage = "This email is already in use.";
+                } else if (error.code === 'auth/weak-password') {
+                    errorMessage = "Password should be at least 6 characters.";
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage = "Invalid email format.";
+                }
+                showStatusMessage(signupStatusMessage, errorMessage, true);
+            } finally {
+                signupButton.disabled = false;
+                signupButton.textContent = 'Sign Up';
+            }
+        });
+
+        // --- Initial Authentication Check ---
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // If a user is already logged in, redirect them immediately to the dashboard
+                console.log("User already logged in, redirecting to dashboard.");
+                // Assuming dashboard.html is in the /customer/ directory,
+                // and this login.html is also in /customer/, a relative path is fine.
+                window.location.href = 'dashboard.html'; 
+            }
+        });
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+

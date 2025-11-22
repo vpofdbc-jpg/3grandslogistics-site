@@ -1,0 +1,35 @@
+# === URL rewrites ===
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Short tracking URL: /t/{order_id}-{32 hex token} -> /track.php
+  RewriteRule ^t/([0-9]+)-([A-Fa-f0-9]{32})$ track.php?order_id=$1&token=$2 [L,QSA]
+RewriteRule ^customer/process-login\.php$ /customer/process_login.php [L,NC]
+</IfModule>
+
+# === Security headers + CSP (Stripe + Google Maps) ===
+<IfModule mod_headers.c>
+  Header always set X-Frame-Options "DENY"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
+
+  # One CSP only
+  Header always unset Content-Security-Policy
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://maps.googleapis.com https://maps.gstatic.com https://cdn.tailwindcss.com https://www.gstatic.com; connect-src 'self' https://api.stripe.com https://q.stripe.com https://maps.googleapis.com https://maps.gstatic.com https://identitytoolkit.googleapis.com https://www.googleapis.com https://www.gstatic.com; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; frame-src 'self' https://js.stripe.com https://hooks.stripe.com https://www.google.com; frame-ancestors 'none';"
+</IfModule>
+
+# === PHP handler (cPanel) ===
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php81 .php .php8 .phtml
+</IfModule>
+
+# php -- BEGIN cPanel-generated handler, do not edit
+# Set the “ea-php81” package as the default “PHP” programming language.
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php81 .php .php8 .phtml
+</IfModule>
+# php -- END cPanel-generated handler, do not edit
+
+

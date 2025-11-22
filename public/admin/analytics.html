@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporting & Analytics - 3 Grands Logistics</title>
+    <!-- Chart.js CDN for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    
+    <!-- Native CSS Styles -->
+    <style>
+        /* Font Import */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+        /* Utility/Base Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fbf8; /* Very light green/white background */
+            min-height: 100vh;
+            padding: 1rem;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Wavy Background Elements */
+        .wavy-bg {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            z-index: -10;
+        }
+        .wavy-circle-1 {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 400px;
+            background-color: #D1FAE5;
+            opacity: 0.3;
+            border-radius: 9999px;
+            transform: translate(50%, -50%);
+            filter: blur(48px);
+        }
+        .wavy-circle-2 {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 600px;
+            height: 600px;
+            background-color: #ECFDF5;
+            opacity: 0.5;
+            border-radius: 9999px;
+            transform: translate(-50%, 50%);
+            filter: blur(48px);
+        }
+
+        /* Main Container */
+        .container {
+            width: 100%;
+            max-width: 72rem; /* max-w-6xl */
+            padding-top: 2rem;
+            z-index: 10;
+        }
+
+        /* Header and Actions */
+        .header {
+            background-color: #ffffff;
+            padding: 1.5rem 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #047857;
+            margin: 0;
+        }
+
+        /* Nav/Action Buttons */
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            align-items: center;
+        }
+        @media (min-width: 768px) {
+            .header {
+                flex-wrap: nowrap;
+            }
+            .nav-actions {
+                margin-top: 0;
+            }
+        }
+
+        .btn {
+            padding: 0.75rem 1.25rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+        }
+        .btn-primary {
+            background-color: #10B981;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #059669;
+            transform: translateY(-1px);
+        }
+        
+        /* KPI Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .kpi-card {
+            background-color: #ffffff;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #10B981; /* Primary color accent */
+        }
+        .kpi-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #6B7280;
+            margin-bottom: 0.5rem;
+        }
+        .kpi-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1F2937;
+        }
+
+        /* Chart Area */
+        .chart-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        @media (min-width: 1024px) {
+            .chart-grid {
+                grid-template-columns: 2fr 1fr; /* Two main charts */
+            }
+        }
+        
+        .chart-card {
+            background-color: #ffffff;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .chart-card h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1F2937;
+            margin-top: 0;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #F3F4F6;
+            padding-bottom: 0.5rem;
+        }
+
+        /* Canvas container for responsiveness */
+        .chart-container {
+            position: relative;
+            height: 350px; /* Fixed height for consistency */
+            width: 100%;
+        }
+
+        /* Status message for loading/error */
+        #status-message {
+            text-align: center;
+            padding: 2rem;
+            color: #4B5563;
+            font-style: italic;
+            font-size: 1.2rem;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Wavy background elements for aesthetics -->
+    <div class="wavy-bg">
+        <div class="wavy-circle-1"></div>
+        <div class="wavy-circle-2"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Reporting & Analytics</h1>
+            <div class="nav-actions">
+                <a href="dashboard.html" class="btn" style="background-color: #E5E7EB; color: #4B5563;">
+                    < Back to Dashboard
+                </a>
+                <button id="logout-button" class="btn btn-primary">
+                    Logout
+                </button>
+            </div>
+        </div>
+        
+        <div id="status-message">Authenticating and loading data...</div>
+
+        <!-- Analytics Content (hidden until authentication is complete and data loaded) -->
+        <div id="analytics-content" style="display:none;">
+            
+            <!-- Key Performance Indicators (KPIs) -->
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Total Users</div>
+                    <div class="kpi-value" id="kpi-users">---</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Active This Month</div>
+                    <div class="kpi-value" id="kpi-active">---</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">New Content Items (Mock)</div>
+                    <div class="kpi-value" id="kpi-content">---</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Avg Engagement (Mock Hours)</div>
+                    <div class="kpi-value" id="kpi-engagement">---</div>
+                </div>
+            </div>
+
+            <!-- Chart Display Area -->
+            <div class="chart-grid">
+                
+                <!-- Chart 1: User Signups Over Time (Line Chart) -->
+                <div class="chart-card">
+                    <h2>User Signups (Last 6 Months)</h2>
+                    <div class="chart-container">
+                        <canvas id="signups-chart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Chart 2: User Role Distribution (Doughnut Chart) -->
+                <div class="chart-card">
+                    <h2>User Role Distribution</h2>
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="roles-chart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Chart 3: Feature Usage (Bar Chart) - Full Width on Mobile/Tablet -->
+                <div class="chart-card" style="grid-column: 1 / -1;"> 
+                    <h2>Top 5 Feature Usage (Mock)</h2>
+                    <div class="chart-container">
+                        <canvas id="usage-chart"></canvas>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+    <!-- Firebase Imports and Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { 
+            getAuth, 
+            signOut, 
+            onAuthStateChanged, 
+            signInWithCustomToken // For potential custom token sign-in from dashboard
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { 
+            getFirestore, 
+            collection,
+            getDocs, // Use getDocs for one-time fetch for analytics
+            query,
+            where,
+            setLogLevel 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Set log level for debugging
+        setLogLevel('Debug');
+
+        // === YOUR ACTUAL FIREBASE CONFIG HERE ===
+        const firebaseConfig = {
+          apiKey: "AIzaSyAtT_XsWP_uumlBO2yrVzAIKZK25PzClWw",
+          authDomain: "grandslogistics-8af41.firebaseapp.com",
+          projectId: "grandslogistics-8af41",
+          storageBucket: "grandslogistics-8af41.appspot.com",
+          messagingSenderId: "267189664335",
+          appId: "1:267189664335:web:bf0536ef521ace642e883a"
+        };
+        // =======================================
+
+        // DOM Elements
+        const statusMessageEl = document.getElementById('status-message');
+        const analyticsContent = document.getElementById('analytics-content');
+        const logoutButton = document.getElementById('logout-button');
+        
+        // KPI Elements
+        const kpiUsers = document.getElementById('kpi-users');
+        const kpiActive = document.getElementById('kpi-active');
+        const kpiContent = document.getElementById('kpi-content');
+        const kpiEngagement = document.getElementById('kpi-engagement');
+
+        let auth, db;
+        let signupsChart, rolesChart, usageChart; // Chart instances
+
+        // --- Data & Charting Setup ---
+        
+        /**
+         * Fetches and processes real analytics data from Firestore.
+         */
+        async function getAnalyticsData() {
+            if (!db) {
+                console.error("Firestore DB not initialized.");
+                return null;
+            }
+
+            try {
+                // --- Fetch All Users ---
+                // NOTE: For very large user bases, consider paginating or aggregating on the backend (Cloud Functions)
+                const usersRef = collection(db, 'users');
+                const usersSnapshot = await getDocs(usersRef);
+                const allUsers = usersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                // --- Calculate KPIs ---
+                const totalUsers = allUsers.length;
+
+                const now = new Date();
+                const thirtyDaysAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 30);
+                
+                const activeThisMonth = allUsers.filter(user => {
+                    // Assuming 'lastLoginAt' is a Firestore Timestamp or an ISO string
+                    if (user.lastLoginAt) {
+                        let lastLoginDate;
+                        if (user.lastLoginAt.toDate) { // Is it a Firestore Timestamp object?
+                            lastLoginDate = user.lastLoginAt.toDate();
+                        } else if (typeof user.lastLoginAt === 'string') { // Is it an ISO string?
+                            lastLoginDate = new Date(user.lastLoginAt);
+                        } else {
+                            return false; // Invalid format
+                        }
+                        return lastLoginDate >= thirtyDaysAgo;
+                    }
+                    return false;
+                }).length;
+
+                // --- Generate Chart Data ---
+
+                // User Role Distribution
+                const rolesCount = { admin: 0, driver: 0, customer: 0, other: 0 };
+                allUsers.forEach(user => {
+                    const role = user.role ? user.role.toLowerCase() : 'other';
+                    if (rolesCount.hasOwnProperty(role)) {
+                        rolesCount[role]++;
+                    } else {
+                        rolesCount.other++;
+                    }
+                });
+
+                // User Signups (Last 6 Months)
+                const monthlySignups = Array(6).fill(0); // For last 6 months
+                const monthsLabels = [];
+                for (let i = 5; i >= 0; i--) {
+                    const d = new Date();
+                    d.setMonth(d.getMonth() - i);
+                    monthsLabels.push(d.toLocaleString('en-us', { month: 'short' }));
+                }
+
+                allUsers.forEach(user => {
+                    let signupDate;
+                    if (user.createdAt) { // Assuming 'createdAt' is a Firestore Timestamp or an ISO string
+                        if (user.createdAt.toDate) { // Is it a Firestore Timestamp object?
+                            signupDate = user.createdAt.toDate();
+                        } else if (typeof user.createdAt === 'string') { // Is it an ISO string?
+                            signupDate = new Date(user.createdAt);
+                        } else {
+                            return; // Skip if no valid creation date
+                        }
+                    } else {
+                        return; // Skip if no creation date
+                    }
+
+                    const diffMonths = (now.getFullYear() - signupDate.getFullYear()) * 12 + (now.getMonth() - signupDate.getMonth());
+                    if (diffMonths >= 0 && diffMonths < 6) {
+                        monthlySignups[5 - diffMonths]++; // Map to current month backwards
+                    }
+                });
+
+                // --- Mock data for Content Items and Feature Usage (requires dedicated collections) ---
+                // These would require separate Firestore collections (e.g., 'content' for items, 'activity_logs' for usage)
+                // For 'New Content Items', you'd fetch from a 'content' collection and count items created recently.
+                // For 'Avg Engagement' and 'Top 5 Feature Usage', you'd need to log user interactions and aggregate them.
+                const newContentItems = Math.floor(Math.random() * 20) + 5; // Placeholder
+                const avgEngagement = (Math.random() * 3 + 0.5).toFixed(1); // Placeholder
+                const featureUsage = { // Placeholder
+                    'Order Tracking': Math.floor(Math.random() * 500) + 100,
+                    'Delivery Schedule': Math.floor(Math.random() * 400) + 50,
+                    'Profile Management': Math.floor(Math.random() * 300) + 20,
+                    'Notifications': Math.floor(Math.random() * 200) + 10,
+                    'Support Chat': Math.floor(Math.random() * 100) + 5
+                };
+            
+                return { 
+                    kpi: {
+                        totalUsers,
+                        activeThisMonth,
+                        newContentItems,
+                        avgEngagement
+                    },
+                    charts: {
+                        months: monthsLabels,
+                        signups: monthlySignups,
+                        roles: rolesCount,
+                        features: featureUsage
+                    }
+                };
+
+            } catch (error) {
+                console.error("Error fetching analytics data:", error);
+                statusMessageEl.textContent = `Error loading data: ${error.message}`;
+                return null;
+            }
+        }
+
+
+        /**
+         * Renders all the charts and KPIs using Chart.js.
+         * @param {Object} data The processed analytics data.
+         */
+        function renderCharts(data) {
+            if (!data) return; // Exit if no data
+
+            // 1. Update KPIs
+            kpiUsers.textContent = data.kpi.totalUsers.toLocaleString();
+            kpiActive.textContent = data.kpi.activeThisMonth.toLocaleString();
+            kpiContent.textContent = data.kpi.newContentItems.toLocaleString();
+            kpiEngagement.textContent = data.kpi.avgEngagement;
+
+            // Chart Colors (A palette of greens and blues)
+            const colors = {
+                primary: '#10B981', // emerald-500
+                secondary: '#3B82F6', // blue-500
+                tertiary: '#FBBF24', // amber-400
+                lightGray: '#D1D5DB',
+                bgColor: 'rgba(16, 185, 129, 0.1)',
+                admin: '#EF4444',
+                staff: '#FBBF24',
+                customer: '#10B981',
+                other: '#6B7280' // For roles not explicitly defined
+            };
+
+            // --- Chart 1: User Signups Over Time (Line Chart) ---
+            const signupsCtx = document.getElementById('signups-chart');
+            if (signupsChart) signupsChart.destroy(); // Destroy previous instance if it exists
+            signupsChart = new Chart(signupsCtx, {
+                type: 'line',
+                data: {
+                    labels: data.charts.months,
+                    datasets: [{
+                        label: 'New Signups',
+                        data: data.charts.signups,
+                        borderColor: colors.primary,
+                        backgroundColor: colors.bgColor,
+                        tension: 0.3,
+                        fill: true,
+                        pointBackgroundColor: colors.primary
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Count' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: false }
+                    }
+                }
+            });
+
+            // --- Chart 2: User Role Distribution (Doughnut Chart) ---
+            const rolesCtx = document.getElementById('roles-chart');
+            if (rolesChart) rolesChart.destroy(); // Destroy previous instance if it exists
+            rolesChart = new Chart(rolesCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(data.charts.roles).map(role => role.charAt(0).toUpperCase() + role.slice(1)), // Capitalize labels for display
+                    datasets: [{
+                        data: Object.values(data.charts.roles),
+                        backgroundColor: [
+                            colors.admin,
+                            colors.driver,
+                            colors.customer,
+                            colors.other
+                        ],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20
+                            }
+                        },
+                        title: { display: false }
+                    }
+                }
+            });
+            
+            // --- Chart 3: Feature Usage (Bar Chart) ---
+            const usageCtx = document.getElementById('usage-chart');
+            if (usageChart) usageChart.destroy(); // Destroy previous instance if it exists
+            usageChart = new Chart(usageCtx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(data.charts.features),
+                    datasets: [{
+                        label: 'Interactions',
+                        data: Object.values(data.charts.features),
+                        backgroundColor: colors.primary,
+                        borderColor: colors.primary,
+                        borderWidth: 1,
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Total Interactions' }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: false }
+                    }
+                }
+            });
+        }
+
+
+        // --- Authentication & Initialization ---
+
+        /**
+         * Initializes Firebase services and authentication.
+         */
+        async function initializeFirebase() {
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                // Auth State Listener
+                onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        // User is signed in. Fetch and display data.
+                        console.log("User authenticated. Loading analytics.");
+                        statusMessageEl.textContent = "Loading analytics data..."; // Update status
+
+                        // Fetch real data
+                        const analyticsData = await getAnalyticsData();
+
+                        if (analyticsData) {
+                            renderCharts(analyticsData); 
+                            analyticsContent.style.display = 'block'; // Show content
+                            statusMessageEl.style.display = 'none'; // Hide status message
+                        } else {
+                            statusMessageEl.textContent = "Could not load analytics data. Please check console for errors.";
+                        }
+                    } else {
+                        // User is signed out. Redirect to login.
+                        console.log("User not authenticated. Redirecting to login.");
+                        // Redirect to your admin login page, assuming it's 'login.html' in the same 'admin' folder
+                        window.location.href = 'login.html'; 
+                    }
+                });
+            } catch (error) {
+                console.error("Firebase Initialization Error:", error.message);
+                statusMessageEl.textContent = `Initialization Failed: ${error.message}`;
+            }
+        }
+
+
+        // --- Event Listeners ---
+
+        // Logout Event
+        logoutButton.addEventListener('click', async () => {
+            if (auth) {
+                logoutButton.disabled = true;
+                logoutButton.textContent = "Signing Out...";
+                try {
+                    await signOut(auth); // onAuthStateChanged handles the redirect
+                } catch (error) {
+                    console.error("Logout Error:", error.message);
+                    alert("Logout failed: " + error.message);
+                } finally {
+                    logoutButton.disabled = false;
+                    logoutButton.textContent = "Logout";
+                }
+            }
+        });
+
+        // Initialize application
+        initializeFirebase();
+
+    </script>
+</body>
+</html>

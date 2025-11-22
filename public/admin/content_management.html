@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3 Grands Logistics - Content Management</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Font Import */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+        /* Base Styles & Wavy Background */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fbf8; /* Very light green/white background */
+            min-height: 100vh;
+            padding: 1rem;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .wavy-bg {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            z-index: -10;
+        }
+        .wavy-circle-1 {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 400px;
+            background-color: #D1FAE5;
+            opacity: 0.3;
+            border-radius: 9999px;
+            transform: translate(50%, -50%);
+            filter: blur(48px);
+        }
+        .wavy-circle-2 {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 600px;
+            height: 600px;
+            background-color: #ECFDF5;
+            opacity: 0.5;
+            border-radius: 9999px;
+            transform: translate(-50%, 50%);
+            filter: blur(48px);
+        }
+
+        /* Main Container */
+        .container {
+            width: 100%;
+            max-width: 96rem; /* Wider container for the table */
+            padding-top: 2rem;
+            z-index: 10;
+        }
+
+        /* Responsive Table for content items */
+        .responsive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .content-card {
+            background-color: #ffffff;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease-in-out;
+            border: 1px solid #E5E7EB;
+            position: relative;
+        }
+        .content-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+        .content-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1F2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .content-card p.description {
+            font-size: 0.875rem;
+            color: #6B7280;
+            margin-bottom: 0.75rem;
+            font-style: italic;
+        }
+
+        .content-card p.value {
+            font-size: 1rem;
+            color: #374151;
+            background-color: #F9FAFB;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            border: 1px solid #F3F4F6;
+            word-break: break-word; /* Ensures long content breaks */
+            white-space: pre-wrap; /* Preserves new lines */
+        }
+
+        .content-card .actions {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .content-card .actions button {
+            background: none;
+            border: none;
+            color: #6B7280;
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s;
+        }
+        .content-card .actions button:hover {
+            background-color: #F3F4F6;
+            color: #1F2937;
+        }
+
+
+        /* Modal Styles (using Tailwind classes directly in JS/HTML for convenience) */
+    </style>
+</head>
+<body>
+
+    <!-- Wavy background elements for aesthetics -->
+    <div class="wavy-bg">
+        <div class="wavy-circle-1"></div>
+        <div class="wavy-circle-2"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-6 rounded-xl shadow-lg mb-6">
+            <h1 class="text-3xl font-extrabold text-[#047857]">Content Management</h1>
+            <div class="flex flex-col md:flex-row gap-3 mt-4 md:mt-0">
+                <a href="login.html" class="flex items-center justify-center text-sm font-semibold text-gray-700 hover:text-[#047857] transition">
+                    <i data-lucide="layout-dashboard" class="w-4 h-4 mr-2"></i> Back to Dashboard
+                </a>
+                <button id="add-content-button" class="bg-[#10B981] hover:bg-[#059669] text-white font-semibold py-2 px-4 rounded-lg shadow-md transition transform hover:scale-[1.02] flex items-center">
+                    <i data-lucide="plus" class="w-5 h-5 mr-2"></i> Add New Content
+                </button>
+            </div>
+        </div>
+
+        <!-- Content List -->
+        <div class="bg-white p-4 rounded-xl shadow-lg">
+            <div id="loading-message" class="text-center py-10 text-xl text-gray-500 font-medium">Loading content...</div>
+            <div id="error-message" class="text-center py-10 text-xl text-red-500 font-medium hidden">An error occurred while loading data.</div>
+            
+            <div id="content-grid" class="responsive-grid">
+                <!-- Content cards will be injected here by JavaScript -->
+            </div>
+            <div id="no-content-message" class="text-center py-10 text-gray-500 hidden">No dynamic content items found. Click "Add New Content" to get started.</div>
+        </div>
+    </div>
+
+    <!-- Content Modal (Hidden by default) -->
+    <div id="content-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-50 transition-opacity duration-300">
+        <div class="flex items-center justify-center min-h-full p-4">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg transform transition-all duration-300 scale-95 opacity-0" id="modal-content">
+                <form id="content-form" class="p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 id="modal-title" class="text-2xl font-bold text-gray-800">Add New Content</h2>
+                        <button type="button" id="close-modal-button" class="text-gray-400 hover:text-gray-600 transition">
+                            <i data-lucide="x" class="w-6 h-6"></i>
+                        </button>
+                    </div>
+
+                    <input type="hidden" id="content-doc-id" name="docId">
+
+                    <div class="space-y-4">
+                        <div class="flex flex-col">
+                            <label for="content-id" class="text-sm font-medium text-gray-700 mb-1">Content ID (Unique Key)</label>
+                            <input type="text" id="content-id" name="id" required class="p-3 border border-gray-300 rounded-lg focus:ring-[#10B981] focus:border-[#10B981] transition" placeholder="e.g., homepage_banner_title">
+                            <p class="mt-1 text-xs text-gray-500">This key is used by your app to fetch this content. (e.g., `hero_title`). Cannot be changed after creation.</p>
+                        </div>
+                        <div class="flex flex-col">
+                            <label for="content-value" class="text-sm font-medium text-gray-700 mb-1">Content Value</label>
+                            <textarea id="content-value" name="value" rows="4" required class="p-3 border border-gray-300 rounded-lg focus:ring-[#10B981] focus:border-[#10B981] transition" placeholder="Enter the text or data here..."></textarea>
+                            <p class="mt-1 text-xs text-gray-500">The actual text, HTML, or JSON content for this item.</p>
+                        </div>
+                        <div class="flex flex-col">
+                            <label for="content-description" class="text-sm font-medium text-gray-700 mb-1">Description (Admin Only)</label>
+                            <input type="text" id="content-description" name="description" class="p-3 border border-gray-300 rounded-lg focus:ring-[#10B981] focus:border-[#10B981] transition" placeholder="e.g., Main title on the homepage">
+                            <p class="mt-1 text-xs text-gray-500">Brief note for admins about where this content is used.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end gap-3 mt-6">
+                        <button type="button" id="delete-content-button" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition hidden">Delete</button>
+                        <button type="submit" class="bg-[#10B981] hover:bg-[#059669] text-white font-semibold py-2 px-4 rounded-lg shadow-md transition">
+                            <span id="form-submit-text">Save Content</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-50 transition-opacity duration-300">
+        <div class="flex items-center justify-center min-h-full p-4">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm transform transition-all duration-300 scale-95 opacity-0" id="confirmation-content">
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-red-600 mb-3 flex items-center">
+                        <i data-lucide="alert-triangle" class="w-6 h-6 mr-2 text-red-500"></i>
+                        Confirm Deletion
+                    </h3>
+                    <p id="confirmation-message" class="text-gray-700 mb-6">Are you sure you want to proceed with this action?</p>
+                    <div class="flex justify-end gap-3">
+                        <button type="button" id="cancel-confirm-button" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg transition">Cancel</button>
+                        <button type="button" id="execute-confirm-button" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Firebase Imports and Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import {
+            getAuth,
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import {
+            getFirestore,
+            setLogLevel,
+            collection,
+            query,
+            onSnapshot,
+            doc,
+            setDoc,
+            deleteDoc
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- Core Setup ---
+        setLogLevel('Debug'); // Enable Firestore logging
+
+        // DOM Elements
+        const contentGrid = document.getElementById('content-grid');
+        const loadingMessage = document.getElementById('loading-message');
+        const errorMessage = document.getElementById('error-message');
+        const noContentMessage = document.getElementById('no-content-message');
+        
+        const addContentButton = document.getElementById('add-content-button');
+        const contentModal = document.getElementById('content-modal');
+        const modalContentEl = document.getElementById('modal-content'); // Renamed to avoid conflict
+        const closeModalButton = document.getElementById('close-modal-button');
+        const contentForm = document.getElementById('content-form');
+        const modalTitle = document.getElementById('modal-title');
+        const formSubmitText = document.getElementById('form-submit-text');
+        const deleteContentButton = document.getElementById('delete-content-button');
+
+        // Form Fields
+        const contentDocIdInput = document.getElementById('content-doc-id');
+        const contentIdInput = document.getElementById('content-id');
+        const contentValueInput = document.getElementById('content-value');
+        const contentDescriptionInput = document.getElementById('content-description');
+
+        // Confirmation Modal Elements
+        const confirmationModal = document.getElementById('confirmation-modal');
+        const confirmationContent = document.getElementById('confirmation-content');
+        const confirmationMessage = document.getElementById('confirmation-message');
+        const cancelConfirmButton = document.getElementById('cancel-confirm-button');
+        const executeConfirmButton = document.getElementById('execute-confirm-button');
+
+        let auth, db;
+        let userId = '';
+        let allContentItems = []; // Stores all content items fetched from Firestore
+
+        // Global variables provided by the canvas environment
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'grandslogistics-8af41'; // Using your project ID as a fallback
+        const collectionPath = `artifacts/${appId}/public/data/content`;
+
+        // --- Utility Functions ---
+
+        /**
+         * Shows the generic confirmation modal.
+         * @param {string} message The message to display.
+         * @param {function} onConfirm The callback function to execute on confirmation.
+         */
+        function showConfirmationModal(message, onConfirm) {
+            confirmationMessage.textContent = message;
+
+            cancelConfirmButton.onclick = closeConfirmationModal;
+            executeConfirmButton.onclick = () => {
+                onConfirm();
+                closeConfirmationModal();
+            };
+            
+            confirmationModal.classList.remove('hidden', 'opacity-0');
+            confirmationContent.classList.remove('scale-95', 'opacity-0');
+            confirmationContent.classList.add('scale-100', 'opacity-100');
+        }
+
+        /** Closes the confirmation modal. */
+        function closeConfirmationModal() {
+            confirmationContent.classList.remove('scale-100', 'opacity-100');
+            confirmationContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                confirmationModal.classList.add('hidden');
+            }, 300);
+        }
+
+        // --- Modal & Form Logic ---
+
+        /** Closes the content modal. */
+        function closeContentModal() {
+            modalContentEl.classList.remove('scale-100', 'opacity-100');
+            modalContentEl.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                contentModal.classList.add('hidden');
+            }, 300);
+        }
+
+        /**
+         * Opens the modal for adding or editing a content item.
+         * @param {Object|null} itemData Existing item data for editing, or null for new item.
+         * @param {string|null} docId The Firestore document ID.
+         */
+        function openContentModal(itemData = null, docId = null) {
+            contentForm.reset();
+            deleteContentButton.onclick = null;
+            
+            // Set up modal for Add/Edit
+            if (itemData) {
+                modalTitle.textContent = `Edit Content: ${itemData.id}`;
+                formSubmitText.textContent = "Update Content";
+                deleteContentButton.style.display = 'inline-block';
+                contentIdInput.disabled = true; // Prevent changing the ID of an existing item
+
+                // Populate form fields
+                contentDocIdInput.value = docId;
+                contentIdInput.value = itemData.id || '';
+                contentValueInput.value = itemData.value || '';
+                contentDescriptionInput.value = itemData.description || '';
+
+                // Set up delete button
+                deleteContentButton.onclick = (e) => {
+                    e.preventDefault();
+                    const message = `Are you sure you want to permanently delete content item "${itemData.id}"? This action cannot be undone.`;
+                    showConfirmationModal(message, () => {
+                        deleteContent(docId);
+                    });
+                };
+
+            } else {
+                modalTitle.textContent = "Add New Content";
+                formSubmitText.textContent = "Save Content";
+                deleteContentButton.style.display = 'none';
+                contentDocIdInput.value = '';
+                contentIdInput.disabled = false; // Allow ID for new item
+            }
+
+            // Display Modal
+            contentModal.classList.remove('hidden', 'opacity-0');
+            modalContentEl.classList.remove('scale-95', 'opacity-0');
+            modalContentEl.classList.add('scale-100', 'opacity-100');
+        }
+
+        // Attach event listeners for modal controls
+        addContentButton.addEventListener('click', () => openContentModal());
+        closeModalButton.addEventListener('click', closeContentModal);
+        contentModal.addEventListener('click', (e) => {
+            if (e.target === contentModal) closeContentModal();
+        });
+        confirmationModal.addEventListener('click', (e) => {
+            if (e.target === confirmationModal) closeConfirmationModal();
+        });
+
+        // Form Submission Handler
+        contentForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const docId = contentDocIdInput.value;
+            const contentId = contentIdInput.value.trim();
+            const contentValue = contentValueInput.value.trim();
+            const contentDescription = contentDescriptionInput.value.trim();
+
+            if (!contentId || !contentValue) {
+                alert("Content ID and Value cannot be empty.");
+                return;
+            }
+
+            const contentData = {
+                id: contentId,
+                value: contentValue,
+                description: contentDescription,
+                updatedAt: new Date().toISOString(),
+                updatedBy: userId
+            };
+
+            try {
+                if (docId) {
+                    // UPDATE existing content
+                    await setDoc(doc(db, collectionPath, docId), contentData, { merge: true });
+                    console.log(`Content item "${contentId}" updated.`);
+                } else {
+                    // ADD new content
+                    // Check if content ID already exists before adding
+                    const existingDoc = allContentItems.find(item => item.id === contentId);
+                    if (existingDoc) {
+                        alert(`A content item with ID "${contentId}" already exists. Please choose a unique ID.`);
+                        return;
+                    }
+                    contentData.createdAt = new Date().toISOString();
+                    // Use contentId as the document ID for easy lookup from frontend
+                    await setDoc(doc(db, collectionPath, contentId), contentData);
+                    console.log(`New content item "${contentId}" added.`);
+                }
+                closeContentModal();
+            } catch (error) {
+                console.error("Error saving content item:", error);
+                errorMessage.textContent = `Error saving content: ${error.message}`;
+                errorMessage.classList.remove('hidden');
+            }
+        });
+
+        // --- Firestore CRUD Operations ---
+
+        /**
+         * Deletes a content item from Firestore.
+         * @param {string} docId The Firestore document ID to delete.
+         */
+        async function deleteContent(docId) {
+            try {
+                await deleteDoc(doc(db, collectionPath, docId));
+                console.log("Content item deleted successfully.");
+                // The onSnapshot listener will re-render the grid
+            } catch (error) {
+                console.error("Error deleting content item:", error);
+                errorMessage.textContent = `Error deleting content: ${error.message}`;
+                errorMessage.classList.remove('hidden');
+            }
+        }
+
+        // --- Real-time Data Display ---
+
+        /**
+         * Renders the current list of content items to the grid.
+         * @param {Array<Object>} items The list of content objects from Firestore.
+         */
+        function renderContentItems(items) {
+            contentGrid.innerHTML = '';
+            noContentMessage.classList.add('hidden');
+
+            if (items.length === 0) {
+                noContentMessage.classList.remove('hidden');
+                loadingMessage.classList.add('hidden'); // Hide loading if empty
+                return;
+            }
+
+            items.sort((a, b) => a.id.localeCompare(b.id)); // Sort alphabetically by ID
+
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'content-card';
+                card.innerHTML = `
+                    <div class="actions">
+                        <button data-doc-id="${item.id}" data-action="edit" title="Edit Content">
+                            <i data-lucide="pencil" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <h3>${item.id}</h3>
+                    <p class="description">${item.description || 'No description provided'}</p>
+                    <p class="value">${item.value}</p>
+                `;
+                contentGrid.appendChild(card);
+            });
+            
+            loadingMessage.classList.add('hidden');
+            lucide.createIcons(); // Re-render Lucide icons after adding new elements
+
+            // Attach edit button listeners after rendering
+            document.querySelectorAll('[data-action="edit"]').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const docId = e.currentTarget.getAttribute('data-doc-id');
+                    const itemToEdit = allContentItems.find(ci => ci.id === docId);
+                    if (itemToEdit) {
+                        openContentModal(itemToEdit, docId);
+                    }
+                });
+            });
+        }
+
+        /**
+         * Sets up the real-time listener for the 'content' collection.
+         */
+        function setupContentListener() {
+            if (!db) return;
+
+            const q = query(collection(db, collectionPath));
+
+            onSnapshot(q, (snapshot) => {
+                allContentItems = [];
+                snapshot.forEach((doc) => {
+                    allContentItems.push({ id: doc.id, ...doc.data() });
+                });
+
+                loadingMessage.classList.add('hidden');
+                errorMessage.classList.add('hidden');
+                
+                renderContentItems(allContentItems);
+                console.log(`Fetched ${allContentItems.length} content items.`);
+
+            }, (error) => {
+                console.error("Error listening to content:", error);
+                loadingMessage.classList.add('hidden');
+                errorMessage.textContent = `Real-time connection failed: ${error.message}`;
+                errorMessage.classList.remove('hidden');
+            });
+        }
+
+        // --- Initialization ---
+
+        /**
+         * Initializes Firebase services and authentication.
+         */
+        async function initializeFirebase() {
+            // Your actual Firebase project config
+            const YOUR_FIREBASE_CONFIG = {
+                apiKey: "AIzaSyAtT_XsWP_uumlBO2yrVzAIKZK25PzClWw",
+                authDomain: "grandslogistics-8af41.firebaseapp.com",
+                projectId: "grandslogistics-8af41",
+                storageBucket: "grandslogistics-8af41.appspot.com",
+                messagingSenderId: "267189664335",
+                appId: "1:267189664335:web:bf0536ef521ace642e883a"
+            };
+           
+            try {
+                const app = initializeApp(YOUR_FIREBASE_CONFIG);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                // Auth State Listener (Crucial for redirection if not authenticated)
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        userId = user.uid;
+                        console.log("User authenticated in content_management.html:", userId);
+                        loadingMessage.classList.remove('hidden'); // Show loading while fetching
+                        setupContentListener();
+                    } else {
+                        console.log("User not authenticated in content_management.html. Redirecting to login.html for login.");
+                        loadingMessage.textContent = "Authentication required. Redirecting to login...";
+                        window.location.href = 'login.html'; // Redirect to the admin dashboard for login
+                    }
+                });
+
+            } catch (error) {
+                console.error("Firebase Initialization Error:", error.message);
+                loadingMessage.classList.add('hidden');
+                errorMessage.textContent = `Initialization Failed: ${error.message}`;
+                errorMessage.classList.remove('hidden');
+            }
+        }
+
+        // Run initialization
+        initializeFirebase();
+        // Create initial icons on load
+        window.onload = () => lucide.createIcons();
+    </script>
+</body>
+</html>
+

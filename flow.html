@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>3 Grands Logistics — App Flow</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;margin:0;padding:24px;background:#f6f7fb}
+    h1{margin:0 0 14px}
+    .card{background:#fff;border:1px solid #e9edf3;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.04);padding:16px}
+  </style>
+<!-- put this inside <head> (and remove any other mermaid <script> you had) -->
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, securityLevel: 'loose', theme: 'default' });
+</script>
+</head>
+<body>
+  <h1>3 Grands Logistics — End-to-End Flow</h1>
+  <div class="card">
+    <div class="mermaid">
+flowchart LR
+  %% ROLES
+  subgraph C[Customer]
+    C0[Visit site / Login]
+    C1[View Rate Card]
+    C2[Schedule Pickup<br/>(quote screen)]
+    C3{Task Type?}
+    C3a[Standard<br/>(vehicle, miles, weight)]
+    C3b[Custom<br/>(special instructions)]
+    C4[Quote Summary<br/>(subtotal + fees + tax)]
+    C5a{Save or Checkout?}
+    C6[Save Quote]
+    C7[Stripe Checkout]
+    C8[Payment Success]
+    C9[View Orders<br/>& POD link (after delivery)]
+  end
+
+  subgraph A[Admin / Dispatcher]
+    A0[Dashboard KPIs]
+    A1[See New Order/Quote]
+    A2[Assign Driver]
+    A3[Chat w/ Driver or Customer]
+  end
+
+  subgraph D[Driver]
+    D0[Login • Toggle Online]
+    D1[Sees Assigned Order(s)]
+    D2[Mark Accepted]
+    D3[Picked Up]
+    D4[In Transit]
+    D5[Start POD<br/>(photo, signature, receiver, notes)]
+    D6[Submit POD → Mark Delivered]
+  end
+
+  subgraph DB[(Database + Files)]
+    DB1[(orders)]
+    DB2[(order_meta:<br/>price, subtotal, fees,<br/>pod_photo, pod_signature,<br/>pod_receiver, pod_time, ...)]
+    FS[/uploads/pod/*<br/>(photo & signature files)/]
+    DB3[(order_driver:<br/>order_id, driver_id, status, updated_at)]
+  end
+
+  %% CUSTOMER FLOW
+  C0 --> C1 --> C2 --> C3
+  C3 -->|Standard| C3a --> C4 --> C5a
+  C3 -->|Custom| C3b --> A1
+  C5a -->|Save| C6 --> A1
+  C5a -->|Checkout| C7 --> C8 --> A1
+
+  %% ADMIN FLOW
+  A1 --> A2 --> D1
+  A0 --- DB1
+  C2 -.-> A3
+  D1 -.-> A3
+
+  %% DRIVER FLOW
+  D0 --> D1 --> D2 --> D3 --> D4 --> D5 --> D6
+
+  %% DATA WRITES
+  C2 -->|create quote/order| DB1
+  C4 -->|breakdown → meta| DB2
+  C6 -->|quote saved| DB1
+  C7 -->|payment intent| DB2
+  C8 -->|paid → status| DB1
+  A2 -->|assign driver| DB3
+  D2 -->|status=Accepted| DB3
+  D3 -->|status=PickedUp| DB3
+  D4 -->|status=In Transit| DB3
+  D5 -->|upload files| FS
+  D6 -->|status=Delivered| DB3
+  D6 -->|POD meta (receiver, time,<br/>photo URL, signature URL)| DB2
+
+  %% CUSTOMER AFTER DELIVERY
+  DB2 --> C9
+    </div>
+  </div>
+</body>
+</html>

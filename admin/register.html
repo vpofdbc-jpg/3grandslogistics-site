@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Registration</title>
+    <!-- Native CSS Styles -->
+    <style>
+        /* Font Import */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+        /* Utility/Base Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fbf8; /* Very light green/white background */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem;
+            margin: 0;
+            overflow: hidden; /* Prevent scrollbar from large background elements */
+        }
+
+        /* Wavy Background Elements (Absolute Positioning) */
+        .wavy-bg {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            z-index: -10;
+        }
+        .wavy-circle-1 {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 400px;
+            background-color: #D1FAE5; /* green-200 */
+            opacity: 0.3;
+            border-radius: 9999px; /* rounded-full */
+            transform: translate(50%, -50%);
+            filter: blur(48px); /* blur-3xl */
+        }
+        .wavy-circle-2 {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 600px;
+            height: 600px;
+            background-color: #ECFDF5; /* emerald-100 */
+            opacity: 0.5;
+            border-radius: 9999px;
+            transform: translate(-50%, 50%);
+            filter: blur(48px);
+        }
+
+        /* Card Styles */
+        .card {
+            background-color: #ffffff;
+            padding: 2rem; /* p-8 */
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* shadow-2xl */
+            width: 100%;
+            max-width: 24rem; /* max-w-sm */
+            transition: transform 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: scale(1.01);
+        }
+        
+        /* Responsive Card Padding */
+        @media (min-width: 640px) { /* sm breakpoint */
+            .card {
+                padding: 2.5rem; /* sm:p-10 */
+            }
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 1.875rem; /* text-3xl */
+            font-weight: 700; /* font-bold */
+            color: #1F2937; /* text-gray-800 */
+            margin-bottom: 0.5rem; /* mb-2 */
+            text-align: center;
+        }
+        .subtitle {
+            color: #6B7280; /* text-gray-500 */
+            margin-bottom: 1.5rem; /* mb-6 */
+            text-align: center;
+            font-size: 0.875rem; /* text-sm */
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1rem; /* space-y-4 for children */
+        }
+        input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 0.75rem; /* p-3 */
+            border: 1px solid #D1D5DB; /* border-gray-300 */
+            border-radius: 0.5rem; /* rounded-lg */
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            background-color: #F0FAF6; /* bg-emerald-50 */
+            color: #374151; /* text-gray-700 */
+        }
+        input:focus {
+            border-color: #10B981; /* focus:border-emerald-500 */
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.5); /* focus:ring-emerald-500 */
+            outline: none;
+        }
+
+        /* Button Styles */
+        .btn-primary {
+            width: 100%;
+            padding-top: 0.75rem; /* py-3 */
+            padding-bottom: 0.75rem; /* py-3 */
+            margin-top: 1rem; /* mt-4 */
+            color: white;
+            font-weight: 600; /* font-semibold */
+            border-radius: 0.5rem; /* rounded-lg */
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06); /* shadow-md */
+            background-color: #10B981; /* #10B981 */
+            border: none;
+            cursor: pointer;
+        }
+        .btn-primary:hover:not(:disabled) {
+            background-color: #059669; /* Darker green on hover */
+        }
+        .btn-primary:active:not(:disabled) {
+            transform: scale(0.95);
+        }
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Status Message Box */
+        #status-message {
+            padding: 0.75rem;
+            margin-top: 1rem;
+            text-align: center;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            transition: opacity 0.3s;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .status-error {
+            background-color: #FEE2E2; /* bg-red-100 */
+            color: #991B1B; /* text-red-700 */
+        }
+        .status-success {
+            background-color: #D1FAE5; /* bg-green-100 */
+            color: #065F46; /* text-green-700 */
+        }
+        
+        /* Back to Login Link */
+        .back-link {
+            text-align: center;
+            font-size: 0.875rem;
+            margin-top: 1.5rem;
+        }
+        .back-link a {
+            color: #6B7280; /* text-gray-500 */
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .back-link a:hover {
+            color: #059669; /* hover:text-emerald-600 */
+        }
+        .back-link a span {
+            font-weight: 600; /* font-semibold */
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Wavy background elements for aesthetics -->
+    <div class="wavy-bg">
+        <div class="wavy-circle-1"></div>
+        <div class="wavy-circle-2"></div>
+    </div>
+
+    <!-- Registration Card -->
+    <div class="card">
+        <h1>Register Admin Account</h1>
+        <p class="subtitle">Create a new staff or administrative login account.</p>
+
+        <form id="registration-form" class="form-group">
+            <div class="form-group">
+                <label for="email" class="sr-only">Email Address</label>
+                <input type="email" id="email" value="admin@3grands.com" placeholder="Email Address" required>
+            </div>
+            <div class="form-group">
+                <label for="password" class="sr-only">Password</label>
+                <input type="password" id="password" value="password123" placeholder="Password" required>
+            </div>
+
+            <!-- Error/Status Message Box -->
+            <div id="status-message" style="opacity:0;">
+                <!-- Content inserted by JavaScript -->
+            </div>
+
+            <button type="submit" id="register-button" class="btn-primary">
+                Create Account
+            </button>
+        </form>
+
+        <p class="back-link">
+            <a href="login.html">Already have an account? <span>Log In</span></a>
+        </p>
+    </div>
+
+    <!-- Firebase Imports and Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global variables provided by the canvas environment
+        const registerButton = document.getElementById('register-button');
+        const statusMessage = document.getElementById('status-message');
+        
+        let auth;
+        let isAuthReady = false;
+
+        // --- Authentication Helper Functions ---
+
+        /**
+         * Displays a status message to the user.
+         * @param {string} message The text message to display.
+         * @param {boolean} isError If true, displays the message in red (error); otherwise, uses green (success).
+         */
+        function displayStatus(message, isError) {
+            statusMessage.textContent = message;
+            statusMessage.className = isError ? 'status-error' : 'status-success';
+            statusMessage.style.opacity = 1;
+        }
+
+        /**
+         * Updates the register button state based on authentication readiness.
+         * @param {boolean} ready True if ready to register, false otherwise.
+         * @param {string} [message] Custom message to display if not ready.
+         */
+        function updateButtonState(ready, message = "Service Not Configured") {
+            registerButton.disabled = !ready;
+            registerButton.textContent = ready ? "Create Account" : message;
+            registerButton.style.opacity = ready ? '1' : '0.6';
+        }
+
+        // --- Firebase Initialization ---
+
+        async function initializeFirebase() {
+            let firebaseConfig = {};
+
+            // TEMPORARY: Check for and use a DUMMY config if environment config is missing.
+            if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+                try {
+                    firebaseConfig = JSON.parse(__firebase_config);
+                } catch (e) {
+                    console.error("Firebase Init Error: Failed to parse __firebase_config:", e);
+                    displayStatus("Application configuration error: Invalid Firebase config.", true);
+                    return;
+                }
+            } else {
+                // Dummy config for local testing/preview mode.
+                console.warn("Using placeholder Firebase config for testing. Connect to a real backend to save data.");
+                firebaseConfig = {
+                    apiKey: "AIzaSy_TESTING_ONLY",
+                    authDomain: "test-domain.firebaseapp.com",
+                    projectId: "test-project-id",
+                };
+            }
+
+            try {
+                const app = initializeApp(firebaseConfig);
+                const db = getFirestore(app); // Initialize db for completeness
+                auth = getAuth(app);
+                
+                // Authenticate using custom token or anonymously
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+                console.log("Firebase initialized and authenticated successfully.");
+                isAuthReady = true;
+                updateButtonState(true); // Enable button with "Create Account"
+                
+            } catch (error) {
+                console.error("Firebase Initialization Error:", error.message);
+                updateButtonState(false, "Service Error: Check Console");
+                displayStatus("Firebase initialization failed. See console for details.", true);
+            }
+        }
+
+        // --- Registration Logic ---
+
+        document.getElementById('registration-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!isAuthReady) {
+                displayStatus("Authentication system is not ready. Cannot register.", true);
+                return;
+            }
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            updateButtonState(false, "Creating Account..."); // Disable button during submission
+            statusMessage.style.opacity = 0; // Hide previous status
+
+            try {
+                // Attempt to create a new user with email and password
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const userId = userCredential.user.uid;
+                
+                displayStatus("Registration successful! Redirecting to login...", false);
+                console.log("Admin User Created:", userId);
+
+                // Simulate success and redirect
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1500);
+
+            } catch (error) {
+                // Handle specific Firebase errors
+                let errorMessage = error.message;
+
+                if (error.code === 'auth/email-already-in-use') {
+                    errorMessage = "This email address is already registered.";
+                } else if (error.code === 'auth/weak-password') {
+                    errorMessage = "Password should be at least 6 characters.";
+                } else {
+                    // This is where 'auth/operation-not-allowed' lands during testing
+                    errorMessage = `Registration Failed: ${errorMessage}`;
+                }
+
+                console.error("Registration Error:", error);
+                displayStatus(errorMessage, true);
+                updateButtonState(true); // Re-enable button on failure
+            }
+        });
+
+        // Initialize on load
+        initializeFirebase();
+
+        // Ensure the button shows 'Loading Service...' initially while loading
+        if (!isAuthReady) {
+            updateButtonState(false, "Loading Service...");
+        }
+    </script>
+</body>
+</html>
+
+
+
