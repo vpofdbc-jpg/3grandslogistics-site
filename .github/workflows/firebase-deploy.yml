@@ -22,13 +22,7 @@ jobs:
           node-version: '20' 
           cache: 'npm' # Use npm cache for faster installs
 
-      - name: Install Dependencies
-        # This will install all packages listed in package.json
-        run: npm install
-
-      - name: Build Project
-        # This assumes your project has a 'build' script defined in package.json (e.g., 'react-scripts build' or 'vite build')
-        run: npm run build
+      
 
       - name: Deploy to Firebase Hosting
         # Uses the official action for Firebase deployment
