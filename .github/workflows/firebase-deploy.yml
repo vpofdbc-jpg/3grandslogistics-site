@@ -1,47 +1,36 @@
-name: Firebase Hosting Deploy
-
-# Triggers the workflow on pushes to the 'main' branch
-on:
+name: 'Firebase Hosting Deploy (Live)'
+'on':
   push:
     branches:
-      - main
+      - main 
 
 jobs:
-  deploy:
-    # Use the latest Ubuntu runner
+  build_and_deploy:
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Checkout Repository
+      - name: Checkout Code
         uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        # Assuming a modern Node.js environment for the app
+        
+      # === FIX START: Set up environment and separate install/build steps ===
+      - name: Setup Node.js Environment
         uses: actions/setup-node@v4
         with:
-          node-version: '20' 
-          cache: 'npm' # Use npm cache for faster installs
-
-      - name: Install Dependencies
-        # This will install all packages listed in package.json
-        run: npm install
-
-      - name: Build Project
-        # This assumes your project has a 'build' script defined in package.json (e.g., 'react-scripts build' or 'vite build')
+          node-version: '18' # Ensures 'npm' is correctly configured
+        
+      - name: Install Project Dependencies
+        # Changed from combined command to separate steps
+        run: npm ci
+        
+      - name: Build Project (npm run build)
         run: npm run build
-
-      - name: Deploy to Firebase Hosting
-        # Uses the official action for Firebase deployment
+      # === FIX END ===
+        
+      - name: Deploy to Firebase Hosting Live Channel
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          # The GitHub Secret containing the service account key JSON
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.GCP_SA_KEY }}
-          # The project ID used during setup
-          projectId: grandslogistics-8af41
-          # The ID of the Hosting site (usually matches the project ID)
-          channelId: live 
-          # You may need to adjust the 'public' directory path if your build output is different (e.g., 'dist' or 'out')
-          # This should match the 'public' setting in your firebase.json file.
-          target: customer-app-mobile 
-          entryPoint: c:\Users\accou\customer_app_mobile
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          # NOTE: Replace 'FIREBASE_SERVICE_ACCOUNT_PROJECT_NAME' and 'your-firebase-project-id' 
+          # with your actual service account secret name and Firebase project ID.
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_PROJECT_NAME }}'
+          projectId: your-firebase-project-id
+          channelId: live # Deploys to your primary site URL (live)
