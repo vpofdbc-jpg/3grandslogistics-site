@@ -354,6 +354,136 @@
             }
 
             if (vwcBtn) {
+                vwcBtn.addEventListener('click', async (e) => { // ADDED async here for the initial button click
+                    if (vwcBtn.disabled || vwcBtn.classList.contains('disabled-btn')) {
+                        e.preventDefault();
+                        return;
+                    }
+
+                    // Check if already subscribed
+                    if (isVWCSubscribed) {
+                        currentView = 'vwc';
+                        renderApp();
+                    } else {
+                        // Show subscription modal
+                        const content = `
+                            <h3 class="text-2xl font-bold text-deep-green mb-3">VWC Service Rules & Subscription</h3>
+                            <p class="text-deep-brown-black mb-4">
+                                The **Vendor to Warehouse to Customer (VWC)** service allows you to place orders with your vendors and ship them to our unique warehouse address for consolidation.
+                            </p>
+                            <ul class="list-disc list-inside text-sm text-deep-brown-black space-y-2 p-4 bg-warm-cream rounded-lg border border-gold-yellow">
+                                <li>We will only hold packages for **no more than 60 days**.</li>
+                                <li>Industrial-grade appliances, safes, or generators, car engines, large pallet orders, or unboxed furniture must use the **On-Demand Service**.</li>
+                                <li>The package must **NOT** exceed **108 inches (9ft)** in its longest dimension.</li>
+                                <li>The package must **NOT** exceed **150 lbs** in weight.</li>
+                                <li class="text-red-brown font-semibold">**Security Reminder:** Package release requires confirming the **Year of Birth** from your profile.</li>
+                            </ul>
+                            <div class="mt-4 p-3 bg-gold-yellow/30 rounded-lg text-center">
+                                <p class="text-xl font-extrabold text-deep-brown-black">Monthly Subscription: <span class="text-red-brown">$23.99</span></p>
+                                <p class="text-sm text-deep-brown-black/70 mt-1">This recurring charge provides unlimited access to VWC consolidation services.</p>
+                            </div>
+                        `;
+                        showModal(content, async () => { // ADDED async here for the modal's actionCallback
+                            // Disable the button and show loading state
+                            const modalActionBtn = document.getElementById('modal-action-btn');
+                            if (modalActionBtn) {
+                                modalActionBtn.disabled = true;
+                                modalActionBtn.classList.add('disabled-btn');
+                                modalActionBtn.innerHTML = '<span class="custom-spinner w-5 h-5 border-white"></span> Initiating Checkout...'; // Add a spinner
+                            }
+
+                            try {
+                                const createStripeSession = httpsCallable(functions, 'createStripeCheckoutSession');
+                                const result = await createStripeSession();
+                                const { url: stripeCheckoutUrl } = result.data;
+
+                                if (stripeCheckoutUrl) {
+                                    window.location.href = stripeCheckoutUrl; // Redirect to Stripe Checkout
+                                } else {
+                                    showModal(
+                                        `<h3 class="text-2xl font-bold text-red-brown mb-3">Error!</h3>
+                                         <p class="text-deep-brown-black">Failed to get Stripe checkout URL. Please try again.</p>`
+                                    );
+                                    // Reset modal button state if an error occurred before redirect
+                                    if (modalActionBtn) {
+                                        modalActionBtn.disabled = false;
+                                        modalActionBtn.classList.remove('disabled-btn');
+                                        modalActionBtn.textContent = 'Proceed';
+                                    }
+                                }
+                            } catch (error) {
+                                console.error("Error calling Cloud Function for Stripe Checkout:", error);
+                                let errorMessage = error.message;
+                                if (error.code === 'unauthenticated') {
+                                    errorMessage = 'You must be logged in to subscribe.';
+                                } else if (error.code === 'internal') {
+                                    errorMessage = 'A server error occurred. Please try again.';
+                                }
+                                showModal(
+                                    `<h3 class="text-2xl font-bold text-red-brown mb-3">Subscription Error</h3>
+                                     <p class="text-deep-brown-black">${errorMessage}</p>`
+                                );
+                                // Reset modal button state if an error occurred
+                                if (modalActionBtn) {
+                                    modalActionBtn.disabled = false;
+                                    modalActionBtn.classList.remove('disabled-btn');
+                                    modalActionBtn.textContent = 'Proceed';
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+
+            // Listener for the Quick Return Request button
+            if (returnBtn) {
+                returnBtn.addEventListener('click', () => {
+                    showModal(
+                        `<h3 class="text-2xl font-bold text-red-brown mb-3">Initiate Return Request</h3>
+                         <p class="text-deep-brown-black">You are about to start a return request. Please ensure you have your order details ready.</p>
+                         <p class="text-xs text-deep-brown-black/70 mt-2">Further steps will be required to complete the return process.</p>`,
+                        () => {
+                            // Placeholder for actual return request form/logic
+                            console.log('User initiated Quick Return Request.');
+                            alert('Return request initiated! Please follow the instructions to provide more details!');
+                        }
+                    );
+                });
+            }
+
+            // Listener for the View All Activity button
+            if (viewAllActivityBtn) {
+                viewAllActivityBtn.addEventListener('click', () => {
+                    currentView = 'activity';
+                    renderApp();
+                });
+            }
+
+            // New listener for the Billing & Payments button
+            if (billingPaymentsBtn) {
+                billingPaymentsBtn.addEventListener('click', () => {
+                    currentView = 'billingPayments';
+                    renderApp();
+                });
+            }
+        };
+
+                });
+            }
+
+            if (odpdsBtn) {
+                odpdsBtn.addEventListener('click', (e) => {
+                    if (odpdsBtn.disabled || odpdsBtn.classList.contains('disabled-btn')) {
+                        e.preventDefault();
+                        return;
+                    }
+
+                    currentView = 'odpds';
+                    renderApp();
+                });
+            }
+
+            if (vwcBtn) {
                 vwcBtn.addEventListener('click', (e) => {
                     if (vwcBtn.disabled || vwcBtn.classList.contains('disabled-btn')) {
                         e.preventDefault();
