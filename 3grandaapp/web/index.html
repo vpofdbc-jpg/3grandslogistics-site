@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3Grands Logistics Secure App</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for the Afrocentric palette */
+        :root {
+            /* Kente-inspired Colors */
+            --color-red-brown: #6F2A1C; /* Saturated Red/Brown */
+            --color-gold-yellow: #D4A74F; /* Vibrant Gold/Yellow */
+            --color-deep-green: #2D4C2D; /* Deep Forest Green */
+            --color-warm-cream: #F5F5DC; /* Warm Cream/Beige */
+            --color-deep-brown-black: #2A1A0A; /* Near-Black/Deep Brown */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--color-warm-cream); 
+            color: var(--color-deep-brown-black); /* Default text color */
+            padding: 1rem;
+        }
+        
+        /* Custom Tailwind Utilities (for use in JS rendering) */
+        .text-red-brown { color: var(--color-red-brown); }
+        .bg-red-brown { background-color: var(--color-red-brown); }
+        .hover\:bg-red-brown-dark:hover { background-color: #5A2016; } /* Slightly darker on hover */
+        .text-gold-yellow { color: var(--color-gold-yellow); }
+        .border-gold-yellow { border-color: var(--color-gold-yellow); }
+        .focus\:ring-gold-yellow:focus { --tw-ring-color: var(--color-gold-yellow); }
+        .focus\:border-gold-yellow:focus { border-color: var(--color-gold-yellow); }
+        .text-deep-green { color: var(--color-deep-green); }
+        .bg-deep-green { background-color: var(--color-deep-green); }
+        .text-warm-cream { color: var(--color-warm-cream); }
+        .bg-warm-cream { background-color: var(--color-warm-cream); }
+        .text-deep-brown-black { color: var(--color-deep-brown-black); }
+        .bg-deep-brown-black { background-color: var(--color-deep-brown-black); }
+
+        /* Custom spinner for better visual integration */
+        .custom-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: var(--color-red-brown);
+            border-top-color: var(--color-gold-yellow);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Modal Backdrop */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        /* Disabled Button Style for consistency */
+        .disabled-btn {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background-color: var(--color-deep-brown-black) !important; 
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app" class="w-full max-w-lg">
+        </div>
+
+    <div id="modal-container"></div>
+
+    <script type="module">
+        // =========================================================================
+        // --- FIREBASE IMPORTS: ENABLED ---
+        // =========================================================================
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { 
+            getAuth, 
+            onAuthStateChanged, 
+            signInWithEmailAndPassword, 
+            createUserWithEmailAndPassword,
+            signOut,
+            setPersistence,
+            browserSessionPersistence
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        
+        // =========================================================================
+
+        let app, auth, db;
+        let authReady = false; 
+        let isFirebaseUnavailable = false; 
+        let currentUser = null; 
+        let currentView = 'dashboard'; 
+        
+        // --- State Variables ---
+        let isVWCSubscribed = false; 
+        let customerProfile = {
+            name: '',
+            address: '',
+            yearOfBirth: '' // Stored as a string (YYYY)
+        };
+        
+        let vwcPackages = [];
+
+
+        const appContainer = document.getElementById('app');
+        const modalContainer = document.getElementById('modal-container');
+        let currentAuthMode = 'login'; 
+
+        // =========================================================================
+        // --- STEP 1: FIREBASE CONFIG --- 
+        // =========================================================================
+        const DEV_MODE_FIREBASE_CONFIG = {
+            apiKey: "AIzaSyCahMIf5Q3YBsjfXB30YpAgWfycvT0gCqQ",
+            authDomain: "grandslogistics-8af41.firebaseapp.com",
+            projectId: "grandslogistics-8af41",
+            storageBucket: "grandslogistics-8af41.firebasestorage.app",
+            messagingSenderId: "267189664335",
+            appId: "1:267189664335:web:ad23fb36b6aabfc52e883a",
+            measurementId: "G-00890Z62TC" 
+        }; 
+        // =========================================================================
+
+        // --- Utility Functions ---
+        const isValidEmail = (email) => /\S+@\S+\.\S+/i.test(email);
+        
+        const renderLogo = () => {
+            const logoPath = 'logo-128x128.png'; 
+            return `<img src="${logoPath}" 
+                            alt="3Grands Logistics Logo" 
+                            onerror="this.onerror=null; this.src='https://placehold.co/80x80/2D4C2D/F5F5DC?text=3G'"
+                            class="w-20 h-20 object-contain mx-auto">`; 
+        }
+
+        // --- State Management Functions (Using Local Storage as a cache) ---
+        const PROFILE_KEY = '3Grands_Profile_';
+        const PACKAGES_KEY = '3Grands_VWC_Packages_';
+        const SUB_KEY = '3Grands_VWC_Subscribed_';
+
+
+        const loadProfile = (uid) => {
+            if (!uid) return;
+            try {
+                const storedProfile = localStorage.getItem(PROFILE_KEY + uid);
+                if (storedProfile) {
+                    customerProfile = JSON.parse(storedProfile);
+                } else {
+                    customerProfile = { name: '', address: '', yearOfBirth: '' };
+                }
+                
+                const storedSub = localStorage.getItem(SUB_KEY + uid);
+                isVWCSubscribed = storedSub === 'true';
+
+            } catch (e) {
+                console.error("Error loading profile/subscription from local storage:", e);
+                customerProfile = { name: '', address: '', yearOfBirth: '' };
+                isVWCSubscribed = false;
+            }
+        };
+
+        const saveProfile = (uid) => {
+            if (!uid) return false;
+            localStorage.setItem(PROFILE_KEY + uid, JSON.stringify(customerProfile));
+            return true;
+        };
+        
+        const setSubscriptionStatus = (uid, status) => {
+             if (!uid) return;
+             isVWCSubscribed = status;
+             localStorage.setItem(SUB_KEY + uid, status ? 'true' : 'false');
+        }
+        
+        const loadVWCPackages = (uid) => {
+             if (!uid) return;
+             vwcPackages = JSON.parse(localStorage.getItem(PACKAGES_KEY + uid) || '[]');
+        };
+
+        const saveVWCPackages = (uid) => {
+             if (!uid) return false;
+             localStorage.setItem(PACKAGES_KEY + uid, JSON.stringify(vwcPackages));
+             return true;
+        };
+
+        const showModal = (content, actionCallback = null) => {
+            modalContainer.innerHTML = `
+                <div class="modal-overlay">
+                    <div class="bg-white p-6 sm:p-8 rounded-xl shadow-2xl w-11/12 max-w-lg transform transition-all duration-300">
+                        ${content}
+                        <div class="mt-6 flex justify-end space-x-3">
+                            <button id="modal-close-btn" class="px-4 py-2 text-sm font-semibold rounded-lg bg-gray-200 text-deep-brown-black hover:bg-gray-300 transition duration-150">
+                                Close
+                            </button>
+                            ${actionCallback ? 
+                                `<button id="modal-action-btn" class="px-4 py-2 text-sm font-semibold rounded-lg bg-deep-green text-warm-cream hover:bg-deep-brown-black transition duration-150">
+                                    Proceed
+                                </button>` : ''
+                            }
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('modal-close-btn').addEventListener('click', () => {
+                modalContainer.innerHTML = '';
+            });
+
+            if (actionCallback) {
+                document.getElementById('modal-action-btn').addEventListener('click', () => {
+                    modalContainer.innerHTML = ''; // Close modal before action
+                    actionCallback();
+                });
+            }
+        };
+
+
+        // --- Core Application Listeners ---
+        
+        const handleAuthAction = async (isRegister, email, password) => {
+            const errorBox = document.getElementById('auth-error');
+            const submitBtn = document.getElementById('submit-btn');
+
+            errorBox.textContent = '';
+
+            if (!isValidEmail(email)) {
+                errorBox.textContent = 'Please enter a valid email address.';
+                return;
+            }
+            if (password.length < 6) {
+                errorBox.textContent = 'Password must be at least 6 characters.';
+                return;
+            }
+
+            if (isFirebaseUnavailable || !auth) {
+                 errorBox.textContent = 'Authentication service is unavailable. Check your connection.';
+                 return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.classList.add('disabled-btn');
+
+            try {
+                if (isRegister) {
+                    await createUserWithEmailAndPassword(auth, email, password);
+                } else {
+                    await setPersistence(auth, browserSessionPersistence);
+                    await signInWithEmailAndPassword(auth, email, password);
+                }
+            } catch (error) {
+                let errorMessage = 'An unknown authentication error occurred.';
+                if (error.code) {
+                    errorMessage = error.message.replace(/firebase:/i, '').replace(/\(auth.*\)/i, '').trim();
+                }
+                errorBox.textContent = `Error: ${errorMessage}`;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('disabled-btn');
+            }
+        };
+
+        const handleSignOut = async () => {
+            if (isFirebaseUnavailable || !auth) {
+                 currentUser = null;
+                 currentView = 'login';
+                 renderApp();
+                 return;
+            }
+            try {
+                await signOut(auth);
+            } catch (error) {
+                console.error("Sign Out Error:", error);
+            }
+        };
+
+        const switchAuthMode = () => {
+            currentAuthMode = currentAuthMode === 'login' ? 'register' : 'login';
+            renderLogin();
+        };
+
+        const attachLoginListeners = (isRegister) => {
+            const form = document.getElementById('auth-form');
+            const switchBtn = document.getElementById('switch-mode-btn');
+
+            if (form) {
+                form.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    const email = document.getElementById('email').value.trim();
+                    const password = document.getElementById('password').value;
+                    handleAuthAction(isRegister, email, password);
+                });
+            }
+            
+            if (switchBtn) {
+                switchBtn.addEventListener('click', switchAuthMode);
+            }
+        };
+
+        const attachDashboardListeners = () => {
+            const signOutBtn = document.getElementById('sign-out-btn');
+            const profileBtn = document.getElementById('profile-btn'); 
+            const odpdsBtn = document.getElementById('odpds-service-btn');
+            const vwcBtn = document.getElementById('vwc-service-btn');
+            const returnBtn = document.getElementById('openReturnModalBtn'); 
+            const viewAllActivityBtn = document.getElementById('view-all-activity-btn');
+            const billingPaymentsBtn = document.getElementById('billing-payments-btn'); // New button
+
+            if (signOutBtn) {
+                signOutBtn.addEventListener('click', handleSignOut);
+            }
+            
+            if (profileBtn) {
+                profileBtn.addEventListener('click', () => {
+                    currentView = 'profile';
+                    renderApp();
+                });
+            }
+
+            if (odpdsBtn) {
+                odpdsBtn.addEventListener('click', (e) => {
+                    if (odpdsBtn.disabled || odpdsBtn.classList.contains('disabled-btn')) {
+                        e.preventDefault();
+                        return;
+                    }
+
+                    currentView = 'odpds';
+                    renderApp();
+                });
+            }
+
+            if (vwcBtn) {
+                vwcBtn.addEventListener('click', (e) => {
+                    if (vwcBtn.disabled || vwcBtn.classList.contains('disabled-btn')) {
+                        e.preventDefault();
+                        return;
+                    }
+
+                    // Check if already subscribed
+                    if (isVWCSubscribed) {
+                        currentView = 'vwc';
+                        renderApp();
+                    } else {
+                        // Show subscription modal
+                        const content = `
+                            <h3 class="text-2xl font-bold text-deep-green mb-3">VWC Service Rules & Subscription</h3>
+                            <p class="text-deep-brown-black mb-4">
+                                The **Vendor to Warehouse to Customer (VWC)** service allows you to place orders with your vendors and ship them to our unique warehouse address for consolidation.
+                            </p>
+                            <ul class="list-disc list-inside text-sm text-deep-brown-black space-y-2 p-4 bg-warm-cream rounded-lg border border-gold-yellow">
+                                <li>We will only hold packages for **no more than 60 days**.</li>
+                                <li>Industrial-grade appliances, safes, or generators, car engines, large pallet orders, or unboxed furniture must use the **On-Demand Service**.</li>
+                                <li>The package must **NOT** exceed **108 inches (9ft)** in its longest dimension.</li>
+                                <li>The package must **NOT** exceed **150 lbs** in weight.</li>
+                                <li class="text-red-brown font-semibold">**Security Reminder:** Package release requires confirming the **Year of Birth** from your profile.</li>
+                            </ul>
+                            <div class="mt-4 p-3 bg-gold-yellow/30 rounded-lg text-center">
+                                <p class="text-xl font-extrabold text-deep-brown-black">Monthly Subscription: <span class="text-red-brown">$23.99</span></p>
+                                <p class="text-sm text-deep-brown-black/70 mt-1">This recurring charge provides unlimited access to VWC consolidation services.</p>
+                            </div>
+                        `;
+                        showModal(content, () => {
+                            setSubscriptionStatus(currentUser?.uid, true);
+                            currentView = 'vwc';
+                            renderApp();
+                            showModal(
+                                `<h3 class="text-2xl font-bold text-gold-yellow mb-3">Subscription Successful!</h3>
+                                 <p class="text-deep-brown-black">Your consolidation address is now active. Please use the **Pre-Alert form** to register all incoming packages.</p>`
+                            );
+                        });
+                    }
+                });
+            }
+
+            // Listener for the Quick Return Request button
+            if (returnBtn) {
+                returnBtn.addEventListener('click', () => {
+                    showModal(
+                        `<h3 class="text-2xl font-bold text-red-brown mb-3">Initiate Return Request</h3>
+                         <p class="text-deep-brown-black">You are about to start a return request. Please ensure you have your order details ready.</p>
+                         <p class="text-xs text-deep-brown-black/70 mt-2">Further steps will be required to complete the return process.</p>`,
+                        () => {
+                            // Placeholder for actual return request form/logic
+                            console.log('User initiated Quick Return Request.');
+                            alert('Return request initiated! Please follow the instructions to provide more details!');
+                        }
+                    );
+                });
+            }
+
+            // Listener for the View All Activity button
+            if (viewAllActivityBtn) {
+                viewAllActivityBtn.addEventListener('click', () => {
+                    currentView = 'activity';
+                    renderApp();
+                });
+            }
+
+            // New listener for the Billing & Payments button
+            if (billingPaymentsBtn) {
+                billingPaymentsBtn.addEventListener('click', () => {
+                    currentView = 'billingPayments';
+                    renderApp();
+                });
+            }
+        };
+        
+        const attachProfileListeners = () => {
+            const form = document.getElementById('profile-form');
+            const backBtn = document.getElementById('profile-back-to-dashboard-btn');
+            const statusBox = document.getElementById('profile-status');
+            
+            document.getElementById('profile-name').value = customerProfile.name;
+            document.getElementById('profile-address').value = customerProfile.address;
+            document.getElementById('profile-yob').value = customerProfile.yearOfBirth;
+
+            // Display subscription status in profile
+            const vwcSubscriptionStatusElement = document.getElementById('vwc-subscription-status');
+            if (vwcSubscriptionStatusElement) {
+                vwcSubscriptionStatusElement.textContent = isVWCSubscribed ? 'Active' : 'Inactive';
+                vwcSubscriptionStatusElement.className = `font-semibold ${isVWCSubscribed ? 'text-deep-green' : 'text-red-brown'}`;
+            }
+
+            if (backBtn) {
+                backBtn.addEventListener('click', () => {
+                    currentView = 'dashboard';
+                    renderApp();
+                });
+            }
+
+            if (form) {
+                form.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    
+                    const name = document.getElementById('profile-name').value.trim();
+                    const address = document.getElementById('profile-address').value.trim();
+                    const yob = document.getElementById('profile-yob').value.trim();
+                    
+                    statusBox.className = 'text-sm font-medium text-red-brown mt-3';
+                    statusBox.textContent = '';
+                    
+                    if (!name || !address || !yob) {
+                        statusBox.textContent = 'All fields are required.';
+                        return;
+                    }
+                    if (yob.length !== 4 || isNaN(parseInt(yob))) {
+                        statusBox.textContent = 'Year of Birth must be a four-digit number (YYYY).';
+                        return;
+                    }
+                    const currentYear = new Date().getFullYear();
+                    if (parseInt(yob) > currentYear || parseInt(yob) < 1900) {
+                        statusBox.textContent = 'Please enter a valid Year of Birth.';
+                        return;
+                    }
+
+                    customerProfile.name = name;
+                    customerProfile.address = address;
+                    customerProfile.yearOfBirth = yob;
+
+                    if (saveProfile(currentUser?.uid)) {
+                        statusBox.className = 'text-sm font-medium text-deep-green mt-3';
+                        statusBox.textContent = '✅ Profile updated successfully!';
+                        setTimeout(() => {
+                             currentView = 'dashboard';
+                             renderApp();
+                        }, 1000);
+                    } else {
+                        statusBox.textContent = 'Error: Could not save profile data.';
+                    }
+                });
+            }
+        };
+        
+        const attachVWCFormListeners = () => {
+            const form = document.getElementById('vwc-pre-alert-form');
+            const alertStatus = document.getElementById('vwc-alert-status');
+            
+            // Disable form if not subscribed
+            if (form) {
+                const formInputs = form.querySelectorAll('input, button');
+                if (!isVWCSubscribed) {
+                    formInputs.forEach(input => input.disabled = true);
+                    alertStatus.textContent = 'Subscription required to submit pre-alerts.';
+                    alertStatus.classList.add('text-red-brown');
+                } else {
+                     formInputs.forEach(input => input.disabled = false);
+                     alertStatus.textContent = ''; // Clear previous message
+                     alertStatus.classList.remove('text-red-brown');
+                }
+            }
+
+
+            if (form && isVWCSubscribed) {
+                form.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    
+                    const trackingNumber = document.getElementById('tracking-number').value.trim();
+                    const vendor = document.getElementById('vendor-name').value.trim();
+                    const contents = document.getElementById('package-contents').value.trim();
+                    
+                    alertStatus.className = 'text-sm font-medium text-red-brown mt-3';
+                    alertStatus.textContent = '';
+                    
+                    if (!trackingNumber || !vendor || !contents) {
+                        alertStatus.textContent = 'All fields are required.';
+                        return;
+                    }
+                    
+                    if (vwcPackages.some(p => p.trackingNumber === trackingNumber)) {
+                         alertStatus.textContent = 'Error: This tracking number has already been submitted.';
+                         return;
+                    }
+
+                    const newPackage = {
+                        id: Date.now(),
+                        trackingNumber,
+                        vendor,
+                        contents,
+                        status: 'Monitoring (Pre-Alert)', 
+                        submissionTime: new Date().toLocaleString()
+                    };
+                    
+                    vwcPackages.push(newPackage);
+                    saveVWCPackages(currentUser?.uid);
+                    
+                    form.reset();
+                    alertStatus.className = 'text-sm font-medium text-deep-green mt-3';
+                    alertStatus.textContent = '✅ Package Pre-Alert submitted!';
+                    
+                    renderVWCPackageList();
+                });
+            }
+        };
+        
+        // --- VWC Status Update Logic (Manual Simulation) ---
+
+        const handleManualStatusUpdate = (event) => {
+            // Note: The package ID is stored as a number, so we parse it.
+            const packageId = parseInt(event.currentTarget.getAttribute('data-package-id'));
+            const packageIndex = vwcPackages.findIndex(p => p.id === packageId);
+
+            if (packageIndex > -1) {
+                let newStatus = '';
+                const currentStatus = vwcPackages[packageIndex].status;
+
+                // Logic to cycle through the statuses:
+                if (currentStatus === 'Monitoring (Pre-Alert)') {
+                    newStatus = 'Out for Delivery to Warehouse'; // Simulates Amazon update
+                } else if (currentStatus === 'Out for Delivery to Warehouse') {
+                    newStatus = 'Received at Warehouse (Ready for Consolidation)'; // Simulates your warehouse scan
+                } else if (currentStatus === 'Received at Warehouse (Ready for Consolidation)') {
+                    newStatus = 'Ready for Customer Pickup/Shipping';
+                } else {
+                    // Once finished, reset it for demonstration purposes
+                    newStatus = 'Monitoring (Pre-Alert)'; 
+                }
+
+                vwcPackages[packageIndex].status = newStatus;
+                saveVWCPackages(currentUser?.uid);
+                
+                // Re-render the list to show the change immediately
+                renderVWCPackageList(); 
+            }
+        };
+        
+        // --- function to render only the package list dynamically ---
+        const renderVWCPackageList = () => {
+             const packageListContainer = document.getElementById('vwc-package-list');
+             if (!packageListContainer) return;
+
+             if (vwcPackages.length === 0) {
+                 packageListContainer.innerHTML = `
+                    <div class="p-4 bg-warm-cream/50 rounded-lg text-center text-deep-brown-black/70 italic">
+                        No packages have been submitted for consolidation yet.
+                    </div>
+                 `;
+                 return;
+             }
+
+             const listItems = vwcPackages.map(p => `
+                 <li class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 border-b border-gold-yellow/50 hover:bg-gold-yellow/10 transition duration-150">
+                     <div class="mb-2 sm:mb-0 flex-grow">
+                         <p class="font-semibold text-deep-brown-black">${p.trackingNumber}</p>
+                         <p class="text-xs text-deep-brown-black/70">From: ${p.vendor} | Contents: ${p.contents}</p>
+                     </div>
+                     <div class="flex items-center space-x-3 w-full sm:w-auto">
+                         <span class="text-sm font-bold ${p.status.includes('Received') ? 'text-deep-green' : p.status.includes('Out for Delivery') ? 'text-gold-yellow' : 'text-red-brown'}">
+                             ${p.status}
+                         </span>
+                         <button data-package-id="${p.id}" 
+                                 class="update-status-btn bg-deep-brown-black text-warm-cream px-3 py-1 text-xs rounded-lg hover:bg-deep-green transition duration-150 whitespace-nowrap">
+                             Simulate Scan
+                         </button>
+                     </div>
+                 </li>
+             `).join('');
+
+             packageListContainer.innerHTML = `
+                 <ul class="divide-y divide-gold-yellow/50">
+                     ${listItems}
+                 </ul>
+             `;
+             
+             // Attach listener after rendering
+             document.querySelectorAll('.update-status-btn').forEach(button => {
+                 button.addEventListener('click', handleManualStatusUpdate);
+             });
+        };
+
+
+        const attachVWCListeners = () => {
+            const backBtn = document.getElementById('vwc-back-to-dashboard-btn');
+            const subscribeBtn = document.getElementById('vwc-subscribe-btn');
+            const preAlertFormSection = document.getElementById('vwc-pre-alert-form-section');
+            const packageListSection = document.getElementById('vwc-package-list-section');
+            const warehouseAddressContainer = document.getElementById('warehouse-address-container');
+            const notSubscribedMessage = document.getElementById('not-subscribed-message');
+
+
+            if (backBtn) {
+                backBtn.addEventListener('click', () => {
+                    currentView = 'dashboard';
+                    renderApp();
+                });
+            }
+            
+            if (!isVWCSubscribed) {
+                // Show subscription button and message, hide form/address
+                if (subscribeBtn) {
+                    subscribeBtn.classList.remove('hidden');
+                    subscribeBtn.textContent = 'Subscribe to VWC Service ($23.99/month)';
+                    subscribeBtn.addEventListener('click', () => {
+                        const content = `
+                            <h3 class="text-2xl font-bold text-deep-green mb-3">Confirm VWC Subscription</h3>
+                            <p class="text-deep-brown-black mb-4">
+                                By clicking 'Proceed', you agree to a monthly charge of **$23.99** for unlimited VWC package consolidation and delivery access.
+                            </p>
+                            <ul class="list-disc list-inside text-sm text-deep-brown-black space-y-2 p-4 bg-warm-cream rounded-lg border border-gold-yellow">
+                                <li>We will only hold packages for **no more than 60 days**.</li>
+                                <li>Industrial-grade appliances, safes, or generators, car engines, large pallet orders, or unboxed furniture must use the **On-Demand Service**.</li>
+                                <li>The package must **NOT** exceed **108 inches (9ft)** in its longest dimension.</li>
+                                <li>The package must **NOT** exceed **150 lbs** in weight.</li>
+                                <li class="text-red-brown font-semibold">**Security Reminder:** Package release requires confirming the **Year of Birth** from your profile.</li>
+                            </ul>
+                        `;
+                        showModal(content, () => {
+                            setSubscriptionStatus(currentUser?.uid, true);
+                            currentView = 'vwc'; 
+                            renderApp();
+
+                            showModal(
+                                `<h3 class="text-2xl font-bold text-gold-yellow mb-3">Subscription Successful!</h3>
+                                 <p class="text-deep-brown-black">Your consolidation address is now active. Please use the **Pre-Alert form** to register all incoming packages.</p>`
+                            );
+                        });
+                    });
+                }
+                if (preAlertFormSection) preAlertFormSection.classList.add('hidden');
+                if (packageListSection) packageListSection.classList.add('hidden');
+                if (warehouseAddressContainer) warehouseAddressContainer.classList.add('hidden');
+                if (notSubscribedMessage) notSubscribedMessage.classList.remove('hidden');
+
+            } else {
+                // Hide subscription button and message, show form/address
+                if (subscribeBtn) subscribeBtn.classList.add('hidden');
+                if (preAlertFormSection) preAlertFormSection.classList.remove('hidden');
+                if (packageListSection) packageListSection.classList.remove('hidden');
+                if (warehouseAddressContainer) warehouseAddressContainer.classList.remove('hidden');
+                if (notSubscribedMessage) notSubscribedMessage.classList.add('hidden');
+            }
+            
+            attachVWCFormListeners(); 
+        }
+
+        const attachODPDSListeners = () => {
+            const backBtn = document.getElementById('odpds-back-to-dashboard-btn');
+
+            if (backBtn) {
+                backBtn.addEventListener('click', () => {
+                    currentView = 'dashboard';
+                    renderApp();
+                });
+            }
+            
+            const runODPDSCheck = () => {
+                const weight = parseFloat(document.getElementById('odpds-weight').value);
+                const dimension = parseFloat(document.getElementById('odpds-dimension').value);
+                const pickupMiles = parseFloat(document.getElementById('odpds-pickup-miles').value);
+                const deliveryMiles = parseFloat(document.getElementById('odpds-delivery-miles').value);
+                
+                const resultBox = document.getElementById('odpds-result-box');
+                const errorBox = document.getElementById('odpds-error');
+                const calculateBtn = document.getElementById('odpds-calculate-btn');
+                errorBox.textContent = '';
+                calculateBtn.disabled = true;
+                calculateBtn.classList.add('disabled-btn');
+                resultBox.innerHTML = '';
+
+
+                if (isNaN(weight) || weight <= 0 || isNaN(dimension) || dimension <= 0 || isNaN(pickupMiles) || pickupMiles < 0 || isNaN(deliveryMiles) || deliveryMiles < 0) {
+                    errorBox.textContent = 'Please enter valid positive values for all fields.';
+                    calculateBtn.classList.remove('bg-deep-green', 'bg-red-brown');
+                    calculateBtn.classList.add('bg-deep-brown-black', 'disabled-btn');
+                    calculateBtn.innerHTML = 'Enter details to calculate rate';
+                    return;
+                }
+                
+                calculateBtn.disabled = false;
+                calculateBtn.classList.remove('disabled-btn', 'bg-deep-brown-black');
+                calculateBtn.classList.add('bg-deep-green', 'hover:bg-deep-brown-black');
+                calculateBtn.innerHTML = 'Calculate Final Rate';
+
+                const perMileRate = 3.79;
+                const totalMiles = pickupMiles + deliveryMiles;
+                const mileRate = totalMiles * perMileRate;
+                const weightRate = weight * 1.50;
+                const dimensionRate = dimension * 0.50;
+                const wndRate = Math.max(weightRate, dimensionRate);
+                const finalCharge = Math.max(mileRate, wndRate);
+                
+                const formatCurrency = (amount) => `$${amount.toFixed(2)}`;
+
+                resultBox.innerHTML = `
+                    <h4 class="text-lg font-bold text-deep-green mt-4 border-t pt-3">Calculation Details:</h4>
+                    <ul class="text-sm space-y-1">
+                        <li>**Total Miles:** ${totalMiles.toFixed(1)} miles</li>
+                        <li>**Rate based on Miles ($${perMileRate}/mi):** ${formatCurrency(mileRate)}</li>
+                        <li>**Rate based on W/D Max Rate:** ${formatCurrency(wndRate)}</li>
+                    </ul>
+                    <div class="mt-4 p-3 bg-gold-yellow/30 rounded-lg">
+                        <p class="text-xl font-extrabold text-deep-brown-black">Final Estimated Charge: <span class="text-red-brown">${formatCurrency(finalCharge)}</span></p>
+                        <p class="text-xs text-deep-brown-black/70 mt-1">Charged is the greater of the Miles Rate (${formatCurrency(mileRate)}) vs. the Weight/Dimension Rate (${formatCurrency(wndRate)}). **YOB ${customerProfile.yearOfBirth}** required for release.</p>
+                    </div>
+                `;
+
+                calculateBtn.onclick = () => showModal(
+                    `<h3 class="text-2xl font-bold text-deep-green mb-3">Confirm On-Demand Service</h3>
+                     <p class="text-deep-brown-black">Your estimated charge is **${formatCurrency(finalCharge)}**. Confirm booking with **Year of Birth ${customerProfile.yearOfBirth}** as the security release code.</p>`,
+                    () => console.log('User confirmed ODPDS booking.') 
+                );
+            };
+
+            document.getElementById('odpds-weight').addEventListener('input', runODPDSCheck);
+            document.getElementById('odpds-dimension').addEventListener('input', runODPDSCheck);
+            document.getElementById('odpds-pickup-miles').addEventListener('input', runODPDSCheck);
+            document.getElementById('odpds-delivery-miles').addEventListener('input', runODPDSCheck);
+            
+            runODPDSCheck();
+        };
+
+        // New function to attach listeners for the Activity Log
+        const attachActivityListeners = () => {
+            const backBtn = document.getElementById('activity-back-to-dashboard-btn');
+            if (backBtn) {
+                backBtn.addEventListener('click', () => {
+                    currentView = 'dashboard';
+                    renderApp();
+                });
+            }
+        };
+
+        // New function to attach listeners for Billing & Payments
+        const attachBillingPaymentsListeners = () => {
+            const backBtn = document.getElementById('billing-payments-back-to-dashboard-btn');
+            if (backBtn) {
+                backBtn.addEventListener('click', () => {
+                    currentView = 'dashboard';
+                    renderApp();
+                });
+            }
+        };
+
+        // =========================================================================
+        // --- VIEW RENDERING FUNCTIONS (MOVED UP FOR SCOPE) ---
+        // =========================================================================
+
+        const renderLoading = () => {
+            appContainer.innerHTML = `
+                <div class="flex flex-col items-center justify-center p-8 bg-white rounded-xl shadow-2xl">
+                    ${renderLogo()}
+                    <div class="custom-spinner mt-6"></div>
+                    <p class="mt-4 text-deep-brown-black font-semibold text-lg">Loading application...</p>
+                </div>
+            `;
+        };
+        
+        const renderLogin = () => {
+            const isRegister = currentAuthMode === 'register';
+            const title = isRegister ? 'Create Account' : 'Secure Login';
+            const submitText = isRegister ? 'Register' : 'Sign In';
+            const switchText = isRegister ? 'Already have an account? Sign In.' : "Don't have an account? Register.";
+            
+            appContainer.classList.remove('max-w-xl');
+            appContainer.classList.add('max-w-lg');
+            
+            appContainer.innerHTML = `
+                <div class="bg-white p-6 sm:p-8 rounded-xl shadow-2xl transition-all duration-300">
+                    ${renderLogo()}
+                    <h2 class="text-3xl font-extrabold text-deep-green mt-4 mb-2 text-center">${title}</h2>
+                    <p class="text-center text-sm text-deep-brown-black/70 mb-6">3Grands Logistics Client Portal</p>
+                    
+                    ${isFirebaseUnavailable ? 
+                        `<div class="bg-red-brown text-warm-cream p-3 rounded-lg text-sm mb-4">
+                            🚨 **ERROR**: Authentication service is unavailable. Please check your network connection or Firebase configuration.
+                        </div>` : ''}
+
+                    <form id="auth-form" class="space-y-4">
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-deep-brown-black">Email Address</label>
+                            <input type="email" id="email" required placeholder="user@example.com" class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:ring-1 focus:ring-gold-yellow focus:border-gold-yellow text-deep-brown-black">
+                        </div>
+                        <div>
+                            <label for="password" class="block text-sm font-medium text-deep-brown-black">Password</label>
+                            <input type="password" id="password" required minlength="6" placeholder="Minimum 6 characters" class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:ring-1 focus:ring-gold-yellow focus:border-gold-yellow text-deep-brown-black">
+                        </div>
+                        
+                        <div id="auth-error" class="text-sm font-medium text-red-brown"></div>
+                        
+                        <button id="submit-btn" type="submit" class="w-full bg-red-brown text-warm-cream py-2 rounded-lg font-semibold flex items-center justify-center hover:bg-red-brown-dark transition duration-200 shadow-md">
+                            ${submitText}
+                        </button>
+                    </form>
+
+                    <button id="switch-mode-btn" class="w-full mt-4 text-center text-sm text-deep-green hover:text-red-brown transition duration-200">
+                        ${switchText}
+                    </button>
+                    <div class="mt-4 text-xs text-center text-deep-brown-black/60">
+                            User ID: ${currentUser ? currentUser.uid : 'Not Signed In'}
+                    </div>
+                </div>
+            `;
+            attachLoginListeners(isRegister);
+        };
+        
+        const renderDashboard = () => {
+            const userEmail = currentUser?.email || 'Guest User';
+            const profileComplete = customerProfile.name && customerProfile.address && customerProfile.yearOfBirth;
+            
+            appContainer.classList.remove('max-w-lg');
+            appContainer.classList.add('max-w-xl');
+
+            appContainer.innerHTML = `
+                <div class="bg-white p-6 sm:p-8 rounded-xl shadow-2xl transition-all duration-300 w-full">
+                    <div class="flex justify-between items-start border-b pb-4 border-gold-yellow/50 mb-6">
+                        <div>
+                            <h1 class="text-3xl font-bold text-deep-green">Welcome Back!</h1>
+                            <p class="text-sm text-deep-brown-black/70 mt-1">${userEmail}</p>
+                        </div>
+                        <button id="sign-out-btn" class="bg-red-brown text-warm-cream px-4 py-2 text-sm font-semibold rounded-lg hover:bg-red-brown-dark transition duration-200">
+                            Sign Out
+                        </button>
+                    </div>
+
+                    ${!profileComplete ? `
+                        <div class="bg-red-brown/10 border-l-4 border-red-brown p-4 mb-6">
+                            <p class="text-sm text-red-brown font-semibold">🚨 **Action Required:** Complete your profile to proceed with services.</p>
+                        </div>
+                    ` : ''}
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        
+                        <div class="bg-warm-cream p-5 rounded-xl shadow-lg border-t-4 ${profileComplete ? 'border-deep-green' : 'border-red-brown'} flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <span class="text-2xl ${profileComplete ? 'text-deep-green' : 'text-red-brown'}">👤</span>
+                                    <h3 class="text-xl font-bold text-deep-brown-black">My Profile</h3>
+                                </div>
+                                <p class="text-sm text-deep-brown-black/80 mb-4">Enter details for package release security.</p>
+                            </div>
+                            <button id="profile-btn" class="w-full bg-deep-brown-black text-warm-cream py-2 text-sm rounded-lg font-semibold hover:bg-deep-green transition duration-200">
+                                Edit Details
+                            </button>
+                        </div>
+                        
+                        <div class="bg-warm-cream p-5 rounded-xl shadow-lg border-t-4 border-red-brown flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <span class="text-2xl text-red-brown">🚚</span>
+                                    <h3 class="text-xl font-bold text-deep-brown-black">On-Demand Service</h3>
+                                </div>
+                                <p class="text-sm text-deep-brown-black/80 mb-4">Instant quote based on size, weight, and distance for large or specialized items, including pickups.</p>
+                            </div>
+                            <button id="odpds-service-btn" ${!profileComplete ? 'disabled' : ''} class="w-full bg-red-brown text-warm-cream py-2 text-sm rounded-lg font-semibold ${!profileComplete ? 'disabled-btn' : 'hover:bg-red-brown-dark'} transition duration-200">
+                                Get Instant Quote
+                            </button>
+                        </div>
+
+                        <div class="bg-warm-cream p-5 rounded-xl shadow-lg border-t-4 border-gold-yellow flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-start space-x-2 mb-1">
+                                    <span class="text-2xl text-gold-yellow">📦</span>
+                                    <h3 class="text-lg font-extrabold text-deep-brown-black leading-snug pt-1">VWC Consolidation</h3> 
+                                </div>
+                                <p class="text-xs text-deep-brown-black/80 mb-4">Vendor to Warehouse to Customer consolidation service with subscription option.</p>
+                            </div>
+                            <button id="vwc-service-btn" ${!profileComplete ? 'disabled' : ''} class="w-full bg-deep-green text-warm-cream py-2 text-sm rounded-lg font-semibold ${!profileComplete ? 'disabled-btn' : 'hover:bg-deep-brown-black'} transition duration-200">
+                                ${isVWCSubscribed ? 'Access VWC Portal' : 'Subscribe to VWC'}
+                            </button>
+                        </div>
+
+                        <!-- Quick Return Request Card -->
+                        <div class="service-card bg-warm-cream p-5 rounded-xl shadow-lg border-t-4 border-red-brown flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <span class="text-2xl text-red-brown">↩️</span>
+                                    <h3 class="text-xl font-bold text-deep-brown-black">Quick Return Request</h3>
+                                </div>
+                                <p class="text-sm text-deep-brown-black/80 mb-4">Initiate a return for your recent orders quickly and easily.</p>
+                            </div>
+                            <button id="openReturnModalBtn" ${!profileComplete ? 'disabled' : ''} class="w-full py-2 bg-red-brown text-warm-cream text-sm font-medium rounded-lg ${!profileComplete ? 'disabled-btn' : 'hover:bg-red-brown-dark'} transition shadow-md">
+                                Start a Return
+                            </button>
+                        </div>
+
+                        <!-- Recent Activity Card -->
+                        <div class="service-card bg-warm-cream p-5 rounded-xl shadow-lg border-t-4 border-deep-green flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <span class="text-2xl text-deep-green">⏱️</span>
+                                    <h3 class="text-xl font-bold text-deep-brown-black">Recent Activity</h3>
+                                </div>
+                                <p class="text-sm text-deep-brown-black/80 mb-4">See updates on stowed packages, on-demand orders, and return requests.</p>
+                                <div id="recent-activity-list" class="text-xs text-deep-brown-black/70 mb-3">
+                                    <!-- Placeholder for dynamic content -->
+                                    <p class="italic">No recent activity to display yet. Complete your profile and use our services to see updates!</p>
+                                </div>
+                            </div>
+                            <button id="view-all-activity-btn" ${!profileComplete ? 'disabled' : ''} class="w-full py-2 bg-deep-green text-warm-cream text-sm font-medium rounded-lg ${!profileComplete ? 'disabled-btn' : 'hover:bg-deep-brown-black'} transition shadow-md">
+                                View All Activity
+                            </button>
+                        </div>
+
+                        <!-- NEW CARD: Billing & Payments -->
+                        <div class="service-card bg-warm-cream p-5 rounded-xl shadow-lg border-t-4 border-gold-yellow flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <span class="text-2xl text-gold-yellow">💳</span>
+                                    <h3 class="text-xl font-bold text-deep-brown-black">Billing & Payments</h3>
+                                </div>
+                                <p class="text-sm text-deep-brown-black/80 mb-4">View invoices, manage payment methods, and handle subscriptions.</p>
+                            </div>
+                            <button id="billing-payments-btn" ${!profileComplete ? 'disabled' : ''} class="w-full py-2 bg-gold-yellow text-deep-brown-black text-sm font-medium rounded-lg ${!profileComplete ? 'disabled-btn' : 'hover:bg-deep-brown-black'} transition shadow-md">
+                                Manage Billing
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            `;
+            attachDashboardListeners();
+        };
+
+        const renderProfile = () => {
+             appContainer.classList.remove('max-w-xl');
+             appContainer.classList.add('max-w-lg');
+            
+            appContainer.innerHTML = `
+                <div class="bg-white p-6 sm:p-8 rounded-xl shadow-2xl transition-all duration-300 w-full">
+                    <div class="flex items-center justify-between border-b pb-4 border-gold-yellow/50 mb-6">
+                        <h1 class="text-3xl font-bold text-deep-green">👤 My Profile</h1>
+                        <button id="profile-back-to-dashboard-btn" class="bg-gray-200 text-deep-brown-black px-4 py-2 text-sm font-semibold rounded-lg hover:bg-gray-300 transition duration-200">
+                            Back to Dashboard
+                        </button>
+                    </div>
+
+                    <form id="profile-form" class="space-y-5">
+                        <div class="bg-gold-yellow/10 border-l-4 border-gold-yellow p-4">
+                            <h4 class="font-semibold text-deep-brown-black">Security Requirement</h4>
+                            <p class="text-sm text-deep-brown-black/80 mt-1">
+                                Your **Year of Birth (YYYY)** is required for security and will be used as the **package release code** unless alternate arrangements are made.
+                            </p>
+                        </div>
+
+                        <div>
+                            <label for="profile-name" class="block text-sm font-medium text-deep-brown-black">Full Name</label>
+                            <input type="text" id="profile-name" required placeholder="John Doe" class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:ring-1 focus:ring-deep-green focus:border-deep-green text-deep-brown-black">
+                        </div>
+                        
+                        <div>
+                            <label for="profile-address" class="block text-sm font-medium text-deep-brown-black">Primary Address</label>
+                            <textarea id="profile-address" rows="3" required placeholder="123 Shipping Lane, City, State, ZIP" class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:ring-1 focus:ring-deep-green focus:border-deep-green text-deep-brown-black resize-none"></textarea>
+                        </div>
+                        
+                        <div>
+                            <label for="profile-yob" class="block text-sm font-medium text-deep-brown-black">Year of Birth (YYYY)</label>
+                            <input type="number" id="profile-yob" required min="1900" max="${new Date().getFullYear()}" placeholder="e.g., 1985" maxlength="4" class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:ring-1 focus:ring-deep-green focus:border-deep-green text-deep-brown-black">
+                        </div>
+
+                        <div class="flex justify-between items-center bg-warm-cream/50 p-3 rounded-lg border border-deep-green/50">
+                            <span class="text-sm font-medium text-deep-brown-black">VWC Subscription Status:</span>
+                            <span id="vwc-subscription-status" class="font-semibold ${isVWCSubscribed ? 'text-deep-green' : 'text-red-brown'}">
+                                ${isVWCSubscribed ? 'Active' : 'Inactive'}
+                            </span>
+                        </div>
+                        
+                        <div id="profile-status" class="text-sm font-medium"></div>
+
+                        <button type="submit" class="w-full bg-red-brown text-warm-cream py-2 rounded-lg font-semibold hover:bg-red-brown-dark transition duration-200 shadow-md">
+                            Save Profile
+                        </button>
+                    </form>
+                </div>
+            `;
+            attachProfileListeners();
+        };
+
+
+        const renderODPDS = () => {
+            appContainer.classList.remove('max-w-lg');
+            appContainer.classList.add('max-w-xl');
+
+            appContainer.innerHTML = `
+                <div class="bg-white p-6 sm:p-8 rounded-xl shadow-2xl transition-all duration-300 w-full">
+                    <div class="flex items-center justify-between border-b pb-4 border-gold-yellow/50 mb-6">
+                        <h1 class="text-3xl font-bold text-red-brown">🚚 On-Demand Service Quote</h1>
+                        <button id="odpds-back-to-dashboard-btn" class="bg-gray-200 text-deep-brown-black px-4 py-2 text-sm font-semibold rounded-lg hover:bg-gray-300 transition duration-200">
+                            Back to Dashboard
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        
+                        <div class="bg-warm-cream p-5 rounded-xl border-2 border-red-brown shadow-md space-y-4">
+                            <h3 class="text-xl font-bold text-red-brown mb-3">Enter Shipment Details</h3>
+                            
+                            <div class="space-y-3">
+                                <label class="block text-md font-medium text-deep-brown-black">Package Metrics</label>
+                                <div>
+                                    <label for="odpds-weight" class="block text-sm font-medium text-deep-brown-black">Package Weight (lbs)</label>
+                                    <input type="number" id="odpds-weight" min="1" placeholder="e.g., 50" class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:ring-1 focus:ring-red-brown focus:border-red-brown text-deep-brown-black">
+                                </div>
+                                <div>
+                                    <label for="odpds-dimension" class="block text-sm font-medium text-deep-brown-black">Longest Dimension (inches)</label>
+                                    <input type="number" id="odpds-dimension" min="1" placeholder="e.g., 40" class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:ring-1 focus:ring-red-brown focus:border-red-brown text-deep-brown-black">
+                                </div>
+                            </div>
+
+                            <div class="space-y-3">
+                                <label class="block text-md font-medium text-deep-brown-black border-t pt-3">Distance (Total Miles)</label>
+                                <div>
+                                    <label for="odpds-pickup-miles" class="block text-sm font-medium text-deep-brown-black">Miles to Pickup Location</label>
+                                    <input type="number" id="odpds-pickup-miles" min="0" placeholder="e.g., 10" class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:ring-1 focus:ring-red-brown focus:border-red-brown text-deep-brown-black">
+                                </div>
+                                <div>
+                                    <label for="odpds-delivery-miles" class="block text-sm font-medium text-deep-brown-black">Miles from Pickup to Delivery</label>
+                                    <input type="number" id="odpds-delivery-miles" min="0" placeholder="e.g., 50" class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:ring-1 focus:ring-red-brown focus:border-red-brown text-deep-brown-black">
+                                </div>
+                            </div>
+                            
+                            <div id="odpds-error" class="text-sm font-medium text-red-brown mt-3"></div>
+                            
+                            <button id="odpds-calculate-btn" disabled class="w-full text-warm-cream py-2 rounded-lg font-semibold mt-4 transition duration-200 bg-deep-brown-black disabled-btn">
+                                Enter details to calculate rate
+                            </button>
+                        </div>
+
+                        <div class="bg-warm-cream p-5 rounded-xl border-2 border-gold-yellow shadow-md">
+                            <h3 class="text-xl font-bold text-deep-green mb-3">Estimated Quote</h3>
+                            <p class="text-sm text-deep-brown-black/80">
+                                Your final cost is determined by the greater value between the **Total Mileage Rate** and the **Weight/Dimension Rate**.
+                            </p>
+                            <div id="odpds-result-box" class="mt-2">
+                                <p class="text-gray-500 italic">Enter package and distance details to view quote.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            attachODPDSListeners();
+        };
+
+
+        const renderVWCService = () => {
+            appContainer.classList.remove('max-w-lg');
+            appContainer.classList.add('max-w-xl');
+
+            appContainer.innerHTML = `
+                <div class="bg-white p-6 sm:p-8 rounded-xl shadow-2xl transition-all duration-300 w-full">
+                    <div class="flex items-center justify-between border-b pb-4 border-gold-yellow/50 mb-6">
+                        <h1 class="text-3xl font-bold text-deep-green">📦 VWC Consolidation Service</h1>
+                        <button id="vwc-back-to-dashboard-btn" class="bg-gray-200 text-deep-brown-black px-4 py-2 text-sm font-semibold rounded-lg hover:bg-gray-300 transition duration-200">
+                            Back to Dashboard
+                        </button>
+                    </div>
+
+                    <div id="not-subscribed-message" class="bg-red-brown/10 border-l-4 border-red-brown p-4 mb-6 ${isVWCSubscribed ? 'hidden' : ''}">
+                        <p class="text-base text-red-brown font-semibold">
+                            🚨 You are not currently subscribed to the VWC Consolidation Service.
+                        </p>
+                        <p class="text-sm text-red-brown/80 mt-1">
+                            Please subscribe to access the pre-alert form and your dedicated warehouse address.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        
+                        <div id="vwc-pre-alert-form-section" class="bg-warm-cream p-5 rounded-xl border-2 border-red-brown shadow-md ${isVWCSubscribed ? '' : 'hidden'}">
+                            <h3 class="text-xl font-bold text-red-brown mb-4">Submit Package Pre-Alert</h3>
+                            <p class="text-sm text-deep-brown-black/80 mb-3">
+                                Enter the details of your order **immediately** after it ships from the vendor. This is required for proper **stow** and receipt.
+                            </p>
+                            
+                            <form id="vwc-pre-alert-form" class="space-y-3">
+                                <div>
+                                    <label for="tracking-number" class="block text-sm font-medium text-deep-brown-black">Tracking Number</label>
+                                    <input type="text" id="tracking-number" required placeholder="e.g., 1Z9999999999999999" class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:ring-1 focus:ring-red-brown focus:border-red-brown text-deep-brown-black">
+                                </div>
+                                <div>
+                                    <label for="vendor-name" class="block text-sm font-medium text-deep-brown-black">Vendor Name (e.g., Amazon, Etsy, Nike)</label>
+                                    <input type="text" id="vendor-name" required placeholder="Amazon" class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:ring-1 focus:ring-red-brown focus:border-red-brown text-deep-brown-black">
+                                </div>
+                                <div>
+                                    <label for="package-contents" class="block text-sm font-medium text-deep-brown-black">Package Contents Description</label>
+                                    <input type="text" id="package-contents" required placeholder="e.g., 3 pairs of shoes" class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:ring-1 focus:ring-red-brown focus:border-red-brown text-deep-brown-black">
+                                </div>
+                                
+                                <div id="vwc-alert-status" class="text-sm font-medium"></div>
+
+                                <button type="submit" class="w-full bg-deep-green text-warm-cream py-2 rounded-lg font-semibold hover:bg-deep-brown-black transition duration-200 shadow-md">
+                                    Submit Pre-Alert
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <div id="vwc-package-list-section" class="bg-warm-cream p-5 rounded-xl border-2 border-gold-yellow shadow-md ${isVWCSubscribed ? '' : 'hidden'}">
+                            <h3 class="text-xl font-bold text-gold-yellow mb-4">Current Packages for Consolidation</h3>
+                            <p class="text-sm text-deep-brown-black/80 mb-3">
+                                Below are the packages we are currently monitoring for your consolidation bin.
+                            </p>
+                            <div id="vwc-package-list">
+                                <!-- Package list will be rendered here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="vwc-subscribe-btn" class="w-full bg-deep-green text-warm-cream py-3 text-sm rounded-lg font-semibold hover:bg-deep-brown-black transition duration-200 shadow-lg mt-5 ${isVWCSubscribed ? 'hidden' : ''}">
+                        Subscribe to VWC Service ($23.99/month)
+                    </button>
+
+                    <div id="warehouse-address-container" class="mt-4 pt-4 border-t border-gold-yellow/50 ${isVWCSubscribed ? '' : 'hidden'}">
+                        <h3 class="text-xl font-bold text-deep-green text-center mb-3">Your Consolidation Warehouse Address:</h3>
+                        <div class="p-4 bg-deep-green text-warm-cream rounded-lg text-center font-mono">
+                            <p class="text-lg font-semibold">${customerProfile.name || 'Your Name'}</p>
+                            <p>3Grands Logistics WHS</p>
+                            <p>123 Global Lane, Unit **${currentUser?.uid.substring(0, 8).toUpperCase() || 'XXXX-XXXX'}**</p>
+                            <p>Miami, FL 33130</p>
+                        </div>
+                        <p class="text-xs text-center text-deep-brown-black/60 mt-2">
+                            **VWC Security Notice:** Profile YOB: **${customerProfile.yearOfBirth || 'Missing'}** is the security code for package release/shipment.
+                        </p>
+                    </div>
+                    
+                </div>
+            `;
+            attachVWCListeners(); 
+            if (isVWCSubscribed) {
+                renderVWCPackageList(); 
+            }
+        };
+
+        const renderActivity = () => {
+            appContainer.classList.remove('max-w-lg');
+            appContainer.classList.add('max-w-xl');
+
+            appContainer.innerHTML = `
+                <div class="bg-white p-6 sm:p-8 rounded-xl shadow-2xl transition-all duration-300 w-full">
+                    <div class="flex items-center justify-between border-b pb-4 border-gold-yellow/50 mb-6">
+                        <h1 class="text-3xl font-bold text-deep-green">⏱️ Activity Log</h1>
+                        <button id="activity-back-to-dashboard-btn" class="bg-gray-200 text-deep-brown-black px-4 py-2 text-sm font-semibold rounded-lg hover:bg-gray-300 transition duration-200">
+                            Back to Dashboard
+                        </button>
+                    </div>
+                    <div class="text-deep-brown-black text-center p-8 bg-warm-cream/50 rounded-lg">
+                        <p class="text-lg font-semibold mb-2">Your detailed activity log will appear here!</p>
+                        <p class="text-sm">This section will show a comprehensive history of your stowed packages, on-demand orders, and return requests.</p>
+                    </div>
+                </div>
+            `;
+            attachActivityListeners();
+        };
+
+        const renderBillingPayments = () => {
+            appContainer.classList.remove('max-w-lg');
+            appContainer.classList.add('max-w-xl');
+
+            appContainer.innerHTML = `
+                <div class="bg-white p-6 sm:p-8 rounded-xl shadow-2xl transition-all duration-300 w-full">
+                    <div class="flex items-center justify-between border-b pb-4 border-gold-yellow/50 mb-6">
+                        <h1 class="text-3xl font-bold text-gold-yellow">💳 Billing & Payments</h1>
+                        <button id="billing-payments-back-to-dashboard-btn" class="bg-gray-200 text-deep-brown-black px-4 py-2 text-sm font-semibold rounded-lg hover:bg-gray-300 transition duration-200">
+                            Back to Dashboard
+                        </button>
+                    </div>
+                    <div class="text-deep-brown-black text-center p-8 bg-warm-cream/50 rounded-lg">
+                        <p class="text-lg font-semibold mb-2">This is where you'll manage your billing and payment information!</p>
+                        <p class="text-sm">You can view invoices, check your payment history, and update your payment methods here.</p>
+                        <p class="text-xs text-deep-brown-black/60 mt-3">**Secure Transactions:** All payments are processed securely by our trusted payment partners.</p>
+                    </div>
+                </div>
+            `;
+            attachBillingPaymentsListeners();
+        };
+
+
+        // =========================================================================
+        // --- MAIN APPLICATION ENTRY POINT ---
+        // =========================================================================
+
+        const renderApp = () => {
+            if (!authReady) {
+                renderLoading();
+                return;
+            }
+
+            if (currentUser) {
+                if (currentView === 'profile') {
+                    renderProfile();
+                } else if (currentView === 'vwc') {
+                    renderVWCService();
+                } else if (currentView === 'odpds') {
+                    renderODPDS();
+                } else if (currentView === 'activity') {
+                    renderActivity();
+                } else if (currentView === 'billingPayments') { // New condition for billing & payments
+                    renderBillingPayments();
+                }
+                else {
+                    renderDashboard(); 
+                }
+            } else {
+                renderLogin();
+            }
+        };
+
+
+        // --- Firebase Initialization and Auth Setup (Initial Entry Point) ---
+        const initializeFirebase = async () => {
+            try {
+                app = initializeApp(DEV_MODE_FIREBASE_CONFIG);
+                auth = getAuth(app);
+
+                onAuthStateChanged(auth, (user) => {
+                    currentUser = user;
+                    authReady = true; 
+
+                    if (user) {
+                        loadProfile(user.uid);
+                        loadVWCPackages(user.uid);
+                        if (currentView === 'login' || currentView === 'register') {
+                            currentView = 'dashboard';
+                        }
+                    } else {
+                        currentUser = null;
+                        customerProfile = { name: '', address: '', yearOfBirth: '' };
+                        vwcPackages = [];
+                        isVWCSubscribed = false;
+                        currentView = 'login';
+                    }
+                    renderApp(); 
+                });
+            } catch (error) {
+                console.error("Firebase initialization failed:", error);
+                isFirebaseUnavailable = true;
+                authReady = true; 
+                renderApp();
+            }
+        };
+
+        // --- Start Application ---
+        console.log("Starting Application...");
+        initializeFirebase();
+    </script>
+</body>
+</html>
