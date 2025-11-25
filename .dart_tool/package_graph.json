@@ -1,10 +1,10 @@
 {
   "roots": [
-    "customer_app_mobile"
+    "firestore_test_app"
   ],
   "packages": [
     {
-      "name": "customer_app_mobile",
+      "name": "firestore_test_app",
       "version": "1.0.0+1",
       "dependencies": [
         "cloud_firestore",
@@ -12,6 +12,7 @@
         "firebase_auth",
         "firebase_core",
         "firebase_messaging",
+        "firebase_ui_auth",
         "flutter",
         "intl"
       ],
@@ -47,11 +48,27 @@
     },
     {
       "name": "intl",
-      "version": "0.19.0",
+      "version": "0.20.2",
       "dependencies": [
         "clock",
         "meta",
         "path"
+      ]
+    },
+    {
+      "name": "firebase_ui_auth",
+      "version": "1.14.0",
+      "dependencies": [
+        "email_validator",
+        "firebase_auth",
+        "firebase_core",
+        "firebase_dynamic_links",
+        "firebase_ui_localizations",
+        "firebase_ui_oauth",
+        "firebase_ui_shared",
+        "flutter",
+        "flutter_localizations",
+        "meta"
       ]
     },
     {
@@ -206,6 +223,60 @@
         "string_scanner",
         "term_glyph"
       ]
+    },
+    {
+      "name": "flutter_localizations",
+      "version": "0.0.0",
+      "dependencies": [
+        "flutter",
+        "intl",
+        "path"
+      ]
+    },
+    {
+      "name": "firebase_ui_shared",
+      "version": "1.4.2",
+      "dependencies": [
+        "flutter"
+      ]
+    },
+    {
+      "name": "firebase_ui_oauth",
+      "version": "1.5.2",
+      "dependencies": [
+        "desktop_webview_auth",
+        "firebase_auth",
+        "firebase_ui_auth",
+        "firebase_ui_shared",
+        "flutter",
+        "flutter_svg"
+      ]
+    },
+    {
+      "name": "firebase_ui_localizations",
+      "version": "1.14.1",
+      "dependencies": [
+        "flutter",
+        "flutter_localizations",
+        "path"
+      ]
+    },
+    {
+      "name": "firebase_dynamic_links",
+      "version": "5.5.7",
+      "dependencies": [
+        "firebase_core",
+        "firebase_core_platform_interface",
+        "firebase_dynamic_links_platform_interface",
+        "flutter",
+        "meta",
+        "plugin_platform_interface"
+      ]
+    },
+    {
+      "name": "email_validator",
+      "version": "2.1.17",
+      "dependencies": []
     },
     {
       "name": "firebase_messaging_web",
@@ -380,6 +451,46 @@
       ]
     },
     {
+      "name": "flutter_svg",
+      "version": "2.2.3",
+      "dependencies": [
+        "flutter",
+        "http",
+        "vector_graphics",
+        "vector_graphics_codec",
+        "vector_graphics_compiler"
+      ]
+    },
+    {
+      "name": "desktop_webview_auth",
+      "version": "0.0.16",
+      "dependencies": [
+        "crypto",
+        "flutter",
+        "flutter_web_plugins",
+        "http",
+        "plugin_platform_interface"
+      ]
+    },
+    {
+      "name": "plugin_platform_interface",
+      "version": "2.1.8",
+      "dependencies": [
+        "meta"
+      ]
+    },
+    {
+      "name": "firebase_dynamic_links_platform_interface",
+      "version": "0.2.6+35",
+      "dependencies": [
+        "_flutterfire_internals",
+        "firebase_core",
+        "flutter",
+        "meta",
+        "plugin_platform_interface"
+      ]
+    },
+    {
       "name": "web",
       "version": "0.5.1",
       "dependencies": []
@@ -403,13 +514,6 @@
       ]
     },
     {
-      "name": "plugin_platform_interface",
-      "version": "2.1.8",
-      "dependencies": [
-        "meta"
-      ]
-    },
-    {
       "name": "http_parser",
       "version": "4.1.2",
       "dependencies": [
@@ -425,10 +529,83 @@
       "dependencies": []
     },
     {
+      "name": "vector_graphics_compiler",
+      "version": "1.1.19",
+      "dependencies": [
+        "args",
+        "meta",
+        "path",
+        "path_parsing",
+        "vector_graphics_codec",
+        "xml"
+      ]
+    },
+    {
+      "name": "vector_graphics_codec",
+      "version": "1.1.13",
+      "dependencies": []
+    },
+    {
+      "name": "vector_graphics",
+      "version": "1.1.19",
+      "dependencies": [
+        "flutter",
+        "http",
+        "vector_graphics_codec"
+      ]
+    },
+    {
+      "name": "http",
+      "version": "1.6.0",
+      "dependencies": [
+        "async",
+        "http_parser",
+        "meta",
+        "web"
+      ]
+    },
+    {
+      "name": "crypto",
+      "version": "3.0.7",
+      "dependencies": [
+        "typed_data"
+      ]
+    },
+    {
       "name": "typed_data",
       "version": "1.4.0",
       "dependencies": [
         "collection"
+      ]
+    },
+    {
+      "name": "xml",
+      "version": "6.6.1",
+      "dependencies": [
+        "collection",
+        "meta",
+        "petitparser"
+      ]
+    },
+    {
+      "name": "path_parsing",
+      "version": "1.1.0",
+      "dependencies": [
+        "meta",
+        "vector_math"
+      ]
+    },
+    {
+      "name": "args",
+      "version": "2.7.0",
+      "dependencies": []
+    },
+    {
+      "name": "petitparser",
+      "version": "7.0.1",
+      "dependencies": [
+        "collection",
+        "meta"
       ]
     }
   ],
