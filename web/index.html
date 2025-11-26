@@ -1,533 +1,534 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3Grands Logistics Secure App</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        /* Custom styles for the Afrocentric palette */
-        :root {
-            /* Kente-inspired Colors */
-            --color-red-brown: #6F2A1C; /* Saturated Red/Brown */
-            --color-gold-yellow: #D4A74F; /* Vibrant Gold/Yellow */
-            --color-deep-green: #2D4C2D; /* Deep Forest Green */
-            --color-warm-cream: #F5F5DC; /* Warm Cream/Beige */
-            --color-deep-brown-black: #2A1A0A; /* Near-Black/Deep Brown */
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--color-warm-cream); 
-            color: var(--color-deep-brown-black); /* Default text color */
-            padding: 1rem;
-        }
-        
-        /* Custom Tailwind Utilities (for use in JS rendering) */
-        .text-red-brown { color: var(--color-red-brown); }
-        .bg-red-brown { background-color: var(--color-red-brown); }
-        .hover\:bg-red-brown-dark:hover { background-color: #5A2016; } /* Slightly darker on hover */
-        .text-gold-yellow { color: var(--color-gold-yellow); }
-        .border-gold-yellow { border-color: var(--color-gold-yellow); }
-        .focus\:ring-gold-yellow:focus { --tw-ring-color: var(--color-gold-yellow); }
-        .focus\:border-gold-yellow:focus { border-color: var(--color-gold-yellow); }
-        .text-deep-green { color: var(--color-deep-green); }
-        .bg-deep-green { background-color: var(--color-deep-green); }
-        .text-warm-cream { color: var(--color-warm-cream); }
-        .bg-warm-cream { background-color: var(--color-warm-cream); }
-        .text-deep-brown-black { color: var(--color-deep-brown-black); }
-        .bg-deep-brown-black { background-color: var(--color-deep-brown-black); }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3Grands Logistics Secure App</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for the Afrocentric palette */
+        :root {
+            /* Kente-inspired Colors */
+            --color-red-brown: #6F2A1C; /* Saturated Red/Brown */
+            --color-gold-yellow: #D4A74F; /* Vibrant Gold/Yellow */
+            --color-deep-green: #2D4C2D; /* Deep Forest Green */
+            --color-warm-cream: #F5F5DC; /* Warm Cream/Beige */
+            --color-deep-brown-black: #2A1A0A; /* Near-Black/Deep Brown */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--color-warm-cream); 
+            color: var(--color-deep-brown-black); /* Default text color */
+            padding: 1rem;
+        }
+        
+        /* Custom Tailwind Utilities (for use in JS rendering) */
+        .text-red-brown { color: var(--color-red-brown); }
+        .bg-red-brown { background-color: var(--color-red-brown); }
+        .hover\:bg-red-brown-dark:hover { background-color: #5A2016; } /* Slightly darker on hover */
+        .text-gold-yellow { color: var(--color-gold-yellow); }
+        .border-gold-yellow { border-color: var(--color-gold-yellow); }
+        .focus\:ring-gold-yellow:focus { --tw-ring-color: var(--color-gold-yellow); }
+        .focus\:border-gold-yellow:focus { border-color: var(--color-gold-yellow); }
+        .text-deep-green { color: var(--color-deep-green); }
+        .bg-deep-green { background-color: var(--color-deep-green); }
+        .text-warm-cream { color: var(--color-warm-cream); }
+        .bg-warm-cream { background-color: var(--color-warm-cream); }
+        .text-deep-brown-black { color: var(--color-deep-brown-black); }
+        .bg-deep-brown-black { background-color: var(--color-deep-brown-black); }
 
-        /* Custom spinner for better visual integration */
-        .custom-spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-left-color: var(--color-red-brown);
-            border-top-color: var(--color-gold-yellow);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-        }
-        /* Specific spinner for buttons */
-        .custom-spinner.w-5.h-5 {
-            border-width: 2px;
-            width: 1.25rem;
-            height: 1.25rem;
-            margin-right: 0.5rem;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* Modal Backdrop */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-        /* Disabled Button Style for consistency */
-        .disabled-btn {
-            opacity: 0.5;
-            cursor: not-allowed;
-            background-color: var(--color-deep-brown-black) !important; 
-        }
-    </style>
+        /* Custom spinner for better visual integration */
+        .custom-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: var(--color-red-brown);
+            border-top-color: var(--color-gold-yellow);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        /* Specific spinner for buttons */
+        .custom-spinner.w-5.h-5 {
+            border-width: 2px;
+            width: 1.25rem;
+            height: 1.25rem;
+            margin-right: 0.5rem;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Modal Backdrop */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        /* Disabled Button Style for consistency */
+        .disabled-btn {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background-color: var(--color-deep-brown-black) !important; 
+        }
+    </style>
 </head>
 <body>
 
-    <div id="app" class="w-full max-w-lg">
-        </div>
+    <div id="app" class="w-full max-w-lg">
+    </div>
 
-    <div id="modal-container"></div>
+    <div id="modal-container"></div>
 
-    <script type="module">
-        // =========================================================================
-        // --- FIREBASE IMPORTS: ENABLED ---
-        // =========================================================================
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { 
-            getAuth, 
-            onAuthStateChanged, 
-            signInWithEmailAndPassword, 
-            createUserWithEmailAndPassword,
-            signOut,
-            setPersistence,
-            browserSessionPersistence
-        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        
-        // NEW: Import Firebase Functions SDK
-        import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-functions.js";
+    <script type="module">
+        // =========================================================================
+        // --- FIREBASE IMPORTS: ENABLED ---
+        // =========================================================================
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { 
+            getAuth, 
+            onAuthStateChanged, 
+            signInWithEmailAndPassword, 
+            createUserWithEmailAndPassword,
+            signOut,
+            setPersistence,
+            browserSessionPersistence
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        
+        // NEW: Import Firebase Functions SDK
+        import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-functions.js";
 
-        // =========================================================================
+        // =========================================================================
 
-        let app, auth, db, functions; // NEW: Added 'functions'
-        let authReady = false; 
-        let isFirebaseUnavailable = false; 
-        let currentUser = null; 
-        let currentView = 'dashboard'; 
-        
-        // --- State Variables ---
-        let isVWCSubscribed = false; 
-        let customerProfile = {
-            name: '',
-            address: '',
-            yearOfBirth: '' // Stored as a string (YYYY)
-        };
-        
-        let vwcPackages = [];
-
-
-        const appContainer = document.getElementById('app');
-        const modalContainer = document.getElementById('modal-container');
-        let currentAuthMode = 'login'; 
-
-        // =========================================================================
-        // --- STEP 1: FIREBASE CONFIG --- 
-        // =========================================================================
-        const DEV_MODE_FIREBASE_CONFIG = {
-            apiKey: "AIzaSyCahMIf5Q3YBsjfXB30YpAgWfycvT0gCqQ",
-            authDomain: "grandslogistics-8af41.firebaseapp.com",
-            projectId: "grandslogistics-8af41",
-            storageBucket: "grandslogistics-8af41.firebasestorage.app",
-            messagingSenderId: "267189664335",
-            appId: "1:267189664335:web:ad23fb36b6aabfc52e883a",
-            measurementId: "G-00890Z62TC" 
-        }; 
-        // =========================================================================
-
-        // --- Utility Functions ---
-        const isValidEmail = (email) => /\S+@\S+\.\S+/i.test(email);
-        
-        const renderLogo = () => {
-            const logoPath = 'logo-128x128.png'; 
-            return `<img src="${logoPath}" 
-                            alt="3Grands Logistics Logo" 
-                            onerror="this.onerror=null; this.src='https://placehold.co/80x80/2D4C2D/F5F5DC?text=3G'"
-                            class="w-20 h-20 object-contain mx-auto">`; 
-        }
-
-        // --- State Management Functions (Using Local Storage as a cache) ---
-        const PROFILE_KEY = '3Grands_Profile_';
-        const PACKAGES_KEY = '3Grands_VWC_Packages_';
-        const SUB_KEY = '3Grands_VWC_Subscribed_';
+        let app, auth, db, functions; // NEW: Added 'functions'
+        let authReady = false; 
+        let isFirebaseUnavailable = false; 
+        let currentUser = null; 
+        let currentView = 'dashboard'; 
+        
+        // --- State Variables ---
+        let isVWCSubscribed = false; 
+        let customerProfile = {
+            name: '',
+            address: '',
+            yearOfBirth: '' // Stored as a string (YYYY)
+        };
+        
+        let vwcPackages = [];
 
 
-        const loadProfile = (uid) => {
-            if (!uid) return;
-            try {
-                const storedProfile = localStorage.getItem(PROFILE_KEY + uid);
-                if (storedProfile) {
-                    customerProfile = JSON.parse(storedProfile);
-                } else {
-                    customerProfile = { name: '', address: '', yearOfBirth: '' };
-                }
-                
-                const storedSub = localStorage.getItem(SUB_KEY + uid);
-                isVWCSubscribed = storedSub === 'true';
+        const appContainer = document.getElementById('app');
+        const modalContainer = document.getElementById('modal-container');
+        let currentAuthMode = 'login'; 
 
-            } catch (e) {
-                console.error("Error loading profile/subscription from local storage:", e);
-                customerProfile = { name: '', address: '', yearOfBirth: '' };
-                isVWCSubscribed = false;
-            }
-        };
+        // =========================================================================
+        // --- STEP 1: FIREBASE CONFIG --- 
+        // =========================================================================
+        const DEV_MODE_FIREBASE_CONFIG = {
+            apiKey: "AIzaSyCahMIf5Q3YBsjfXB30YpAgWfycvT0gCqQ",
+            authDomain: "grandslogistics-8af41.firebaseapp.com",
+            projectId: "grandslogistics-8af41",
+            storageBucket: "grandslogistics-8af41.firebasestorage.app",
+            messagingSenderId: "267189664335",
+            appId: "1:267189664335:web:ad23fb36b6aabfc52e883a",
+            measurementId: "G-00890Z62TC" 
+        }; 
+        // =========================================================================
 
-        const saveProfile = (uid) => {
-            if (!uid) return false;
-            localStorage.setItem(PROFILE_KEY + uid, JSON.stringify(customerProfile));
-            return true;
-        };
-        
-        const setSubscriptionStatus = (uid, status) => {
-             if (!uid) return;
-             isVWCSubscribed = status;
-             localStorage.setItem(SUB_KEY + uid, status ? 'true' : 'false');
-        }
-        
-        const loadVWCPackages = (uid) => {
-             if (!uid) return;
-             vwcPackages = JSON.parse(localStorage.getItem(PACKAGES_KEY + uid) || '[]');
-        };
+        // --- Utility Functions ---
+        const isValidEmail = (email) => /\S+@\S+\.\S+/i.test(email);
+        
+        const renderLogo = () => {
+            const logoPath = 'logo-128x128.png'; 
+            return `<img src="${logoPath}" 
+                                alt="3Grands Logistics Logo" 
+                                onerror="this.onerror=null; this.src='https://placehold.co/80x80/2D4C2D/F5F5DC?text=3G'"
+                                class="w-20 h-20 object-contain mx-auto">`; 
+        }
 
-        const saveVWCPackages = (uid) => {
-             if (!uid) return false;
-             localStorage.setItem(PACKAGES_KEY + uid, JSON.stringify(vwcPackages));
-             return true;
-        };
-
-        const showModal = (content, actionCallback = null) => {
-            modalContainer.innerHTML = `
-                <div class="modal-overlay">
-                    <div class="bg-white p-6 sm:p-8 rounded-xl shadow-2xl w-11/12 max-w-lg transform transition-all duration-300">
-                        ${content}
-                        <div class="mt-6 flex justify-end space-x-3">
-                            <button id="modal-close-btn" class="px-4 py-2 text-sm font-semibold rounded-lg bg-gray-200 text-deep-brown-black hover:bg-gray-300 transition duration-150">
-                                Close
-                            </button>
-                            ${actionCallback ? 
-                                `<button id="modal-action-btn" class="px-4 py-2 text-sm font-semibold rounded-lg bg-deep-green text-warm-cream hover:bg-deep-brown-black transition duration-150">
-                                    Proceed
-                                </button>` : ''
-                            }
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('modal-close-btn').addEventListener('click', () => {
-                modalContainer.innerHTML = '';
-            });
-
-            if (actionCallback) {
-                document.getElementById('modal-action-btn').addEventListener('click', () => {
-                    // Remove event listener to prevent double clicks during async operation
-                    const actionBtn = document.getElementById('modal-action-btn');
-                    if (actionBtn) {
-                        actionBtn.disabled = true;
-                        actionBtn.innerHTML = '<span class="custom-spinner w-5 h-5 border-white"></span> Processing...';
-                    }
-                    actionCallback();
-                });
-            }
-        };
+        // --- State Management Functions (Using Local Storage as a cache) ---
+        const PROFILE_KEY = '3Grands_Profile_';
+        const PACKAGES_KEY = '3Grands_VWC_Packages_';
+        const SUB_KEY = '3Grands_VWC_Subscribed_';
 
 
-        // --- Core Application Listeners ---
-        
-        const handleAuthAction = async (isRegister, email, password) => {
-            const errorBox = document.getElementById('auth-error');
-            const submitBtn = document.getElementById('submit-btn');
+        const loadProfile = (uid) => {
+            if (!uid) return;
+            try {
+                const storedProfile = localStorage.getItem(PROFILE_KEY + uid);
+                if (storedProfile) {
+                    customerProfile = JSON.parse(storedProfile);
+                } else {
+                    customerProfile = { name: '', address: '', yearOfBirth: '' };
+                }
+                
+                const storedSub = localStorage.getItem(SUB_KEY + uid);
+                isVWCSubscribed = storedSub === 'true';
 
-            errorBox.textContent = '';
+            } catch (e) {
+                console.error("Error loading profile/subscription from local storage:", e);
+                customerProfile = { name: '', address: '', yearOfBirth: '' };
+                isVWCSubscribed = false;
+            }
+        };
 
-            if (!isValidEmail(email)) {
-                errorBox.textContent = 'Please enter a valid email address.';
-                return;
-            }
-            if (password.length < 6) {
-                errorBox.textContent = 'Password must be at least 6 characters.';
-                return;
-            }
+        const saveProfile = (uid) => {
+            if (!uid) return false;
+            localStorage.setItem(PROFILE_KEY + uid, JSON.stringify(customerProfile));
+            return true;
+        };
+        
+        const setSubscriptionStatus = (uid, status) => {
+             if (!uid) return;
+             isVWCSubscribed = status;
+             localStorage.setItem(SUB_KEY + uid, status ? 'true' : 'false');
+        }
+        
+        const loadVWCPackages = (uid) => {
+             if (!uid) return;
+             vwcPackages = JSON.parse(localStorage.getItem(PACKAGES_KEY + uid) || '[]');
+        };
 
-            if (isFirebaseUnavailable || !auth) {
-                 errorBox.textContent = 'Authentication service is unavailable. Check your connection.';
-                 return;
-            }
+        const saveVWCPackages = (uid) => {
+             if (!uid) return false;
+             localStorage.setItem(PACKAGES_KEY + uid, JSON.stringify(vwcPackages));
+             return true;
+        };
 
-            submitBtn.disabled = true;
-            submitBtn.classList.add('disabled-btn');
+        const showModal = (content, actionCallback = null) => {
+            modalContainer.innerHTML = `
+                <div class="modal-overlay">
+                    <div class="bg-white p-6 sm:p-8 rounded-xl shadow-2xl w-11/12 max-w-lg transform transition-all duration-300">
+                        ${content}
+                        <div class="mt-6 flex justify-end space-x-3">
+                            <button id="modal-close-btn" class="px-4 py-2 text-sm font-semibold rounded-lg bg-gray-200 text-deep-brown-black hover:bg-gray-300 transition duration-150">
+                                Close
+                            </button>
+                            ${actionCallback ? 
+                                `<button id="modal-action-btn" class="px-4 py-2 text-sm font-semibold rounded-lg bg-deep-green text-warm-cream hover:bg-deep-brown-black transition duration-150">
+                                    Proceed
+                                </button>` : ''
+                            }
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('modal-close-btn').addEventListener('click', () => {
+                modalContainer.innerHTML = '';
+            });
 
-            try {
-                if (isRegister) {
-                    await createUserWithEmailAndPassword(auth, email, password);
-                } else {
-                    await setPersistence(auth, browserSessionPersistence);
-                    await signInWithEmailAndPassword(auth, email, password);
-                }
-            } catch (error) {
-                let errorMessage = 'An unknown authentication error occurred.';
-                if (error.code) {
-                    errorMessage = error.message.replace(/firebase:/i, '').replace(/\(auth.*\)/i, '').trim();
-                }
-                errorBox.textContent = `Error: ${errorMessage}`;
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.classList.remove('disabled-btn');
-            }
-        };
+            if (actionCallback) {
+                document.getElementById('modal-action-btn').addEventListener('click', () => {
+                    const actionBtn = document.getElementById('modal-action-btn');
+                    if (actionBtn) {
+                        actionBtn.disabled = true;
+                        actionBtn.classList.add('disabled-btn'); // Add disabled style
+                        actionBtn.innerHTML = '<span class="custom-spinner w-5 h-5 border-white"></span> Processing...';
+                    }
+                    actionCallback();
+                });
+            }
+        };
 
-        const handleSignOut = async () => {
-            if (isFirebaseUnavailable || !auth) {
-                 currentUser = null;
-                 currentView = 'login';
-                 renderApp();
-                 return;
-            }
-            try {
-                await signOut(auth);
-            } catch (error) {
-                console.error("Sign Out Error:", error);
-            }
-        };
 
-        const switchAuthMode = () => {
-            currentAuthMode = currentAuthMode === 'login' ? 'register' : 'login';
-            renderLogin();
-        };
+        // --- Core Application Listeners ---
+        
+        const handleAuthAction = async (isRegister, email, password) => {
+            const errorBox = document.getElementById('auth-error');
+            const submitBtn = document.getElementById('submit-btn');
 
-        const attachLoginListeners = (isRegister) => {
-            const form = document.getElementById('auth-form');
-            const switchBtn = document.getElementById('switch-mode-btn');
+            errorBox.textContent = '';
 
-            if (form) {
-                form.addEventListener('submit', (event) => {
-                    event.preventDefault();
-                    const email = document.getElementById('email').value.trim();
-                    const password = document.getElementById('password').value;
-                    handleAuthAction(isRegister, email, password);
-                });
-            }
-            
-            if (switchBtn) {
-                switchBtn.addEventListener('click', switchAuthMode);
-            }
-        };
+            if (!isValidEmail(email)) {
+                errorBox.textContent = 'Please enter a valid email address.';
+                return;
+            }
+            if (password.length < 6) {
+                errorBox.textContent = 'Password must be at least 6 characters.';
+                return;
+            }
 
-        const attachDashboardListeners = () => {
-            const signOutBtn = document.getElementById('sign-out-btn');
-            const profileBtn = document.getElementById('profile-btn'); 
-            const odpdsBtn = document.getElementById('odpds-service-btn');
-            const vwcBtn = document.getElementById('vwc-service-btn');
-            const returnBtn = document.getElementById('openReturnModalBtn'); 
-            const viewAllActivityBtn = document.getElementById('view-all-activity-btn');
-            const billingPaymentsBtn = document.getElementById('billing-payments-btn'); // New button
+            if (isFirebaseUnavailable || !auth) {
+                errorBox.textContent = 'Authentication service is unavailable. Check your connection.';
+                return;
+            }
 
-            if (signOutBtn) {
-                signOutBtn.addEventListener('click', handleSignOut);
-            }
-            
-            if (profileBtn) {
-                profileBtn.addEventListener('click', () => {
-                    currentView = 'profile';
-                    renderApp();
-                });
-            }
+            submitBtn.disabled = true;
+            submitBtn.classList.add('disabled-btn');
 
-            if (odpdsBtn) {
-                odpdsBtn.addEventListener('click', (e) => {
-                    if (odpdsBtn.disabled || odpdsBtn.classList.contains('disabled-btn')) {
-                        e.preventDefault();
-                        return;
-                    }
+            try {
+                if (isRegister) {
+                    await createUserWithEmailAndPassword(auth, email, password);
+                } else {
+                    await setPersistence(auth, browserSessionPersistence);
+                    await signInWithEmailAndPassword(auth, email, password);
+                }
+            } catch (error) {
+                let errorMessage = 'An unknown authentication error occurred.';
+                if (error.code) {
+                    errorMessage = error.message.replace(/firebase:/i, '').replace(/\(auth.*\)/i, '').trim();
+                }
+                errorBox.textContent = `Error: ${errorMessage}`;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('disabled-btn');
+            }
+        };
 
-                    currentView = 'odpds';
-                    renderApp();
-                });
-            }
+        const handleSignOut = async () => {
+            if (isFirebaseUnavailable || !auth) {
+                currentUser = null;
+                currentView = 'login';
+                renderApp();
+                return;
+            }
+            try {
+                await signOut(auth);
+            } catch (error) {
+                console.error("Sign Out Error:", error);
+            }
+        };
 
-            if (vwcBtn) {
-                vwcBtn.addEventListener('click', async (e) => { // ADDED async here for the initial button click
-                    if (vwcBtn.disabled || vwcBtn.classList.contains('disabled-btn')) {
-                        e.preventDefault();
-                        return;
-                    }
+        const switchAuthMode = () => {
+            currentAuthMode = currentAuthMode === 'login' ? 'register' : 'login';
+            renderLogin();
+        };
 
-                    // Check if already subscribed
-                    if (isVWCSubscribed) {
-                        currentView = 'vwc';
-                        renderApp();
-                    } else {
-                        // Show subscription modal
-                        const content = `
-                            <h3 class="text-2xl font-bold text-deep-green mb-3">VWC Service Rules & Subscription</h3>
-                            <p class="text-deep-brown-black mb-4">
-                                The **Vendor to Warehouse to Customer (VWC)** service allows you to place orders with your vendors and ship them to our unique warehouse address for consolidation.
-                            </p>
-                            <ul class="list-disc list-inside text-sm text-deep-brown-black space-y-2 p-4 bg-warm-cream rounded-lg border border-gold-yellow">
-                                <li>We will only hold packages for **no more than 60 days**.</li>
-                                <li>Industrial-grade appliances, safes, or generators, car engines, large pallet orders, or unboxed furniture must use the **On-Demand Service**.</li>
-                                <li>The package must **NOT** exceed **108 inches (9ft)** in its longest dimension.</li>
-                                <li>The package must **NOT** exceed **150 lbs** in weight.</li>
-                                <li class="text-red-brown font-semibold">**Security Reminder:** Package release requires confirming the **Year of Birth** from your profile.</li>
-                            </ul>
-                            <div class="mt-4 p-3 bg-gold-yellow/30 rounded-lg text-center">
-                                <p class="text-xl font-extrabold text-deep-brown-black">Monthly Subscription: <span class="text-red-brown">$23.99</span></p>
-                                <p class="text-sm text-deep-brown-black/70 mt-1">This recurring charge provides unlimited access to VWC consolidation services.</p>
-                            </div>
-                        `;
-                        showModal(content, async () => { 
-                            // NOTE: Modal UI is updated inside showModal. We just execute the action here.
-                            const modalActionBtn = document.getElementById('modal-action-btn');
+        const attachLoginListeners = (isRegister) => {
+            const form = document.getElementById('auth-form');
+            const switchBtn = document.getElementById('switch-mode-btn');
+
+            if (form) {
+                form.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    const email = document.getElementById('email').value.trim();
+                    const password = document.getElementById('password').value;
+                    handleAuthAction(isRegister, email, password);
+                });
+            }
+            
+            if (switchBtn) {
+                switchBtn.addEventListener('click', switchAuthMode);
+            }
+        };
+
+        const attachDashboardListeners = () => {
+            const signOutBtn = document.getElementById('sign-out-btn');
+            const profileBtn = document.getElementById('profile-btn'); 
+            const odpdsBtn = document.getElementById('odpds-service-btn');
+            const vwcBtn = document.getElementById('vwc-service-btn');
+            const returnBtn = document.getElementById('openReturnModalBtn'); 
+            const viewAllActivityBtn = document.getElementById('view-all-activity-btn');
+            const billingPaymentsBtn = document.getElementById('billing-payments-btn'); // New button
+
+            if (signOutBtn) {
+                signOutBtn.addEventListener('click', handleSignOut);
+            }
+            
+            if (profileBtn) {
+                profileBtn.addEventListener('click', () => {
+                    currentView = 'profile';
+                    renderApp();
+                });
+            }
+
+            if (odpdsBtn) {
+                odpdsBtn.addEventListener('click', (e) => {
+                    if (odpdsBtn.disabled || odpdsBtn.classList.contains('disabled-btn')) {
+                        e.preventDefault();
+                        return;
+                    }
+
+                    currentView = 'odpds';
+                    renderApp();
+                });
+            }
+
+            if (vwcBtn) {
+                vwcBtn.addEventListener('click', async (e) => {
+                    if (vwcBtn.disabled || vwcBtn.classList.contains('disabled-btn')) {
+                        e.preventDefault();
+                        return;
+                    }
+
+                    if (isVWCSubscribed) {
+                        currentView = 'vwc';
+                        renderApp();
+                    } else {
+                        const content = `
+                            <h3 class="text-2xl font-bold text-deep-green mb-3">VWC Service Rules & Subscription</h3>
+                            <p class="text-deep-brown-black mb-4">
+                                The **Vendor to Warehouse to Customer (VWC)** service allows you to place orders with your vendors and ship them to our unique warehouse address for consolidation.
+                            </p>
+                            <ul class="list-disc list-inside text-sm text-deep-brown-black space-y-2 p-4 bg-warm-cream rounded-lg border border-gold-yellow">
+                                <li>We will only hold packages for **no more than 60 days**.</li>
+                                <li>Industrial-grade appliances, safes, or generators, car engines, large pallet orders, or unboxed furniture must use the **On-Demand Service**.</li>
+                                <li>The package must **NOT** exceed **108 inches (9ft)** in its longest dimension.</li>
+                                <li>The package must **NOT** exceed **150 lbs** in weight.</li>
+                                <li class="text-red-brown font-semibold">**Security Reminder:** Package release requires confirming the **Year of Birth** from your profile.</li>
+                            </ul>
+                            <div class="mt-4 p-3 bg-gold-yellow/30 rounded-lg text-center">
+                                <p class="text-xl font-extrabold text-deep-brown-black">Monthly Subscription: <span class="text-red-brown">$23.99</span></p>
+                                <p class="text-sm text-deep-brown-black/70 mt-1">This recurring charge provides unlimited access to VWC consolidation services.</p>
+                            </div>
+                        `;
+                        showModal(content, async () => { 
+                            const modalActionBtn = document.getElementById('modal-action-btn');
                             
-                            try {
-                                const createStripeSession = httpsCallable(functions, 'createStripeCheckoutSession');
-                                const result = await createStripeSession();
-                                const { url: stripeCheckoutUrl } = result.data;
+                            try {
+                                const createStripeSession = httpsCallable(functions, 'createStripeCheckoutSession');
+                                const result = await createStripeSession();
+                                const { url: stripeCheckoutUrl } = result.data;
 
-                                if (stripeCheckoutUrl) {
-                                    window.location.href = stripeCheckoutUrl; // Redirect to Stripe Checkout
-                                } else {
-                                    showModal(
-                                        `<h3 class="text-2xl font-bold text-red-brown mb-3">Error!</h3>
-                                         <p class="text-deep-brown-black">Failed to get Stripe checkout URL. Please try again.</p>`
-                                    );
-                                }
-                            } catch (error) {
-                                console.error("Error calling Cloud Function for Stripe Checkout:", error);
-                                let errorMessage = error.message;
-                                if (error.code === 'unauthenticated') {
-                                    errorMessage = 'You must be logged in to subscribe.';
-                                } else if (error.code === 'internal') {
-                                    errorMessage = 'A server error occurred. Please try again.';
-                                }
-                                showModal(
-                                    `<h3 class="text-2xl font-bold text-red-brown mb-3">Subscription Error</h3>
-                                     <p class="text-deep-brown-black">${errorMessage}</p>`
-                                );
-                            } finally {
-                                // Close the modal container after error or success (if no redirect)
-                                if (modalActionBtn && !window.location.href.includes('checkout.stripe.com')) {
-                                     modalContainer.innerHTML = '';
+                                if (stripeCheckoutUrl) {
+                                    window.location.href = stripeCheckoutUrl; // Redirect to Stripe Checkout
+                                    return; // STOP EXECUTION ON REDIRECT
+                                } else {
+                                    showModal(
+                                        `<h3 class="text-2xl font-bold text-red-brown mb-3">Error!</h3>
+                                        <p class="text-deep-brown-black">Failed to get Stripe checkout URL. Please try again.</p>`
+                                    );
+                                }
+                            } catch (error) {
+                                console.error("Error calling Cloud Function for Stripe Checkout:", error);
+                                let errorMessage = error.message;
+                                if (error.code === 'unauthenticated') {
+                                    errorMessage = 'You must be logged in to subscribe.';
+                                } else if (error.code === 'internal') {
+                                    errorMessage = 'A server error occurred. Please try again.';
+                                }
+                                showModal(
+                                    `<h3 class="text-2xl font-bold text-red-brown mb-3">Subscription Error</h3>
+                                    <p class="text-deep-brown-black">${errorMessage}</p>`
+                                );
+                            } finally {
+                                // Only reset the button state. The modal itself is either redirected away from,
+                                // or replaced by a new error modal shown in the catch block.
+                                if (modalActionBtn) {
+                                    modalActionBtn.disabled = false;
+                                    modalActionBtn.classList.remove('disabled-btn');
+                                    modalActionBtn.innerHTML = 'Proceed'; // Reset button text
                                 }
                             }
-                        });
-                    }
-                });
-            }
+                        });
+                    }
+                });
+            }
 
-            // Listener for the Quick Return Request button
-            if (returnBtn) {
-                returnBtn.addEventListener('click', () => {
-                    showModal(
-                        `<h3 class="text-2xl font-bold text-red-brown mb-3">Initiate Return Request</h3>
-                         <p class="text-deep-brown-black">You are about to start a return request. Please ensure you have your order details ready.</p>
-                         <p class="text-xs text-deep-brown-black/70 mt-2">Further steps will be required to complete the return process.</p>`,
-                        () => {
-                            // Placeholder for actual return request form/logic
-                            console.log('User initiated Quick Return Request.');
-                            alert('Return request initiated! Please follow the instructions to provide more details!');
-                        }
-                    );
-                });
-            }
+            // Listener for the Quick Return Request button
+            if (returnBtn) {
+                returnBtn.addEventListener('click', () => {
+                    showModal(
+                        `<h3 class="text-2xl font-bold text-red-brown mb-3">Initiate Return Request</h3>
+                         <p class="text-deep-brown-black">You are about to start a return request. Please ensure you have your order details ready.</p>
+                         <p class="text-xs text-deep-brown-black/70 mt-2">Further steps will be required to complete the return process.</p>`,
+                        () => {
+                            // Placeholder for actual return request form/logic
+                            console.log('User initiated Quick Return Request.');
+                            alert('Return request initiated! Please follow the instructions to provide more details!');
+                            modalContainer.innerHTML = ''; // Explicitly close modal after the action
+                        }
+                    );
+                });
+            }
 
-            // Listener for the View All Activity button
-            if (viewAllActivityBtn) {
-                viewAllActivityBtn.addEventListener('click', () => {
-                    currentView = 'activity';
-                    renderApp();
-                });
-            }
+            // Listener for the View All Activity button
+            if (viewAllActivityBtn) {
+                viewAllActivityBtn.addEventListener('click', () => {
+                    currentView = 'activity';
+                    renderApp();
+                });
+            }
 
-            // New listener for the Billing & Payments button
-            if (billingPaymentsBtn) {
-                billingPaymentsBtn.addEventListener('click', () => {
-                    currentView = 'billingPayments';
-                    renderApp();
-                });
-            }
-        };
-        
-        const attachProfileListeners = () => {
-            const form = document.getElementById('profile-form');
-            const backBtn = document.getElementById('profile-back-to-dashboard-btn');
-            const statusBox = document.getElementById('profile-status');
-            
-            document.getElementById('profile-name').value = customerProfile.name;
-            document.getElementById('profile-address').value = customerProfile.address;
-            document.getElementById('profile-yob').value = customerProfile.yearOfBirth;
+            // New listener for the Billing & Payments button
+            if (billingPaymentsBtn) {
+                billingPaymentsBtn.addEventListener('click', () => {
+                    currentView = 'billingPayments';
+                    renderApp();
+                });
+            }
+        };
+        
+        const attachProfileListeners = () => {
+            const form = document.getElementById('profile-form');
+            const backBtn = document.getElementById('profile-back-to-dashboard-btn');
+            const statusBox = document.getElementById('profile-status');
+            
+            document.getElementById('profile-name').value = customerProfile.name;
+            document.getElementById('profile-address').value = customerProfile.address;
+            document.getElementById('profile-yob').value = customerProfile.yearOfBirth;
 
-            // Display subscription status in profile
-            const vwcSubscriptionStatusElement = document.getElementById('vwc-subscription-status');
-            if (vwcSubscriptionStatusElement) {
-                vwcSubscriptionStatusElement.textContent = isVWCSubscribed ? 'Active' : 'Inactive';
-                vwcSubscriptionStatusElement.className = `font-semibold ${isVWCSubscribed ? 'text-deep-green' : 'text-red-brown'}`;
-            }
+            // Display subscription status in profile
+            const vwcSubscriptionStatusElement = document.getElementById('vwc-subscription-status');
+            if (vwcSubscriptionStatusElement) {
+                vwcSubscriptionStatusElement.textContent = isVWCSubscribed ? 'Active' : 'Inactive';
+                vwcSubscriptionStatusElement.className = `font-semibold ${isVWCSubscribed ? 'text-deep-green' : 'text-red-brown'}`;
+            }
 
-            if (backBtn) {
-                backBtn.addEventListener('click', () => {
-                    currentView = 'dashboard';
-                    renderApp();
-                });
-            }
+            if (backBtn) {
+                backBtn.addEventListener('click', () => {
+                    currentView = 'dashboard';
+                    renderApp();
+                });
+            }
 
-            if (form) {
-                form.addEventListener('submit', (event) => {
-                    event.preventDefault();
-                    
-                    const name = document.getElementById('profile-name').value.trim();
-                    const address = document.getElementById('profile-address').value.trim();
-                    const yob = document.getElementById('profile-yob').value.trim();
-                    
-                    statusBox.className = 'text-sm font-medium text-red-brown mt-3';
-                    statusBox.textContent = '';
-                    
-                    if (!name || !address || !yob) {
-                        statusBox.textContent = 'All fields are required.';
-                        return;
-                    }
-                    if (yob.length !== 4 || isNaN(parseInt(yob))) {
-                        statusBox.textContent = 'Year of Birth must be a four-digit number (YYYY).';
-                        return;
-                    }
-                    const currentYear = new Date().getFullYear();
-                    if (parseInt(yob) > currentYear || parseInt(yob) < 1900) {
-                        statusBox.textContent = 'Please enter a valid Year of Birth.';
-                        return;
-                    }
+            if (form) {
+                form.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    
+                    const name = document.getElementById('profile-name').value.trim();
+                    const address = document.getElementById('profile-address').value.trim();
+                    const yob = document.getElementById('profile-yob').value.trim();
+                    
+                    statusBox.className = 'text-sm font-medium text-red-brown mt-3';
+                    statusBox.textContent = '';
+                    
+                    if (!name || !address || !yob) {
+                        statusBox.textContent = 'All fields are required.';
+                        return;
+                    }
+                    if (yob.length !== 4 || isNaN(parseInt(yob))) {
+                        statusBox.textContent = 'Year of Birth must be a four-digit number (YYYY).';
+                        return;
+                    }
+                    const currentYear = new Date().getFullYear();
+                    if (parseInt(yob) > currentYear || parseInt(yob) < 1900) {
+                        statusBox.textContent = 'Please enter a valid Year of Birth.';
+                        return;
+                    }
 
-                    customerProfile.name = name;
-                    customerProfile.address = address;
-                    customerProfile.yearOfBirth = yob;
+                    customerProfile.name = name;
+                    customerProfile.address = address;
+                    customerProfile.yearOfBirth = yob;
 
-                    if (saveProfile(currentUser?.uid)) {
-                        statusBox.className = 'text-sm font-medium text-deep-green mt-3';
-                        statusBox.textContent = 'Profile updated successfully!';
-                    } else {
-                        statusBox.textContent = 'Error saving profile. Please try again.';
-                    }
-                });
-            }
-        };
+                    if (saveProfile(currentUser?.uid)) {
+                        statusBox.className = 'text-sm font-medium text-deep-green mt-3';
+                        statusBox.textContent = 'Profile updated successfully!';
+                    } else {
+                        statusBox.textContent = 'Error saving profile. Please try again.';
+                    }
+                });
+            }
+        };
         
         // --- VIEW RENDERING FUNCTIONS (PLACEHOLDER STUBS) ---
         // You would need to add the actual HTML rendering logic for each view (login, dashboard, profile, vwc, odpds, activity, billingPayments) here.
         
         const renderLogin = () => {
-            // Placeholder: Replace with actual HTML for login/register
             appContainer.innerHTML = `
                 <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-sm">
                     ${renderLogo()}
@@ -557,7 +558,6 @@
         };
 
         const renderDashboard = () => {
-            // Placeholder: Replace with actual HTML for dashboard
             appContainer.innerHTML = `
                 <div class="bg-white p-6 rounded-xl shadow-2xl w-full space-y-4">
                     <div class="flex justify-between items-center pb-2 border-b border-gold-yellow">
@@ -609,7 +609,6 @@
         };
 
         const renderProfile = () => {
-            // Placeholder: Replace with actual HTML for profile
             appContainer.innerHTML = `
                 <div class="bg-white p-6 rounded-xl shadow-2xl w-full">
                     <div class="flex justify-between items-center pb-3 border-b border-gold-yellow mb-4">
@@ -712,32 +711,32 @@
         };
 
 
-        // =========================================================================
-        // --- STEP 2: APP INITIALIZATION ---
-        // =========================================================================
-        try {
-            renderLoading(); // Show loading screen immediately
-            
-            app = initializeApp(DEV_MODE_FIREBASE_CONFIG);
-            auth = getAuth(app);
+        // =========================================================================
+        // --- STEP 2: APP INITIALIZATION ---
+        // =========================================================================
+        try {
+            renderLoading(); // Show loading screen immediately
+            
+            app = initializeApp(DEV_MODE_FIREBASE_CONFIG);
+            auth = getAuth(app);
             functions = getFunctions(app); // Initialize Functions
-            
-            onAuthStateChanged(auth, (user) => {
-                currentUser = user;
-                authReady = true;
-                renderApp();
-            });
-            
-        } catch (error) {
-            isFirebaseUnavailable = true;
-            console.error("Firebase Initialization Error:", error);
-            appContainer.innerHTML = `
-                <div class="p-8 bg-red-brown text-warm-cream rounded-xl shadow-2xl w-full max-w-sm">
-                    <h2 class="text-2xl font-extrabold mb-3">Service Unavailable</h2>
-                    <p class="text-sm">The application could not connect to the backend services. Please check your network connection or try again later.</p>
-                </div>
-            `;
-        }
-    </script>
+            
+            onAuthStateChanged(auth, (user) => {
+                currentUser = user;
+                authReady = true;
+                renderApp();
+            });
+            
+        } catch (error) {
+            isFirebaseUnavailable = true;
+            console.error("Firebase Initialization Error:", error);
+            appContainer.innerHTML = `
+                <div class="p-8 bg-red-brown text-warm-cream rounded-xl shadow-2xl w-full max-w-sm">
+                    <h2 class="text-2xl font-extrabold mb-3">Service Unavailable</h2>
+                    <p class="text-sm">The application could not connect to the backend services. Please check your network connection or try again later.</p>
+                </div>
+            `;
+        }
+    </script>
 </body>
 </html>
